@@ -18,4 +18,6 @@
     <color name="blue_dark">#005B9F</color>
     <color name="blue_light">#81D4FA</color>
 
+    <color name="lightGrey">#ECECEC</color>
+    <color name="htmlGrey">#808080</color>
 </resources>
