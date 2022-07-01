@@ -37,3 +37,8 @@ mobile-development-ecomerce
             │   res
             │   assets
 ```
+
+
+## References
+
+<a href="https://www.flaticon.com/free-icons/online-shop" title="online-shop icons">Online-shop icons created by itim2101 - Flaticon</a>
