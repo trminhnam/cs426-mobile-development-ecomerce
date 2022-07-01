@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <style name="Widget.FindAndBuy.TextView" parent="Widget.MaterialComponents.TextView">
         <item name="android:minHeight">48dp</item>
         <item name="android:gravity">center_vertical</item>
