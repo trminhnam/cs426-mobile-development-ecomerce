@@ -20,6 +20,15 @@
         <!-- Switches -->
         <item name="switchStyle">@style/Widget.FindAndBuy.CompoundButton.Switch</item>
     </style>
+    
+    
+    <style name="SplashTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_background</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:statusBarColor">@color/colorAccent</item>
+    </style>
 
 
     <style name="Theme.FindAndBuyNoActionBar" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
@@ -44,8 +53,6 @@
         <item name="radioButtonStyle">@style/Widget.FindAndBuy.CompoundButton.RadioButton</item>
         <!-- Switches -->
         <item name="switchStyle">@style/Widget.FindAndBuy.CompoundButton.Switch</item>
-
-
     </style>
-
+    
 </resources>
