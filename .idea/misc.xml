@@ -3,11 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/trmin/Desktop/cs426-mobile-development-ecomerce/app/src/main/res/layout/activity_main.xml" value="0.32135416666666666" />
-        <entry key="..\:/Users/trmin/Desktop/cs426-mobile-development-ecomerce/app/src/main/res/layout/fragment_seller_login.xml" value="0.25555555555555554" />
         <entry key="..\:/Users/trmin/Desktop/cs426-mobile-development-ecomerce/findandbuy/app/src/main/res/layout/activity_main.xml" value="0.16041666666666668" />
-      </map>
-    </option>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
