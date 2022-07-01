@@ -1,33 +1,34 @@
 {
   "project_info": {
-    "project_number": "881699687288",
-    "project_id": "findandbuy-558cf",
-    "storage_bucket": "findandbuy-558cf.appspot.com"
+    "project_number": "364690534701",
+    "firebase_url": "https://findandbuy-701ca-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "findandbuy-701ca",
+    "storage_bucket": "findandbuy-701ca.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:881699687288:android:82fb64a202f7a04574568d",
+        "mobilesdk_app_id": "1:364690534701:android:00379ef576bc92eee223a4",
         "android_client_info": {
           "package_name": "com.example.findandbuy"
         }
       },
       "oauth_client": [
         {
-          "client_id": "881699687288-8uq4n7odp91bbkfqom6he17s7148dp3f.apps.googleusercontent.com",
+          "client_id": "364690534701-jv05b8he122452mporfegkbvqifngm2n.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCzv2KgUDFNnLbaKThrRuD6pHx4reP6PMQ"
+          "current_key": "AIzaSyBzaESErzS8eflGhJ9ukO5gFZVqp4kT4mY"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "881699687288-8uq4n7odp91bbkfqom6he17s7148dp3f.apps.googleusercontent.com",
+              "client_id": "364690534701-jv05b8he122452mporfegkbvqifngm2n.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
