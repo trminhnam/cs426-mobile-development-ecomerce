@@ -21,5 +21,7 @@
     <color name="lightGrey">#ECECEC</color>
     <color name="htmlGrey">#808080</color>
 
+    <color name="bgBottomNavigation">#77c66e</color>
+
     <color name="transparent">#00000000</color>
 </resources>

@@ -1,4 +1,4 @@
-package com.example.findandbuy;
+package com.example.findandbuy.user;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -14,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.example.findandbuy.R;
 import com.example.findandbuy.seller.RegisterSellerActivity;
 
 public class RegisterUserActivity extends AppCompatActivity {
@@ -22,6 +24,7 @@ public class RegisterUserActivity extends AppCompatActivity {
     private ImageButton backButton;
     private EditText nameEt, phoneEt, streetEt, districtEt, cityEt, emailEt, passwordEt, confirmPasswordEt;
     private Button registerButton;
+    private ImageButton gpsButton;
     private TextView registerSellerTv;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +41,7 @@ public class RegisterUserActivity extends AppCompatActivity {
         passwordEt = findViewById(R.id.passwordEt);
         confirmPasswordEt = findViewById(R.id.confirmPasswordEt);
         registerButton = findViewById(R.id.register_btn);
+        gpsButton = findViewById(R.id.gpsBtn);
         registerSellerTv = findViewById(R.id.registerSeller);
 
 
@@ -56,6 +60,14 @@ public class RegisterUserActivity extends AppCompatActivity {
                 startActivity(new Intent(RegisterUserActivity.this, RegisterSellerActivity.class));
             }
         });
+
+        gpsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Get the location lng ltn
+            }
+        });
+
     }
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
