@@ -4,12 +4,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.findandbuy.seller.SellerMainActivity;
 import com.example.findandbuy.user.RegisterUserActivity;
+import com.example.findandbuy.user.UserMainActivity;
 import com.google.android.material.textfield.TextInputEditText;
 
 public class LoginActivity extends AppCompatActivity {
@@ -36,14 +40,21 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         //Test the login to user main activity
+        //admin have form: abc@admin.com
+        //user have form: abc@user.com
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (userName.toString().matches(".*@admin.com.$")){
+                Log.d("check", userName.getText().toString().trim());
+                if (userName.getText().toString().trim().matches(".*@admin.com$")){
                     startActivity(new Intent(LoginActivity.this, SellerMainActivity.class));
-                } else if (userName.toString().matches("/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/\n")){
-                    startActivity(new Intent(LoginActivity.this, SellerMainActivity.class));
+                } else if (userName.getText().toString().trim().matches(".*@user.com$")){
+                    startActivity(new Intent(LoginActivity.this, UserMainActivity.class));
+                    Log.d("check", userName.toString());
+                } else {
+                    Toast.makeText(LoginActivity.this, "Invalid username", Toast.LENGTH_SHORT).show();
                 }
+
             }
         });
     }
