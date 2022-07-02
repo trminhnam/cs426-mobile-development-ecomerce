@@ -12,10 +12,10 @@ import com.example.findandbuy.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link ShoppingCartFragment#newInstance} factory method to
+ * Use the {@link UserProfileFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ShoppingCartFragment extends Fragment {
+public class UserProfileFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,7 +26,7 @@ public class ShoppingCartFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public ShoppingCartFragment() {
+    public UserProfileFragment() {
         // Required empty public constructor
     }
 
@@ -36,11 +36,11 @@ public class ShoppingCartFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment ShoppingCartFragment.
+     * @return A new instance of fragment ProfileFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ShoppingCartFragment newInstance(String param1, String param2) {
-        ShoppingCartFragment fragment = new ShoppingCartFragment();
+    public static UserProfileFragment newInstance(String param1, String param2) {
+        UserProfileFragment fragment = new UserProfileFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -61,6 +61,6 @@ public class ShoppingCartFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_shopping_cart, container, false);
+        return inflater.inflate(R.layout.fragment_user_profile, container, false);
     }
 }

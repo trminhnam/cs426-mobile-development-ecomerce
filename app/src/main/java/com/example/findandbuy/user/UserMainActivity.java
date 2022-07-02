@@ -1,8 +1,8 @@
 package com.example.findandbuy.user;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
@@ -10,10 +10,11 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import com.example.findandbuy.R;
-import com.example.findandbuy.fragment.GameFragment;
-import com.example.findandbuy.fragment.ProfileFragment;
-import com.example.findandbuy.fragment.ShopFragment;
-import com.example.findandbuy.fragment.ShoppingCartFragment;
+import com.example.findandbuy.fragment.UserGameFragment;
+import com.example.findandbuy.fragment.UserProfileFragment;
+import com.example.findandbuy.fragment.UserShopFragment;
+import com.example.findandbuy.fragment.UserShoppingCartFragment;
+import com.example.findandbuy.navigation.BottomNavigationBehavior;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
@@ -27,10 +28,12 @@ public class UserMainActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .setReorderingAllowed(true)
-                    .add(R.id.frame_container, ShopFragment.class, null)
+                    .add(R.id.frame_container, UserShopFragment.class, null)
                     .commit();
         }
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) navigation.getLayoutParams();
+        layoutParams.setBehavior(new BottomNavigationBehavior());
         navigation.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -47,7 +50,7 @@ public class UserMainActivity extends AppCompatActivity {
                         if (savedInstanceState == null) {
                             getSupportFragmentManager().beginTransaction()
                                     .setReorderingAllowed(true)
-                                    .add(R.id.frame_container, ShopFragment.class, null)
+                                    .add(R.id.frame_container, UserShopFragment.class, null)
                                     .commit();
                         }
                         return true;
@@ -56,7 +59,7 @@ public class UserMainActivity extends AppCompatActivity {
                         if (savedInstanceState == null) {
                             getSupportFragmentManager().beginTransaction()
                                     .setReorderingAllowed(true)
-                                    .add(R.id.frame_container, GameFragment.class, null)
+                                    .add(R.id.frame_container, UserGameFragment.class, null)
                                     .commit();
                         }
                         return true;
@@ -65,7 +68,7 @@ public class UserMainActivity extends AppCompatActivity {
                         if (savedInstanceState == null) {
                             getSupportFragmentManager().beginTransaction()
                                     .setReorderingAllowed(true)
-                                    .add(R.id.frame_container, ShoppingCartFragment.class, null)
+                                    .add(R.id.frame_container, UserShoppingCartFragment.class, null)
                                     .commit();
                         }
                         return true;
@@ -74,7 +77,7 @@ public class UserMainActivity extends AppCompatActivity {
                         if (savedInstanceState == null) {
                             getSupportFragmentManager().beginTransaction()
                                     .setReorderingAllowed(true)
-                                    .add(R.id.frame_container, ProfileFragment.class, null)
+                                    .add(R.id.frame_container, UserProfileFragment.class, null)
                                     .commit();
                         }
                         return true;

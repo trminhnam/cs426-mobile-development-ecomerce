@@ -37,6 +37,10 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="YOUR_API_KEY" />
 
+
+        <activity
+            android:name=".user.ShopDetailsActivity"
+            android:exported="false" />
         <activity
             android:name=".user.UserMainActivity"
             android:exported="true"></activity>
@@ -49,7 +53,6 @@
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
