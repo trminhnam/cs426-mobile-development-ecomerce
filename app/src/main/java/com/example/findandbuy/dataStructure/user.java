@@ -1,13 +1,13 @@
 package com.example.findandbuy.dataStructure;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class user {
     Integer userID = null;
     String userName = null;
     String userUsername = null;
     String userPassword = null;
-    ArrayList<Item> cart = null;
+    HashMap<String, Item> cart = null;
 
     public user addUser(Integer userID, String userName, String userUsername, String userPassword)
     {

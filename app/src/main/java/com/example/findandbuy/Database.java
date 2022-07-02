@@ -5,7 +5,7 @@ import com.example.findandbuy.dataStructure.Store;
 import com.example.findandbuy.dataStructure.seller;
 import com.example.findandbuy.dataStructure.user;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Database {
     private static Database INSTANCE = null;
@@ -21,8 +21,18 @@ public class Database {
         return(INSTANCE);
     }
 
-    ArrayList<seller> sellers = new ArrayList<>();
-    ArrayList<user> users = new ArrayList<>();
+    HashMap<String, seller> sellers = new HashMap<>();
+    HashMap<String, user> users = new HashMap<>();
+
+    public HashMap<String, user> getUsers()
+    {
+        return users;
+    }
+
+    public HashMap<String, seller> getSellers()
+    {
+        return sellers;
+    }
 
     public void registerSeller(String sellerName,
                                String sellerUsername, String sellerPassword,
@@ -32,23 +42,13 @@ public class Database {
         sellerID = 100000 + sellers.size();
 
         // TODO: check sellerUsername unique
-
-        sellers.add(new seller().addSeller(sellerID, sellerName, sellerUsername, sellerPassword, store));
-    }
-
-    public ArrayList<user> getUsers()
-    {
-        return users;
-    }
-
-    public ArrayList<seller> getSellers()
-    {
-        return sellers;
+        sellers.put(String.valueOf(sellerID), new seller().addSeller(sellerID, sellerName, sellerUsername, sellerPassword, store));
+        pushToFirebase();
     }
 
     public void registerSeller(String sellerName,
                                String sellerUsername, String sellerPassword,
-                               String storeName, ArrayList<Item> items, String storeDescription)
+                               String storeName, HashMap<String, Item> items, String storeDescription)
     {
         int sellerID, storeID;
         sellerID = 100000 + sellers.size();
@@ -57,7 +57,8 @@ public class Database {
         // TODO: check sellerUsername unique
 
         Store store = new Store().addStore(storeID, storeName, items, storeDescription);
-        sellers.add(new seller().addSeller(sellerID, sellerName, sellerUsername, sellerPassword, store));
+        sellers.put(String.valueOf(sellerID), new seller().addSeller(sellerID, sellerName, sellerUsername, sellerPassword, store));
+        pushToFirebase();
     }
 
 
@@ -68,13 +69,24 @@ public class Database {
 
         // TODO: check userUsername unique
 
-        users.add(new user().addUser(userID, userName, userUsername, userPassword));
+        users.put(String.valueOf(userID), new user().addUser(userID, userName, userUsername, userPassword));
+        pushToFirebase();
     }
+
+
+
+
+
+
+
 
     public void pushToFirebase()
     {
         firebase.addData(this);
     }
 
-
+    public void getDataFromFirebase() throws Exception {
+        // TODO: FIX LOAD DATA FROM FIREBASE
+        FieldMapper.copy(firebase.getData(), this);
+    }
 }

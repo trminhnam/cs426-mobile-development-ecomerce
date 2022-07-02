@@ -85,4 +85,9 @@ public class FireBase {
 
         return result[0];
     }
+
+    public Object getData()
+    {
+        return databaseReference.get().getResult().getValue();
+    }
 }

@@ -1,14 +1,14 @@
 package com.example.findandbuy.dataStructure;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Store {
     Integer storeID = null;
     String storeName = null;
     String storeDescription = null;
-    ArrayList<Item> items = null;
+    HashMap<String, Item> items = null;
 
-    public Store addStore(Integer storeID, String storeName, ArrayList<Item> items, String storeDescription)
+    public Store addStore(Integer storeID, String storeName, HashMap<String, Item> items, String storeDescription)
     {
         this.storeID = storeID;
         this.storeName = storeName;
@@ -32,7 +32,7 @@ public class Store {
         return storeDescription;
     }
 
-    public ArrayList<Item> getItems()
+    public HashMap<String, Item> getItems()
     {
         return items;
     }

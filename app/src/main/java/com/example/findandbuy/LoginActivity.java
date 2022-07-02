@@ -15,7 +15,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -23,8 +23,6 @@ public class LoginActivity extends AppCompatActivity {
     private Button loginBtn;
     private TextView noAccountTv;
     private Database database;
-
-    ArrayList<Item> items = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,14 +43,17 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         // test
+        HashMap<String, Item> items = new HashMap<>();
         database = Database.getInstance();
-        Item item = new Item().addItem(1, "test", 12,
-                "a", 12, 323, "tess");
-        items.add(item);
+        Item item = new Item().addItem(1, "Iphone Note 10", 12,
+                "Phone", 12, 323, "Iphone Android System");
+        items.put("12233", item);
 
-        Store store = new Store().addStore(12, "aaa", items, "aa");
+        Store store = new Store().addStore(12, "AppStore", items, "Only Samsung");
 
-        database.registerSeller("Test", "test", "test", store);
-        database.pushToFirebase();
+        database.registerSeller("seller0", "seller.0", "abcd", store);
+        database.registerSeller("seller1", "seller.1", "abcd", store);
+        database.registerSeller("seller2", "seller.2", "abcd", store);
+        database.registerSeller("seller3", "seller.3", "abcd", store);
     }
 }
