@@ -12,8 +12,8 @@
         android:id="@+id/navBar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@drawable/shape_rect01"
-        android:layout_marginBottom="20dp">
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/shape_rect01">
 
         <ImageButton
             android:id="@+id/backBtn"
@@ -62,10 +62,13 @@
 
             <EditText
                 android:id="@+id/phoneEt"
-                android:layout_below="@id/fullNameEt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_below="@id/fullNameEt"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
                 android:background="@drawable/shape_rect02"
                 android:drawableStart="@drawable/ic_baseline_smartphone_24"
                 android:drawablePadding="5dp"
