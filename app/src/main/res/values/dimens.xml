@@ -20,4 +20,5 @@
     <dimen name="margin_horizontal">16dp</dimen>
     <dimen name="margin_between_elements">8dp</dimen>
     <dimen name="corner_rate">24dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 </resources>
