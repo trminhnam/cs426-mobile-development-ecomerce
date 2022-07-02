@@ -73,16 +73,12 @@ public class SellerAddItem extends AppCompatActivity {
     // image picked uri
     private Uri image_uri;
 
-    private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_seller_add_item);
-
-        // init firebase
-        firebaseAuth = FirebaseAuth.getInstance();
 
         // init progress dialog
         progressDialog = new ProgressDialog(this);

@@ -3,6 +3,14 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/AndroidStudio/cs426-mobile-development-ecomerce/app/src/main/res/layout/activity_login2.xml" value="0.22826086956521738" />
+        <entry key="..\:/AndroidStudio/cs426-mobile-development-ecomerce/app/src/main/res/layout/activity_main.xml" value="0.22826086956521738" />
+        <entry key="..\:/AndroidStudio/cs426-mobile-development-ecomerce/app/src/main/res/layout/activity_register_seller.xml" value="0.22826086956521738" />
+        <entry key="..\:/AndroidStudio/cs426-mobile-development-ecomerce/app/src/main/res/layout/activity_register_user.xml" value="0.22826086956521738" />
+        <entry key="..\:/AndroidStudio/cs426-mobile-development-ecomerce/app/src/main/res/layout/activity_seller_add_item.xml" value="0.22826086956521738" />
+        <entry key="..\:/AndroidStudio/cs426-mobile-development-ecomerce/app/src/main/res/layout/activity_seller_main.xml" value="0.22826086956521738" />
+        <entry key="..\:/AndroidStudio/cs426-mobile-development-ecomerce/app/src/main/res/layout/activity_splash_screen.xml" value="0.22826086956521738" />
+        <entry key="..\:/AndroidStudio/cs426-mobile-development-ecomerce/app/src/main/res/layout/activity_user_main.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/trmin/Desktop/cs426-mobile-development-ecomerce/app/src/main/res/drawable/bg_gradient.xml" value="0.1" />
         <entry key="..\:/Users/trmin/Desktop/cs426-mobile-development-ecomerce/app/src/main/res/drawable/ic_add_photo_gray.xml" value="0.216" />
         <entry key="..\:/Users/trmin/Desktop/cs426-mobile-development-ecomerce/app/src/main/res/drawable/ic_category_gray.xml" value="0.1625" />
