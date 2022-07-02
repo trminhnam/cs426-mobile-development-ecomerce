@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<androidx.core.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:scrollbars="vertical"
     android:textAlignment="center"
-    tools:context=".seller.SellerAddItem"
-    android:scrollbars="vertical">
+    tools:context=".seller.SellerAddItem">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -20,20 +18,19 @@
             android:id="@+id/customActionBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/shape_rect01"
             android:padding="10dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:background="@drawable/shape_rect01">
+            app:layout_constraintTop_toTopOf="parent">
 
-
-            <ImageView
+            <ImageButton
                 android:id="@+id/backButton"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/ic_goback_white"
-                android:background="@null"
+                android:layout_alignParentStart="true"
                 android:layout_marginStart="8dp"
-                android:layout_alignParentStart="true"/>
+                android:background="@null"
+                android:src="@drawable/ic_goback_white" />
 
             <TextView
                 android:id="@+id/nameTextView"
@@ -48,60 +45,62 @@
         </RelativeLayout>
 
 
-        <ImageButton
+        <ImageView
             android:id="@+id/itemAddImageButton"
             android:layout_width="160dp"
             android:layout_height="160dp"
-            android:background="@drawable/shape_rect02"
             android:layout_marginTop="@dimen/margin_vertical"
+            android:background="@drawable/shape_rect02"
             android:src="@drawable/ic_add_photo_gray"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/customActionBar"/>
+            app:layout_constraintTop_toBottomOf="@+id/customActionBar" />
 
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/itemNameTextLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin"
             android:layout_marginTop="@dimen/margin_vertical"
             android:hint="Item name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/itemAddImageButton"
-            android:layout_marginHorizontal="@dimen/margin">
+            app:layout_constraintTop_toBottomOf="@+id/itemAddImageButton">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/itemNameEditText"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:inputType="textAutoComplete|textCapWords"
-                android:singleLine="true"
                 android:drawableStart="@drawable/ic_textfield_gray"
-                android:drawablePadding="10dp"/>
+                android:drawablePadding="10dp"
+                android:inputType="textAutoComplete|textCapWords"
+                android:singleLine="true" />
         </com.google.android.material.textfield.TextInputLayout>
+
 
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/itemCategoryTextLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin"
             android:layout_marginTop="@dimen/margin_vertical"
             android:hint="Categories"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/itemNameTextLayout"
-            android:layout_marginHorizontal="@dimen/margin">
+            app:layout_constraintTop_toBottomOf="@+id/itemNameTextLayout">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/itemCategoryEditText"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:inputType="textCapSentences|textMultiLine"
-                android:singleLine="true"
                 android:drawableStart="@drawable/ic_category_gray"
                 android:drawableEnd="@drawable/ic_dropdown_gray"
-                android:drawablePadding="10dp"/>/>
+                android:drawablePadding="10dp"
+                android:inputType="textCapSentences|textMultiLine"
+                android:singleLine="true"
+                android:editable="false"/>
         </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -109,21 +108,21 @@
             android:id="@+id/itemPriceTextLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin"
             android:layout_marginTop="@dimen/margin_vertical"
             android:hint="Price"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/itemCategoryTextLayout"
-            android:layout_marginHorizontal="@dimen/margin">
+            app:layout_constraintTop_toBottomOf="@+id/itemCategoryTextLayout">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/itemPriceEditText"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:inputType="numberDecimal"
-                android:singleLine="true"
                 android:drawableStart="@drawable/ic_money_gray"
-                android:drawablePadding="10dp"/>
+                android:drawablePadding="10dp"
+                android:inputType="numberDecimal"
+                android:singleLine="true" />
         </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -131,35 +130,63 @@
             android:id="@+id/itemCountTextLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin"
             android:layout_marginTop="@dimen/margin_vertical"
             android:hint="@string/quantity_req"
-            app:layout_constraintBottom_toTopOf="@+id/add_item_save_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/itemPriceTextLayout"
-            android:layout_marginHorizontal="@dimen/margin">
+            app:layout_constraintTop_toBottomOf="@+id/itemPriceTextLayout">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/itemCountEditText"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:inputType="number"
-                android:singleLine="true"
                 android:drawableStart="@drawable/ic_numberfield_gray"
-                android:drawablePadding="10dp"/>/>
+                android:drawablePadding="10dp"
+                android:inputType="number"
+                android:singleLine="true" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/itemDescriptionTextLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin"
+            android:layout_marginTop="@dimen/margin_vertical"
+            android:hint="Description"
+            android:lines="5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/itemCountTextLayout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/itemDescriptionEditText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:drawablePadding="10dp"
+                android:gravity="top|start"
+                android:inputType="textMultiLine"
+                android:lines="16"
+                android:maxLines="20"
+                android:minLines="8"
+                android:overScrollMode="always"
+                android:scrollbarStyle="insideInset"
+                android:scrollbars="vertical"
+                />
         </com.google.android.material.textfield.TextInputLayout>
 
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/add_item_save_button"
+            android:id="@+id/addProductButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin"
             android:layout_marginTop="@dimen/margin_vertical"
             android:text="Add"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/itemCountTextLayout"
-            android:layout_marginHorizontal="@dimen/margin"/>
+            app:layout_constraintTop_toBottomOf="@+id/itemDescriptionTextLayout" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.core.widget.NestedScrollView>

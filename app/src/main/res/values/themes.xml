@@ -20,8 +20,8 @@
         <!-- Switches -->
         <item name="switchStyle">@style/Widget.FindAndBuy.CompoundButton.Switch</item>
     </style>
-    
-    
+
+
     <style name="SplashTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="android:windowBackground">@drawable/splash_background</item>
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -54,5 +54,12 @@
         <!-- Switches -->
         <item name="switchStyle">@style/Widget.FindAndBuy.CompoundButton.Switch</item>
     </style>
-    
+    <style name="Theme.FindAndBuyNoActionBar.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="Theme.FindAndBuyNoActionBar.AppBarOverlay"
+        parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.FindAndBuyNoActionBar.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
 </resources>
