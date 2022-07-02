@@ -21,16 +21,25 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FindAndBuyNoActionBar"
         tools:targetApi="31">
+        
         <activity
-            android:name=".seller.RegisterSellerActivity"
+            android:name=".user.UserMainActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".SplashScreenActivity"
             android:exported="true"
-            android:theme="@style/SplashTheme"></activity>
+            android:theme="@style/SplashTheme" />
+        <activity
+            android:name=".seller.SellerMainActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".seller.RegisterSellerActivity"
+            android:exported="false" />
+            
         <activity
             android:name=".seller.SellerAddItem"
             android:exported="true"></activity>
@@ -46,6 +55,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".RegisterUserActivity"
+            android:exported="false" />
     </application>
 
 </manifest>
