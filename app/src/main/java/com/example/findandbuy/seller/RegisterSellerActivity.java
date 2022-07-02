@@ -3,19 +3,15 @@ package com.example.findandbuy.seller;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.findandbuy.R;
-import com.example.findandbuy.RegisterUserActivity;
 import com.google.firebase.auth.FirebaseAuth;
-
-import java.util.Locale;
 
 public class RegisterSellerActivity extends AppCompatActivity {
     private ImageButton backButton;
@@ -78,5 +74,11 @@ public class RegisterSellerActivity extends AppCompatActivity {
         email = emailEt.getText().toString().trim();
         password = passwordEt.getText().toString().trim();
         confirmPassword = confirmPasswordEt.getText().toString().trim();
+
+        //validate of data
+        if (fullName.isEmpty()){
+            Toast.makeText(this, "Item name is required ...", Toast.LENGTH_SHORT).show();
+            return;
+        }
     }
 }
