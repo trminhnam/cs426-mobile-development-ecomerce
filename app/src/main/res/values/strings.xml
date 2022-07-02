@@ -5,16 +5,10 @@
     <string name="text_signin_message">Welcome to Find And Buy!</string>
 
 
-
-
-
-
-
     <!--    Seller Add Item String-->
     <string name="product_name">Product Name</string>
     <string name="currency_symbol">$</string>
     <string name="quantity_req">Quantity in Stock</string>
-
 
 
 </resources>
