@@ -26,6 +26,22 @@ public class FireBase {
         return(INSTANCE);
     }
 
+    public void addData(Object obj)
+    {
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                databaseReference.setValue(obj);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // if the data is not added or it is cancelled then
+                // we are displaying a failure toast message.
+                System.out.println("Fail to add data " + error);
+            }
+        });
+    }
+
     public void addData(String key, String data)
     {
         databaseReference.addValueEventListener(new ValueEventListener() {
