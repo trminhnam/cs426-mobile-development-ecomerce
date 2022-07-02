@@ -45,7 +45,6 @@ public class RegisterUserActivity extends AppCompatActivity {
         registerSellerTv = findViewById(R.id.registerSeller);
 
 
-
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -58,6 +57,7 @@ public class RegisterUserActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //open register seller
                 startActivity(new Intent(RegisterUserActivity.this, RegisterSellerActivity.class));
+                finish();
             }
         });
 
