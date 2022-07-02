@@ -27,9 +27,9 @@
             style="@style/TextAppearance.MaterialComponents.Headline6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
             android:layout_toEndOf="@+id/userIcon"
             android:textColor="@color/white"
-            android:layout_marginLeft="8dp"
             tools:text="Seller Name" />
 
         <ImageButton
@@ -39,7 +39,7 @@
             android:layout_marginHorizontal="8dp"
             android:layout_toStartOf="@id/editSellerProfileButton"
             android:background="@null"
-            android:src="@drawable/ic_add_shopping_white"/>
+            android:src="@drawable/ic_add_shopping_white" />
 
         <ImageButton
             android:id="@+id/editSellerProfileButton"
