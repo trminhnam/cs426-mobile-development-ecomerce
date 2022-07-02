@@ -1,6 +1,7 @@
 package com.example.findandbuy.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.findandbuy.R;
 import com.example.findandbuy.models.Shop;
+import com.example.findandbuy.user.ShopDetailsActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -60,6 +62,15 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ShopHolder>{
         catch (Exception e){
             holder.shopIv.setImageResource(R.drawable.ic_baseline_storefront_24);
         }
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, ShopDetailsActivity.class);
+                intent.putExtra("shopUid",uid);
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override

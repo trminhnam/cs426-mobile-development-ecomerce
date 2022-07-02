@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".user.ShopDetailsActivity">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="170dp">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@color/green_light"
+            android:background="@color/transparent"
+            app:tint="@color/green_light" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@color/green_dark" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:padding="10dp">
+            <TextView
+                android:id="@+id/shopNameDetailTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/TextAppearance.AppCompat.Title"
+                android:text="Shop Name"
+                android:textColor="@color/white"
+                android:layout_marginStart="3dp"/>
+            <TextView
+                android:id="@+id/phoneDetailTv"
+                android:layout_below="@+id/shopNameDetailTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Phone number"
+                android:textColor="@color/white"
+                android:layout_marginStart="3dp"/>
+            <TextView
+                android:id="@+id/emailDetailTv"
+                android:layout_below="@+id/phoneDetailTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Email"
+                android:textColor="@color/white"
+                android:layout_marginStart="3dp"/>
+
+            <TextView
+                android:id="@+id/addressDetailTv"
+                android:layout_below="@+id/emailDetailTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:text="Address"
+                android:textColor="@color/white" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal">
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_baseline_phone_24"
+                    android:background="@color/transparent"
+                    />
+            </LinearLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+
+</RelativeLayout>
