@@ -9,9 +9,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.android.material.textfield.TextInputEditText;
+
 public class LoginActivity extends AppCompatActivity {
 
-    private EditText userName, password;
+    private TextInputEditText userName, password;
     private Button loginBtn;
     private TextView noAccountTv;
 
@@ -20,8 +22,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login2);
 
-        userName = findViewById(R.id.username);
-        password = findViewById(R.id.password);
+        userName = findViewById(R.id.username_text);
+        password = findViewById(R.id.password_text);
         loginBtn = findViewById(R.id.login_btn);
         noAccountTv = findViewById(R.id.no_account);
 
