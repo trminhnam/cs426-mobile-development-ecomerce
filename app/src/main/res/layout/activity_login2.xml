@@ -30,30 +30,49 @@
             android:textColor="#696969"
             android:textSize="16sp"
             android:textStyle="bold"/>
-        <EditText
+
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Username"
-            android:drawableTint="@color/htmlGrey"
-            android:drawableStart="@drawable/ic_outline_email_24"
-            android:drawablePadding="5dp"
-            android:background="@drawable/shape_rect01"
-            android:padding="10dp"
-            android:inputType="textEmailAddress"
-            android:layout_margin="10dp"/>
-        <EditText
+            android:layout_marginTop="5dp"
+            android:layout_margin="10dp"
+            app:hintTextAppearance="@style/TextAppearance.AppCompat.Medium"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/username_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="textAutoComplete|textCapWords"
+                android:singleLine="true"
+                android:drawableStart="@drawable/ic_outline_email_24"
+                android:drawablePadding="5dp"
+                android:hint="User name"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Password"
-            android:drawableTint="@color/htmlGrey"
-            android:drawableStart="@drawable/ic_outline_email_24"
-            android:drawablePadding="5dp"
-            android:background="@drawable/shape_rect01"
-            android:padding="10dp"
-            android:inputType="textPassword"
-            android:layout_margin="10dp"/>
+            android:layout_marginTop="5dp"
+            android:layout_margin="10dp"
+            app:hintTextAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:passwordToggleEnabled="true"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/password_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="textPassword"
+                android:singleLine="true"
+                android:drawableStart="@drawable/ic_outline_vpn_key_24"
+                android:drawablePadding="5dp"
+                android:hint="Password"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
         <Button
             android:id="@+id/login_btn"
             android:layout_width="wrap_content"
