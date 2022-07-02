@@ -17,6 +17,17 @@ public class Store {
         return this;
     }
 
+    public void addItem(Item item)
+    {
+        Integer itemID = items.size();
+        items.put(String.valueOf(itemID), item);
+    }
+
+    public void changeName(String storeName)
+    {
+        this.storeName = storeName;
+    }
+
     public Integer getID()
     {
         return this.storeID;
