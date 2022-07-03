@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -17,6 +18,7 @@
             android:src="@drawable/ic_image_gray" />
 
         <LinearLayout
+            android:id="@+id/itemInforLinearLayout"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:padding="4dp"
@@ -48,6 +50,16 @@
                 android:layout_weight="1"/>
         </LinearLayout>
 
+        <ImageButton
+            android:id="@+id/addToCartButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="124dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/ic_add_shopping_white"
+            app:layout_constraintStart_toEndOf="@+id/itemInforLinearLayout"
+            app:layout_constraintTop_toTopOf="parent"
+            android:backgroundTint="@color/green_light"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>

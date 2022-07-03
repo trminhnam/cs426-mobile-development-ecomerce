@@ -38,6 +38,25 @@ mobile-development-ecomerce
             │   assets
 ```
 
+## Defaut accounts:
+
+### Users:
+
+- User 1:
+  - user1@gmail.com
+  - 123456
+- User 2:
+  - user2@gmail.com
+  - user2@gmail.com
+
+### Sellers:
+- Seller 1 - Shop 1:
+  - seller1@gmail.com
+  - 123456
+- Seller 2 - Shop 2:
+  - seller2@gmail.com
+  - 123456
+
 
 ## References
 

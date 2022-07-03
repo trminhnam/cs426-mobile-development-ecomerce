@@ -1,7 +1,10 @@
 package com.example.findandbuy.fragment;
 
+import android.app.ProgressDialog;
+import android.icu.util.Freezable;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -10,10 +13,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import com.example.findandbuy.Database;
+import com.example.findandbuy.FireBase;
 import com.example.findandbuy.R;
 import com.example.findandbuy.adapters.SellerItemAdapter;
 import com.example.findandbuy.models.Item;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -35,6 +48,10 @@ public class SellerItemListFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private ArrayList<Item> itemArrayList;
+    private SellerItemAdapter sellerItemAdapter;
+
+    private FirebaseAuth firebaseAuth;
+    private ProgressDialog progressDialog;
 
     public SellerItemListFragment() {
         // Required empty public constructor
@@ -65,27 +82,48 @@ public class SellerItemListFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        progressDialog = new ProgressDialog(getContext());
+        progressDialog.setTitle("Please wait");
+        progressDialog.setCanceledOnTouchOutside(false);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        itemArrayList = new ArrayList<>();
-        for (int i = 0; i < 10; i++){
-            Item item = new Item("1", "Book", "Others",
-                            "20", "10", "Just a book",
-                        "123", null, "123");
-            itemArrayList.add(item);
-        }
-
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_seller_item_list, container, false);
         recyclerView = view.findViewById(R.id.itemRecyclerView);
-        SellerItemAdapter sellerItemAdapter = new SellerItemAdapter(getContext(), itemArrayList);
+
+        loadAllItems();
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
+
+        sellerItemAdapter = new SellerItemAdapter(getContext(), itemArrayList);
         recyclerView.setAdapter(sellerItemAdapter);
 
         return view;
+    }
+
+    private void loadAllItems() {
+        itemArrayList = new ArrayList<>();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
+        databaseReference.child(firebaseAuth.getUid()).child("Items")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        itemArrayList.clear();
+                        for (DataSnapshot ds: snapshot.getChildren()){
+                            Item item = ds.getValue(Item.class);
+                            itemArrayList.add(item);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(getContext(), "Action canceled", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 }
