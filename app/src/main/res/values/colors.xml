@@ -24,4 +24,6 @@
     <color name="bgBottomNavigation">#77c66e</color>
 
     <color name="transparent">#00000000</color>
+    <color name="holo_green">#80E8DD</color>
+    <color name="holo_blue">#7CC2F6</color>
 </resources>
