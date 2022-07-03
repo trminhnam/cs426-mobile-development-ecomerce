@@ -83,10 +83,8 @@ public class SellerItemAdapter
 //                intent.putExtra("itemID", itemID);
 //                context.startActivity(intent);
                 // handle item click
-
             }
         });
-
     }
 
     private int quantity = 0;

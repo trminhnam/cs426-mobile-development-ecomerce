@@ -5,16 +5,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 
+import com.example.findandbuy.MapsActivity;
 import com.example.findandbuy.R;
+import com.example.findandbuy.fragment.CustomMapFragment;
 import com.example.findandbuy.fragment.UserGameFragment;
 import com.example.findandbuy.fragment.UserProfileFragment;
 import com.example.findandbuy.fragment.UserShopFragment;
 import com.example.findandbuy.fragment.UserShoppingCartFragment;
 import com.example.findandbuy.navigation.BottomNavigationBehavior;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
@@ -63,6 +67,17 @@ public class UserMainActivity extends AppCompatActivity {
                                     .commit();
                         }
                         return true;
+                    case R.id.navigation_map:
+//                        Log.d("game", "onNavigationItemSelected: Im map");
+//                        if (savedInstanceState == null) {
+//                            getSupportFragmentManager()
+//                                    .beginTransaction()
+//                                    .replace(R.id.frame_container, CustomMapFragment.class, null)
+//                                    .commit();
+//                        }
+                        startActivity(new Intent(UserMainActivity.this, MapsActivity.class));
+                        return true;
+
                     case R.id.navigation_cart:
                         Log.d("card", "onNavigationItemSelected: Im card");
                         if (savedInstanceState == null) {

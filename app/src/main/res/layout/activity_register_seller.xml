@@ -98,54 +98,10 @@
 
             <LinearLayout
                 android:id="@+id/address"
-                android:layout_below="@id/shopNameEt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <EditText
-                    android:id="@+id/streetEt"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/shape_rect02"
-                    android:drawableStart="@drawable/ic_baseline_location_on_24"
-                    android:drawablePadding="5dp"
-                    android:drawableTint="@color/htmlGrey"
-                    android:hint="Street"
-                    android:minHeight="48dp"
-                    android:padding="10dp" />
-
-                <EditText
-                    android:id="@+id/districtEt"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/shape_rect02"
-                    android:drawableStart="@drawable/ic_baseline_location_on_24"
-                    android:drawablePadding="5dp"
-                    android:drawableTint="@color/htmlGrey"
-                    android:hint="District"
-                    android:minHeight="48dp"
-                    android:padding="10dp" />
-
-                <EditText
-                    android:id="@+id/cityEt"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/shape_rect02"
-                    android:drawableStart="@drawable/ic_baseline_location_on_24"
-                    android:drawablePadding="5dp"
-                    android:drawableTint="@color/htmlGrey"
-                    android:hint="City"
-                    android:minHeight="48dp"
-                    android:padding="10dp" />
-            </LinearLayout>
+                android:layout_below="@id/shopNameEt"
+                android:orientation="horizontal"/>
             <RelativeLayout
                 android:id="@+id/completeAddressContainer"
                 android:layout_below="@id/address"
