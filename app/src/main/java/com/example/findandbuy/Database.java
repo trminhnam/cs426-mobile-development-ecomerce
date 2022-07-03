@@ -4,12 +4,16 @@ import com.example.findandbuy.dataStructure.Item;
 import com.example.findandbuy.dataStructure.Store;
 import com.example.findandbuy.dataStructure.seller;
 import com.example.findandbuy.dataStructure.user;
+import com.google.firebase.firestore.auth.User;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class Database {
     private static Database INSTANCE = null;
     private final FireBase firebase;
+    private static String UserID = null;
 
     private Database() {
         firebase = FireBase.getInstance();
@@ -56,7 +60,7 @@ public class Database {
 
         // TODO: check sellerUsername unique
 
-        Store store = new Store().addStore(storeID, storeName, items, storeDescription);
+        Store store = new Store().addStore(storeID, storeName, storeDescription, items);
         sellers.put(String.valueOf(sellerID), new seller().addSeller(sellerID, sellerName, sellerUsername, sellerPassword, store));
         pushToFirebase();
     }
@@ -73,12 +77,27 @@ public class Database {
         pushToFirebase();
     }
 
+    public boolean loginSeller(String sellerUsername, String sellerPassword)
+    {
+        UserID = "10000";
+        return true;
+    }
 
+    public boolean loginUser(String userUsername, String userPassword)
+    {
+        UserID = "20000";
+        return true;
+    }
 
+    public HashMap<String, seller> getAllSellers()        // for user
+    {
+        return sellers;
+    }
 
-
-
-
+    public HashMap<String, Item> getItems(String storeID) // for each shop
+    {
+        return Objects.requireNonNull(sellers.get(storeID)).getStore().getItems();
+    }
 
     public void pushToFirebase()
     {
