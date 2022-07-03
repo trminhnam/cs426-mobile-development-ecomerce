@@ -2,6 +2,8 @@ package com.example.findandbuy;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -15,7 +17,7 @@ public class FireBase {
     DatabaseReference databaseReference;
 
     private FireBase(String database) {
-        firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseDatabase = FirebaseDatabase.getInstance("https://findandbuy-701ca-default-rtdb.asia-southeast1.firebasedatabase.app");
         databaseReference = firebaseDatabase.getReference(database);
     }
 
@@ -28,16 +30,39 @@ public class FireBase {
 
     public void addData(Object obj)
     {
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        databaseReference.setValue(obj).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                        // Write was successful!
+                        // ...
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    // Write failed
+                    // ...
+                }
+            });
+    }
+
+    public DatabaseReference getDatabaseReference()
+    {
+        return databaseReference;
+    }
+
+    public void addData(String child, Object obj)
+    {
+        databaseReference.child(child).setValue(obj).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                databaseReference.setValue(obj);
+            public void onSuccess(Void aVoid) {
+                // Write was successful!
+                // ...
             }
+        }).addOnFailureListener(new OnFailureListener() {
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                // if the data is not added or it is cancelled then
-                // we are displaying a failure toast message.
-                System.out.println("Fail to add data " + error);
+            public void onFailure(@NonNull Exception e) {
+                // Write failed
+                // ...
             }
         });
     }

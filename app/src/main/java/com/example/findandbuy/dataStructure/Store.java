@@ -1,5 +1,7 @@
 package com.example.findandbuy.dataStructure;
 
+import androidx.annotation.NonNull;
+
 import java.util.HashMap;
 
 public class Store {
@@ -8,24 +10,37 @@ public class Store {
     String storeDescription = null;
     HashMap<String, Item> items = null;
 
-    public Store addStore(Integer storeID, String storeName, HashMap<String, Item> items, String storeDescription)
+    public Store addStore(Integer storeID, String storeName, String storeDescription)
     {
         this.storeID = storeID;
         this.storeName = storeName;
-        this.items = items;
         this.storeDescription = storeDescription;
         return this;
     }
 
-    public void addItem(Item item)
+    public Store addStore(Integer storeID, String storeName, String storeDescription, HashMap<String, Item> items)
     {
-        Integer itemID = items.size();
-        items.put(String.valueOf(itemID), item);
+        this.storeID = storeID;
+        this.storeName = storeName;
+        if (items != null)
+            this.items = items;
+        else
+            this.items = new HashMap<>();
+        this.storeDescription = storeDescription;
+        return this;
     }
 
-    public void changeName(String storeName)
+    public HashMap<String, Item> addItem(@NonNull Item item)
+    {
+        Integer itemID = item.itemID;
+        items.put(String.valueOf(itemID), item);
+        return getItems();
+    }
+
+    public Store changeName(String storeName)
     {
         this.storeName = storeName;
+        return this;
     }
 
     public Integer getID()
