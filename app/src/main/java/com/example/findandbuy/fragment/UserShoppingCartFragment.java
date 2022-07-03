@@ -9,7 +9,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.findandbuy.adapters.ShoppingCartAdapter;
 import com.example.findandbuy.models.Item;
@@ -34,7 +36,11 @@ public class UserShoppingCartFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    private ShoppingCartAdapter shoppingCartAdapter;
+    private TextView totalPriceTextView;
+    private Button checkoutButton;
     private RecyclerView recyclerView;
+
     private ArrayList<Item> itemsList = new ArrayList<>();
 
     public UserShoppingCartFragment() {
@@ -68,22 +74,36 @@ public class UserShoppingCartFragment extends Fragment {
         }
     }
 
+    private final ShoppingCartAdapter.updateTotalPrice callback = (position) -> {
+        // get total price
+        double totalPrice = 0;
+        for(Item item : itemsList)
+        {
+            totalPrice += Double.parseDouble(item.getItemPrice()) * Double.parseDouble(item.getItemCount());
+        }
+        totalPriceTextView.setText(String.format("Total: $%.2f", totalPrice));
+    };
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         // fake data for shopping cart
-        for(int i = 0; i < 10; ++i)
+        for(int i = 0; i < 5; ++i)
         {
-            Item item = new Item("1", "Iphone", "phone", "122", "12", "HELLO", "123", "1232", "123");
+            Item item = new Item("1", "Iphone", "phone", "122.0", "1", "HELLO", "123", "1232", "123");
             itemsList.add(item);
         }
 
         View view = inflater.inflate(R.layout.fragment_user_shopping_cart, container, false);
         recyclerView = view.findViewById(R.id.shoppingCartRv);
+        totalPriceTextView = view.findViewById(R.id.totalTv);
+        checkoutButton = view.findViewById(R.id.checkoutBtn);
 
-        ShoppingCartAdapter adapter = new ShoppingCartAdapter(getContext(), itemsList);
+
+        ShoppingCartAdapter adapter = new ShoppingCartAdapter(getContext(), itemsList, callback);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(adapter);
 
