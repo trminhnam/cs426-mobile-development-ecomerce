@@ -6,13 +6,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragment.UserShoppingCartFragment">
-
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout
         android:id="@+id/shoppingCartRl"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="650dp"
         >
 
         <TextView
@@ -23,7 +25,7 @@
             android:textSize="20sp"
             android:textStyle="bold"
             android:gravity="center|center_vertical" />
-        
+
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp" />
@@ -37,14 +39,22 @@
             tools:listitem="@layout/row_item_cart" />
         />
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_below="@+id/shoppingCartRl">
+
         <TextView
             android:id="@+id/totalTv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center|center_vertical"
             android:text="Total: $0.00"
             android:textSize="20sp"
-            android:textStyle="bold"
-            android:gravity="center|center_vertical" />
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/checkoutBtn"
@@ -56,5 +66,5 @@
             android:textStyle="bold" />
 
     </LinearLayout>
-
+</RelativeLayout>
 </FrameLayout>
