@@ -172,7 +172,7 @@ public class SellerAddItem extends AppCompatActivity {
 
     private void addItem() {
         progressDialog.show();
-        
+
         String timestamp = "" + System.currentTimeMillis();
         Log.d("ADD_ITEM", "timestamp = " + timestamp.toString() );
         Log.d("ADD_ITEM", "firebase auth uid = " + firebaseAuth.getUid() );

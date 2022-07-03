@@ -57,6 +57,7 @@ public class SellerMainActivity extends AppCompatActivity {
                                     .add(R.id.seller_frame_container, SellerItemListFragment.class, null)
                                     .commit();
                         }
+
                         return true;
                     case R.id.navigation_add_item:
                         Log.d("game", "onNavigationItemSelected: Im game");

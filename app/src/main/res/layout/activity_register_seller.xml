@@ -182,12 +182,16 @@
                     android:src="@drawable/ic_outline_gps_fixed_24"
                     app:tint="@color/green_dark" />
             </RelativeLayout>
+
             <EditText
                 android:id="@+id/emailEt"
-                android:layout_below="@id/completeAddressContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_below="@id/completeAddressContainer"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
                 android:background="@drawable/shape_rect02"
                 android:drawableStart="@drawable/ic_outline_email_24"
                 android:drawablePadding="5dp"

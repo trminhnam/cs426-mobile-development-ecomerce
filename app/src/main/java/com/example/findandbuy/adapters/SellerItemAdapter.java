@@ -1,5 +1,6 @@
 package com.example.findandbuy.adapters;
 
+import android.content.Intent;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -41,16 +42,19 @@ public class SellerItemAdapter
     public void onBindViewHolder(@NonNull ItemHolder holder, int position) {
         Item item = itemArrayList.get(position);
 
+        // get data
         String itemName = item.getItemName();
         String category = item.getItemCategory();
         String price = item.getItemPrice();
         String itemImage = item.getItemImage();
         String itemID = item.getItemID();
 
+        // set data
         holder.itemNameTextView.setText(itemName);
         holder.categoryTextView.setText(category);
         holder.priceTextView.setText(price);
 
+        // retrieve image
         try{
             Picasso.get().load(itemImage)
                     .placeholder(R.drawable.ic_image_gray)
@@ -66,6 +70,8 @@ public class SellerItemAdapter
 //                Intent intent = new Intent(context, ItemDetailActivity.class)
 //                intent.putExtra("itemID", itemID);
 //                context.startActivity(intent);
+                // handle item click
+
             }
         });
 
