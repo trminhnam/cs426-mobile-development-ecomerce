@@ -39,6 +39,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 public class RegisterSellerActivity extends AppCompatActivity implements LocationListener {
     private ImageButton backButton, gpsButton;
@@ -97,19 +98,20 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
         gpsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if (checkLocationPermission()) {
-//                    // already allowed
-//                    detectLocation();
-//                } else {
-//                    requestLocationPermission();
-//                }
-                lat = Math.random() * (10.875863 - 10.727280) + 10.727280;
-                lng = Math.random() * (106.702834 - 106.544569) + 106.544569;
+                if (checkLocationPermission()) {
+                    // already allowed
+                    detectLocation();
+                } else {
+                    requestLocationPermission();
+                }
 
-                Log.d("REGISTER_LOCATION", "Latitude = " + String.valueOf(lat));
-                Log.d("REGISTER_LOCATION", "Longtitude = " + String.valueOf(lng));
+//                lat = Math.random() * (10.875863 - 10.727280) + 10.727280;
+//                lng = Math.random() * (106.702834 - 106.544569) + 106.544569;
 
-                findAddress();
+//                Log.d("REGISTER_LOCATION", "Latitude = " + String.valueOf(lat));
+//                Log.d("REGISTER_LOCATION", "Longtitude = " + String.valueOf(lng));
+
+//                findAddress();
             }
         });
 
@@ -158,12 +160,12 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
             return;
         }
 
-        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             Toast.makeText(this, "Invalid email.", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if (lat == 0.0 && lng == 0.0){
+        if (lat == 0.0 && lng == 0.0) {
             Toast.makeText(this, "Please click GPS button to locate", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -178,7 +180,7 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
             return;
         }
 
-        if (!password.equals(confirmPassword)){
+        if (!password.equals(confirmPassword)) {
             Toast.makeText(this, "Password does not match.", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -212,27 +214,27 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
         progressDialog.setMessage("Saving account information.");
         progressDialog.show();
 
-        String timestamp = ""+System.currentTimeMillis();
+        String timestamp = "" + System.currentTimeMillis();
 
         // upload without image
         HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("uid", ""+firebaseAuth.getUid());
-        hashMap.put("email", ""+email);
-        hashMap.put("fullname", ""+fullName);
-        hashMap.put("shopName", ""+shopNames);
-        hashMap.put("street", ""+street);
-        hashMap.put("district", ""+district);
-        hashMap.put("city", ""+city);
-        hashMap.put("address", ""+address);
-        hashMap.put("lat", ""+lat);
-        hashMap.put("lng", ""+lng);
-        hashMap.put("timestamp", ""+timestamp);
+        hashMap.put("uid", "" + firebaseAuth.getUid());
+        hashMap.put("email", "" + email);
+        hashMap.put("fullname", "" + fullName);
+        hashMap.put("shopName", "" + shopNames);
+        hashMap.put("street", "" + street);
+        hashMap.put("district", "" + district);
+        hashMap.put("city", "" + city);
+        hashMap.put("address", "" + address);
+        hashMap.put("lat", "" + lat);
+        hashMap.put("lng", "" + lng);
+        hashMap.put("timestamp", "" + timestamp);
         hashMap.put("accountType", "Seller");
         hashMap.put("available", "true");
 
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
-        databaseReference.child(firebaseAuth.getUid()).setValue(hashMap)
+        databaseReference.child(Objects.requireNonNull(firebaseAuth.getUid())).setValue(hashMap)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
@@ -290,16 +292,27 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            requestLocationPermission();
+            return;
+        }
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
     }
 
     @Override
     public void onLocationChanged(@NonNull Location location) {
         // location detected
-//        lat = location.getLatitude();
-//        lng = location.getLongitude();
-        lat = Math.random() * (10.875863 - 10.727280) + 10.727280;
-        lng = Math.random() * (106.702834 - 106.544569) + 106.544569;
+        lat = location.getLatitude();
+        lng = location.getLongitude();
+//        lat = Math.random() * (10.875863 - 10.727280) + 10.727280;
+//        lng = Math.random() * (106.702834 - 106.544569) + 106.544569;
 
         Log.d("REGISTER_LOCATION", "Latitude = " + String.valueOf(lat));
         Log.d("REGISTER_LOCATION", "Longtitude = " + String.valueOf(lng));
