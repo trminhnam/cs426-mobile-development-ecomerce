@@ -5,9 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
 
 import com.example.findandbuy.R;
 import com.example.findandbuy.fragment.SellerItemListFragment;
@@ -63,6 +66,7 @@ public class SellerMainActivity extends AppCompatActivity {
 //                                    .add(R.id.seller_frame_container, UserGameFragment.class, null)
 //                                    .commit();
 //                        }
+                        startActivity(new Intent(SellerMainActivity.this, SellerAddItem.class));
                         return true;
                     case R.id.navigation_modify_items:
                         Log.d("card", "onNavigationItemSelected: Im card");
