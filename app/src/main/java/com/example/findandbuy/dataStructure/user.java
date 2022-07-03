@@ -9,7 +9,7 @@ public class user {
     String userName = null;
     String userUsername = null;
     String userPassword = null;
-    HashMap<String, Item> cart = null;
+    HashMap<String, Item> cart = new HashMap<>();
 
     public user addUser(Integer userID, String userName, String userUsername, String userPassword)
     {
@@ -24,7 +24,7 @@ public class user {
     public HashMap<String, Item> addToCart(@NonNull Item item, Integer amount)
     {
         String itemId = String.valueOf(item.getID());
-        item.itemCount = amount;
+        item.setAmount(amount);
         cart.put(itemId, item);
 
         return getCart();

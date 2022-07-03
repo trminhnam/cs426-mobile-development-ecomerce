@@ -22,7 +22,10 @@ public class Store {
     {
         this.storeID = storeID;
         this.storeName = storeName;
-        this.items = items;
+        if (items != null)
+            this.items = items;
+        else
+            this.items = new HashMap<>();
         this.storeDescription = storeDescription;
         return this;
     }
