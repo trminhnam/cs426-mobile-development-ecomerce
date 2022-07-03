@@ -7,11 +7,13 @@
     android:orientation="vertical"
     android:background="@color/white"
     tools:context=".LoginActivity">
+
     <RelativeLayout
+        android:id="@+id/navBar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@drawable/shape_rect02"
-        android:id="@+id/navBar">
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/shape_rect01">
 
         <ImageButton
             android:id="@+id/backBtn"
@@ -20,15 +22,16 @@
             android:backgroundTint="@color/transparent"
             android:src="@drawable/ic_outline_arrow_back_ios_24"
             app:tint="@color/green_light" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
             android:text="Register Seller"
-            android:textStyle="bold"
-            android:textSize="20sp"
             android:textColor="@color/green_light"
-            android:layout_marginTop="10dp"/>
+            android:textSize="20sp"
+            android:textStyle="bold" />
     </RelativeLayout>
 
     <ScrollView
@@ -44,9 +47,12 @@
                 android:id="@+id/fullNameEt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:background="@drawable/shape_rect01"
-                android:drawableStart="@drawable/ic_outline_email_24"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/shape_rect02"
+                android:drawableStart="@drawable/ic_person_white"
                 android:drawablePadding="5dp"
                 android:drawableTint="@color/htmlGrey"
                 android:hint="Full Name"
@@ -56,12 +62,15 @@
 
             <EditText
                 android:id="@+id/phoneEt"
-                android:layout_below="@id/fullNameEt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:background="@drawable/shape_rect01"
-                android:drawableStart="@drawable/ic_outline_vpn_key_24"
+                android:layout_below="@id/fullNameEt"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/shape_rect02"
+                android:drawableStart="@drawable/ic_baseline_smartphone_24"
                 android:drawablePadding="5dp"
                 android:drawableTint="@color/htmlGrey"
                 android:hint="Phone"
@@ -71,12 +80,15 @@
 
             <EditText
                 android:id="@+id/shopNameEt"
-                android:layout_below="@id/phoneEt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:background="@drawable/shape_rect01"
-                android:drawableStart="@drawable/ic_outline_email_24"
+                android:layout_below="@id/phoneEt"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/shape_rect02"
+                android:drawableStart="@drawable/ic_baseline_shopping_cart_24"
                 android:drawablePadding="5dp"
                 android:drawableTint="@color/htmlGrey"
                 android:hint="Shop name"
@@ -97,8 +109,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:layout_weight="1"
-                    android:background="@drawable/shape_rect01"
-                    android:drawableStart="@drawable/ic_outline_vpn_key_24"
+                    android:background="@drawable/shape_rect02"
+                    android:drawableStart="@drawable/ic_baseline_location_on_24"
                     android:drawablePadding="5dp"
                     android:drawableTint="@color/htmlGrey"
                     android:hint="Street"
@@ -112,8 +124,8 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
                     android:layout_weight="1"
-                    android:background="@drawable/shape_rect01"
-                    android:drawableStart="@drawable/ic_outline_vpn_key_24"
+                    android:background="@drawable/shape_rect02"
+                    android:drawableStart="@drawable/ic_baseline_location_on_24"
                     android:drawablePadding="5dp"
                     android:drawableTint="@color/htmlGrey"
                     android:hint="District"
@@ -126,37 +138,57 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:layout_weight="1"
-                    android:background="@drawable/shape_rect01"
-                    android:drawableStart="@drawable/ic_outline_vpn_key_24"
+                    android:background="@drawable/shape_rect02"
+                    android:drawableStart="@drawable/ic_baseline_location_on_24"
                     android:drawablePadding="5dp"
                     android:drawableTint="@color/htmlGrey"
                     android:hint="City"
                     android:minHeight="48dp"
                     android:padding="10dp" />
             </LinearLayout>
-
-            <EditText
-                android:id="@+id/completeAddressEt"
+            <RelativeLayout
+                android:id="@+id/completeAddressContainer"
                 android:layout_below="@id/address"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:background="@drawable/shape_rect01"
-                android:drawableStart="@drawable/ic_outline_email_24"
-                android:drawablePadding="5dp"
-                android:drawableTint="@color/htmlGrey"
-                android:hint="Complete shop address"
-                android:inputType="textPostalAddress"
-                android:minHeight="48dp"
-                android:padding="10dp" />
+                android:layout_height="wrap_content">
 
+                <EditText
+                    android:id="@+id/completeAddressEt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/shape_rect02"
+                    android:drawableStart="@drawable/ic_baseline_location_on_24"
+                    android:drawablePadding="5dp"
+                    android:drawableTint="@color/htmlGrey"
+                    android:hint="Complete shop address"
+                    android:inputType="textPostalAddress"
+                    android:minHeight="48dp"
+                    android:padding="10dp" />
+
+                <ImageButton
+                    android:id="@+id/gpsBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:backgroundTint="@color/transparent"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_outline_gps_fixed_24"
+                    app:tint="@color/green_dark" />
+            </RelativeLayout>
             <EditText
                 android:id="@+id/emailEt"
-                android:layout_below="@id/completeAddressEt"
+                android:layout_below="@id/completeAddressContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:background="@drawable/shape_rect01"
+                android:background="@drawable/shape_rect02"
                 android:drawableStart="@drawable/ic_outline_email_24"
                 android:drawablePadding="5dp"
                 android:drawableTint="@color/htmlGrey"
@@ -167,12 +199,15 @@
 
             <EditText
                 android:id="@+id/passwordEt"
-                android:layout_below="@id/emailEt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:background="@drawable/shape_rect01"
-                android:drawableStart="@drawable/ic_outline_email_24"
+                android:layout_below="@id/emailEt"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/shape_rect02"
+                android:drawableStart="@drawable/ic_outline_vpn_key_24"
                 android:drawablePadding="5dp"
                 android:drawableTint="@color/htmlGrey"
                 android:hint="Password"
@@ -186,8 +221,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:background="@drawable/shape_rect01"
-                android:drawableStart="@drawable/ic_outline_email_24"
+                android:background="@drawable/shape_rect02"
+                android:drawableStart="@drawable/ic_outline_vpn_key_24"
                 android:drawablePadding="5dp"
                 android:drawableTint="@color/htmlGrey"
                 android:hint="Confirm password"

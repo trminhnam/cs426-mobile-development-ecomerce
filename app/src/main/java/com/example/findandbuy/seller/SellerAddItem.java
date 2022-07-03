@@ -14,6 +14,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,7 +33,15 @@ import androidx.core.content.PackageManagerCompat;
 
 import com.example.findandbuy.Constants;
 import com.example.findandbuy.R;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.HashMap;
 
@@ -115,7 +124,13 @@ public class SellerAddItem extends AppCompatActivity {
             public void onClick(View v) {
                 // Flow: 1. input data, 2. Validate data, 3. add data to db
                 inputData();
+            }
+        });
 
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
             }
         });
 
@@ -154,9 +169,14 @@ public class SellerAddItem extends AppCompatActivity {
 
     private void addItem() {
         progressDialog.setMessage("Adding Product ...");
-        progressDialog.show();
 
         String timestampt = "" + System.currentTimeMillis();
+//        Log.d("ADD_ITEM", "timestampt = " + timestampt.toString() );
+//        Log.d("ADD_ITEM", "firebase auth uid = " + firebaseAuth.getUid() );
+//        Toast.makeText(this, firebaseAuth.getUid().toString(), Toast.LENGTH_LONG);
+//        Toast.makeText(this, timestampt, Toast.LENGTH_LONG);
+//        return;
+
 
         if (image_uri == null){
             // upload without image
@@ -168,11 +188,182 @@ public class SellerAddItem extends AppCompatActivity {
             hashMap.put("itemCount", itemCount);
             hashMap.put("itemDescription", itemCount);
 
+            hashMap.put("itemImage", "");
+            hashMap.put("uid", "123456789");
+            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
+            databaseReference.child("123456789").child("Items").child(timestampt).setValue(hashMap)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            progressDialog.dismiss();
+                            Toast.makeText(SellerAddItem.this, "Item added", Toast.LENGTH_SHORT).show();
+                            clearData();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            progressDialog.dismiss();
+                            Toast.makeText(SellerAddItem.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
         }
         else{
             // upload with image
 
+            // first upload image to storage
+            String filePathAndName = "item_images/" + timestampt;
+
+            StorageReference storageReference = FirebaseStorage.getInstance().getReference(filePathAndName);
+            storageReference.putFile(image_uri)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+                            while (!uriTask.isSuccessful()) {}
+                            Uri downloadImageUri = uriTask.getResult();
+
+                            if (uriTask.isSuccessful()){
+                                // receivev image url
+                                HashMap<String, Object> hashMap = new HashMap<>();
+                                hashMap.put("itemID", ""+timestampt);
+                                hashMap.put("itemName", itemName);
+                                hashMap.put("itemCategory", itemCategory);
+                                hashMap.put("itemPrice", itemPrice);
+                                hashMap.put("itemCount", itemCount);
+                                hashMap.put("itemDescription", itemCount);
+
+                                hashMap.put("itemImage", ""+downloadImageUri);
+                                hashMap.put("uid", "123456789");
+                                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
+                                databaseReference.child("123456789").child("Items").child(timestampt).setValue(hashMap)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void unused) {
+                                                progressDialog.dismiss();
+                                                Toast.makeText(SellerAddItem.this, "Item added", Toast.LENGTH_SHORT).show();
+                                                clearData();
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                progressDialog.dismiss();
+                                                Toast.makeText(SellerAddItem.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                            }
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            progressDialog.dismiss();
+                            Toast.makeText(SellerAddItem.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
         }
+
+//        if (image_uri == null){
+//            // upload without image
+//            HashMap<String, Object> hashMap = new HashMap<>();
+//            hashMap.put("itemID", ""+timestampt);
+//            hashMap.put("itemName", itemName);
+//            hashMap.put("itemCategory", itemCategory);
+//            hashMap.put("itemPrice", itemPrice);
+//            hashMap.put("itemCount", itemCount);
+//            hashMap.put("itemDescription", itemCount);
+//
+//            hashMap.put("itemImage", "");
+//            hashMap.put("uid", ""+firebaseAuth.getUid());
+//            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
+//            databaseReference.child(firebaseAuth.getUid()).child("Items").child(timestampt).setValue(hashMap)
+//                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                        @Override
+//                        public void onSuccess(Void unused) {
+//                            progressDialog.dismiss();
+//                            Toast.makeText(SellerAddItem.this, "Item added", Toast.LENGTH_SHORT).show();
+//                            clearData();
+//                        }
+//                    })
+//                    .addOnFailureListener(new OnFailureListener() {
+//                        @Override
+//                        public void onFailure(@NonNull Exception e) {
+//                            progressDialog.dismiss();
+//                            Toast.makeText(SellerAddItem.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+//                        }
+//                    });
+//
+//        }
+//        else{
+//            // upload with image
+//
+//            // first upload image to storage
+//            String filePathAndName = "item_images/" + timestampt;
+//
+//            StorageReference storageReference = FirebaseStorage.getInstance().getReference(filePathAndName);
+//            storageReference.putFile(image_uri)
+//                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//                        @Override
+//                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                            Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+//                            while (!uriTask.isSuccessful()) {}
+//                            Uri downloadImageUri = uriTask.getResult();
+//
+//                            if (uriTask.isSuccessful()){
+//                                // receivev image url
+//                                HashMap<String, Object> hashMap = new HashMap<>();
+//                                hashMap.put("itemID", ""+timestampt);
+//                                hashMap.put("itemName", itemName);
+//                                hashMap.put("itemCategory", itemCategory);
+//                                hashMap.put("itemPrice", itemPrice);
+//                                hashMap.put("itemCount", itemCount);
+//                                hashMap.put("itemDescription", itemCount);
+//
+//                                hashMap.put("itemImage", ""+downloadImageUri);
+//                                hashMap.put("uid", ""+firebaseAuth.getUid());
+//                                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
+//                                databaseReference.child(firebaseAuth.getUid()).child("Items").child(timestampt).setValue(hashMap)
+//                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                                            @Override
+//                                            public void onSuccess(Void unused) {
+//                                                progressDialog.dismiss();
+//                                                Toast.makeText(SellerAddItem.this, "Item added", Toast.LENGTH_SHORT).show();
+//                                                clearData();
+//                                            }
+//                                        })
+//                                        .addOnFailureListener(new OnFailureListener() {
+//                                            @Override
+//                                            public void onFailure(@NonNull Exception e) {
+//                                                progressDialog.dismiss();
+//                                                Toast.makeText(SellerAddItem.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+//                                            }
+//                                        });
+//                            }
+//                        }
+//                    })
+//                    .addOnFailureListener(new OnFailureListener() {
+//                        @Override
+//                        public void onFailure(@NonNull Exception e) {
+//                            progressDialog.dismiss();
+//                            Toast.makeText(SellerAddItem.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+//                        }
+//                    });
+//
+//        }
+    }
+
+    private void clearData() {
+        // clear data after uploading item
+        itemNameEditText.setText("");
+        itemCategoryEditText.setText("");
+        itemPriceEditText.setText("");
+        itemCountEditText.setText("");
+        itemDescriptionEditText.setText("");
+        productPhotoImageView.setImageResource(R.drawable.ic_add_photo_gray);
+        image_uri = null;
     }
 
     private void showCaterogyDialig() {

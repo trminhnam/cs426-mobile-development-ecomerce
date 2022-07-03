@@ -21,43 +21,56 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FindAndBuyNoActionBar"
         tools:targetApi="31">
-        
+
+        <!--
+             TODO: Before you run your application, you need a Google Maps API key.
+
+             To get one, follow the directions here:
+
+                https://developers.google.com/maps/documentation/android-sdk/get-api-key
+
+             Once you have your API key (it starts with "AIza"), define a new property in your
+             project's local.properties file (e.g. MAPS_API_KEY=Aiza...), and replace the
+             "YOUR_API_KEY" string in this file with "${MAPS_API_KEY}".
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="YOUR_API_KEY" />
+
+
+        <activity
+            android:name=".user.ShopDetailsActivity"
+            android:exported="false" />
         <activity
             android:name=".user.UserMainActivity"
-            android:exported="false" />
+            android:exported="true"></activity>
         <activity
             android:name=".MainActivity"
             android:exported="true" />
         <activity
             android:name=".SplashScreenActivity"
             android:exported="true"
-            android:theme="@style/SplashTheme" />
-        <activity
-            android:name=".seller.SellerMainActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".seller.RegisterSellerActivity"
-            android:exported="false" />
-            
-        <activity
-            android:name=".seller.SellerAddItem"
-            android:exported="true"></activity>
-        <activity
-            android:name=".RegisterUserActivity"
-            android:exported="false"></activity>
-        <activity
-            android:name=".LoginActivity"
-            android:exported="true">
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".RegisterUserActivity"
+            android:name=".seller.SellerMainActivity"
             android:exported="false" />
+        <activity
+            android:name=".seller.RegisterSellerActivity"
+            android:exported="false" />
+        <activity
+            android:name=".seller.SellerAddItem"
+            android:exported="true"></activity>
+        <activity
+            android:name=".user.RegisterUserActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LoginActivity"
+            android:exported="true"></activity>
     </application>
 
 </manifest>

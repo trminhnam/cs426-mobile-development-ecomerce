@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_shop"
+        android:icon="@drawable/ic_baseline_storefront_24"
+        android:title="@string/title_user_shop" />
+
+    <item
+        android:id="@+id/navigation_game"
+        android:icon="@drawable/ic_videogame_asset_24"
+        android:title="@string/title_user_game" />
+
+    <item
+        android:id="@+id/navigation_map"
+        android:icon="@drawable/ic_map_white"
+        android:title="Map"/>
+
+    <item
+        android:id="@+id/navigation_cart"
+        android:icon="@drawable/ic_baseline_shopping_cart_24"
+        android:title="@string/title_user_cart" />
+
+    <item
+        android:id="@+id/navigation_profile"
+        android:icon="@drawable/ic_person_white"
+        android:title="@string/title_user_profile" />
+</menu>
