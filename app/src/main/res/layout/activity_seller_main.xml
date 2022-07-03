@@ -14,41 +14,41 @@
 
 
         <ImageView
-            android:id="@+id/userIcon"
+            android:id="@+id/shopIcon"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:src="@drawable/ic_person_white"
-            android:background="@null"
+            android:layout_alignParentStart="true"
             android:layout_marginLeft="16dp"
-            android:layout_alignParentStart="true"/>
+            android:background="@null"
+            android:src="@drawable/ic_baseline_storefront_24" />
 
         <TextView
-            android:id="@+id/nameTextView"
+            android:id="@+id/shopNameTextView"
             style="@style/TextAppearance.MaterialComponents.Headline6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
-            android:layout_toEndOf="@+id/userIcon"
+            android:layout_toEndOf="@+id/shopIcon"
             android:textColor="@color/white"
             tools:text="Seller Name" />
 
-        <ImageButton
-            android:id="@+id/addProductButton"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginHorizontal="8dp"
-            android:layout_toStartOf="@id/editSellerProfileButton"
-            android:background="@null"
-            android:src="@drawable/ic_add_shopping_white" />
+<!--        <ImageButton-->
+<!--            android:id="@+id/addProductButton"-->
+<!--            android:layout_width="30dp"-->
+<!--            android:layout_height="30dp"-->
+<!--            android:layout_marginHorizontal="8dp"-->
+<!--            android:layout_toStartOf="@id/editSellerProfileButton"-->
+<!--            android:background="@null"-->
+<!--            android:src="@drawable/ic_add_shopping_white" />-->
 
-        <ImageButton
-            android:id="@+id/editSellerProfileButton"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/ic_edit_white"
-            android:background="@null"
-            android:layout_marginHorizontal="8dp"
-            android:layout_toStartOf="@id/logoutButton"/>
+<!--        <ImageButton-->
+<!--            android:id="@+id/editSellerProfileButton"-->
+<!--            android:layout_width="30dp"-->
+<!--            android:layout_height="30dp"-->
+<!--            android:layout_marginHorizontal="8dp"-->
+<!--            android:layout_toStartOf="@id/logoutButton"-->
+<!--            android:background="@null"-->
+<!--            android:src="@drawable/ic_edit_white" />-->
 
         <ImageButton
             android:id="@+id/logoutButton"
@@ -60,5 +60,28 @@
             android:background="@null"/>
 
     </RelativeLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/editItemButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin"
+        android:layout_marginBottom="@dimen/margin"
+        android:src="@drawable/ic_edit_white"
+        app:layout_constraintBottom_toTopOf="@+id/addItemButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:tint="@android:color/white" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addItemButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin"
+        android:layout_marginBottom="@dimen/margin"
+        android:src="@drawable/ic_add"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:tint="@android:color/white" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

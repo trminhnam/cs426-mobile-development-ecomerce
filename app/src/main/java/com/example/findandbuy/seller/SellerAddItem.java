@@ -74,11 +74,14 @@ public class SellerAddItem extends AppCompatActivity {
     private Uri image_uri;
 
     private ProgressDialog progressDialog;
+    private FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_seller_add_item);
+
+        firebaseAuth = FirebaseAuth.getInstance();
 
         // init progress dialog
         progressDialog = new ProgressDialog(this);
@@ -138,11 +141,11 @@ public class SellerAddItem extends AppCompatActivity {
 
     private String itemName, itemPrice, itemCategory, itemCount, itemDescription;
     private void inputData() {
-        itemName = itemNameEditText.getText().toString();
-        itemCategory = itemCategoryEditText.getText().toString();
-        itemPrice = itemPriceEditText.getText().toString();
-        itemCount = itemCountEditText.getText().toString();
-        itemDescription = itemDescriptionEditText.getText().toString();
+        itemName = itemNameEditText.getText().toString().trim();
+        itemCategory = itemCategoryEditText.getText().toString().trim();
+        itemPrice = itemPriceEditText.getText().toString().trim();
+        itemCount = itemCountEditText.getText().toString().trim();
+        itemDescription = itemDescriptionEditText.getText().toString().trim();
 
         if (itemName.isEmpty()){
             Toast.makeText(this, "Item name is required ...", Toast.LENGTH_SHORT).show();
@@ -168,20 +171,19 @@ public class SellerAddItem extends AppCompatActivity {
     }
 
     private void addItem() {
-        progressDialog.setMessage("Adding Product ...");
 
-        String timestampt = "" + System.currentTimeMillis();
-//        Log.d("ADD_ITEM", "timestampt = " + timestampt.toString() );
-//        Log.d("ADD_ITEM", "firebase auth uid = " + firebaseAuth.getUid() );
-//        Toast.makeText(this, firebaseAuth.getUid().toString(), Toast.LENGTH_LONG);
-//        Toast.makeText(this, timestampt, Toast.LENGTH_LONG);
-//        return;
+        String timestamp = "" + System.currentTimeMillis();
+        Log.d("ADD_ITEM", "timestamp = " + timestamp.toString() );
+        Log.d("ADD_ITEM", "firebase auth uid = " + firebaseAuth.getUid() );
+        Toast.makeText(this, firebaseAuth.getUid().toString(), Toast.LENGTH_LONG);
+        Toast.makeText(this, timestamp, Toast.LENGTH_LONG);
 
 
         if (image_uri == null){
+            progressDialog.setMessage("Uploading item data");
             // upload without image
             HashMap<String, Object> hashMap = new HashMap<>();
-            hashMap.put("itemID", ""+timestampt);
+            hashMap.put("itemID", ""+timestamp);
             hashMap.put("itemName", itemName);
             hashMap.put("itemCategory", itemCategory);
             hashMap.put("itemPrice", itemPrice);
@@ -189,9 +191,9 @@ public class SellerAddItem extends AppCompatActivity {
             hashMap.put("itemDescription", itemCount);
 
             hashMap.put("itemImage", "");
-            hashMap.put("uid", "123456789");
+            hashMap.put("uid", ""+firebaseAuth.getUid());
             DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
-            databaseReference.child("123456789").child("Items").child(timestampt).setValue(hashMap)
+            databaseReference.child(firebaseAuth.getUid()).child("Items").child(timestamp).setValue(hashMap)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
@@ -207,13 +209,12 @@ public class SellerAddItem extends AppCompatActivity {
                             Toast.makeText(SellerAddItem.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
-
         }
         else{
             // upload with image
-
+            progressDialog.setMessage("Uploading item image");
             // first upload image to storage
-            String filePathAndName = "item_images/" + timestampt;
+            String filePathAndName = "item_images/" + timestamp;
 
             StorageReference storageReference = FirebaseStorage.getInstance().getReference(filePathAndName);
             storageReference.putFile(image_uri)
@@ -225,9 +226,10 @@ public class SellerAddItem extends AppCompatActivity {
                             Uri downloadImageUri = uriTask.getResult();
 
                             if (uriTask.isSuccessful()){
+                                progressDialog.setMessage("Uploading item data");
                                 // receivev image url
                                 HashMap<String, Object> hashMap = new HashMap<>();
-                                hashMap.put("itemID", ""+timestampt);
+                                hashMap.put("itemID", ""+timestamp);
                                 hashMap.put("itemName", itemName);
                                 hashMap.put("itemCategory", itemCategory);
                                 hashMap.put("itemPrice", itemPrice);
@@ -235,9 +237,9 @@ public class SellerAddItem extends AppCompatActivity {
                                 hashMap.put("itemDescription", itemCount);
 
                                 hashMap.put("itemImage", ""+downloadImageUri);
-                                hashMap.put("uid", "123456789");
+                                hashMap.put("uid", ""+firebaseAuth.getUid());
                                 DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
-                                databaseReference.child("123456789").child("Items").child(timestampt).setValue(hashMap)
+                                databaseReference.child(firebaseAuth.getUid()).child("Items").child(timestamp).setValue(hashMap)
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void unused) {
@@ -263,13 +265,12 @@ public class SellerAddItem extends AppCompatActivity {
                             Toast.makeText(SellerAddItem.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
-
         }
 
 //        if (image_uri == null){
 //            // upload without image
 //            HashMap<String, Object> hashMap = new HashMap<>();
-//            hashMap.put("itemID", ""+timestampt);
+//            hashMap.put("itemID", ""+timestamp);
 //            hashMap.put("itemName", itemName);
 //            hashMap.put("itemCategory", itemCategory);
 //            hashMap.put("itemPrice", itemPrice);
@@ -279,7 +280,7 @@ public class SellerAddItem extends AppCompatActivity {
 //            hashMap.put("itemImage", "");
 //            hashMap.put("uid", ""+firebaseAuth.getUid());
 //            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
-//            databaseReference.child(firebaseAuth.getUid()).child("Items").child(timestampt).setValue(hashMap)
+//            databaseReference.child(firebaseAuth.getUid()).child("Items").child(timestamp).setValue(hashMap)
 //                    .addOnSuccessListener(new OnSuccessListener<Void>() {
 //                        @Override
 //                        public void onSuccess(Void unused) {
@@ -301,7 +302,7 @@ public class SellerAddItem extends AppCompatActivity {
 //            // upload with image
 //
 //            // first upload image to storage
-//            String filePathAndName = "item_images/" + timestampt;
+//            String filePathAndName = "item_images/" + timestamp;
 //
 //            StorageReference storageReference = FirebaseStorage.getInstance().getReference(filePathAndName);
 //            storageReference.putFile(image_uri)
@@ -315,7 +316,7 @@ public class SellerAddItem extends AppCompatActivity {
 //                            if (uriTask.isSuccessful()){
 //                                // receivev image url
 //                                HashMap<String, Object> hashMap = new HashMap<>();
-//                                hashMap.put("itemID", ""+timestampt);
+//                                hashMap.put("itemID", ""+timestamp);
 //                                hashMap.put("itemName", itemName);
 //                                hashMap.put("itemCategory", itemCategory);
 //                                hashMap.put("itemPrice", itemPrice);
@@ -325,7 +326,7 @@ public class SellerAddItem extends AppCompatActivity {
 //                                hashMap.put("itemImage", ""+downloadImageUri);
 //                                hashMap.put("uid", ""+firebaseAuth.getUid());
 //                                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
-//                                databaseReference.child(firebaseAuth.getUid()).child("Items").child(timestampt).setValue(hashMap)
+//                                databaseReference.child(firebaseAuth.getUid()).child("Items").child(timestamp).setValue(hashMap)
 //                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
 //                                            @Override
 //                                            public void onSuccess(Void unused) {
@@ -353,6 +354,7 @@ public class SellerAddItem extends AppCompatActivity {
 //                    });
 //
 //        }
+
     }
 
     private void clearData() {

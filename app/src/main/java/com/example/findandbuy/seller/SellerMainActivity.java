@@ -23,15 +23,15 @@ public class SellerMainActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         String fullname = extras.getString("fullname");
 
-        nameTextView = findViewById(R.id.nameTextView);
-        addProductButton = findViewById(R.id.addProductButton);
+        nameTextView = findViewById(R.id.shopNameTextView);
+        addProductButton = findViewById(R.id.addItemButton);
 
         nameTextView.setText(fullname);
 
         addProductButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                startActivity(new Intent(SellerMainActivity.this, SellerAddItem.class));
             }
         });
     }
