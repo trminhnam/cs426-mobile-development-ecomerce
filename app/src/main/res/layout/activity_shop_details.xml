@@ -6,9 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".user.ShopDetailsActivity">
     <RelativeLayout
+        android:id="@+id/shopContainerRl"
         android:layout_width="match_parent"
         android:layout_height="190dp">
         <ImageView
+            android:id="@+id/shopIv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
@@ -100,7 +102,7 @@
                     app:tint="@color/white" />
 
                 <ImageButton
-                    android:id="@+id/mapBTn"
+                    android:id="@+id/mapBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@color/transparent"
@@ -108,20 +110,20 @@
                     android:src="@drawable/ic_map_white" />
             </LinearLayout>
         </RelativeLayout>
-        <!-- List product -->
+        </RelativeLayout>
+
+    <!-- List product -->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/shopInformationRl">
-
+            android:layout_below="@+id/shopContainerRl">
             <!-- Recycler view -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/listProductsRv"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem=""/>
+                tools:listitem="@layout/row_item"/>
         </RelativeLayout>
-    </RelativeLayout>
 
 </RelativeLayout>
