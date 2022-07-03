@@ -89,6 +89,7 @@ public class Database {
         return true;
     }
 
+    /*              HELPER FUNCTION FOR USER            */
     public HashMap<String, seller> getAllSellers()        // for user
     {
         return sellers;
@@ -99,9 +100,40 @@ public class Database {
         return Objects.requireNonNull(sellers.get(storeID)).getStore().getItems();
     }
 
+    public void addToCart(Item item, Integer amount)
+    {
+        pushToFirebase(Objects.requireNonNull(users.get(UserID)).addToCart(item, amount));
+    }
+
+    public void addToCart(String storeID, String itemID, Integer amount)
+    {
+        Item item = getItems(storeID).get(itemID);
+        assert item != null;
+        pushToFirebase(Objects.requireNonNull(users.get(UserID)).addToCart(item, amount));
+    }
+
+    /*              END HELPER FUNCTION FOR USER              */
+
+
+    /*              HELPER FUNCTION FOR SELLER                  */
+
+
+
+
+
+
+    /*              END HELPER FUNCTION FOR SELLER              */
+
+
+
     public void pushToFirebase()
     {
         firebase.addData(this);
+    }
+
+    public void pushToFirebase(Object obj)
+    {
+        firebase.addData(obj);
     }
 
     public void getDataFromFirebase() throws Exception {

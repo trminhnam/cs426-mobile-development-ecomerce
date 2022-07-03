@@ -27,15 +27,17 @@ public class Store {
         return this;
     }
 
-    public void addItem(@NonNull Item item)
+    public HashMap<String, Item> addItem(@NonNull Item item)
     {
         Integer itemID = item.itemID;
         items.put(String.valueOf(itemID), item);
+        return getItems();
     }
 
-    public void changeName(String storeName)
+    public Store changeName(String storeName)
     {
         this.storeName = storeName;
+        return this;
     }
 
     public Integer getID()

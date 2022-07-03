@@ -1,5 +1,7 @@
 package com.example.findandbuy.dataStructure;
 
+import androidx.annotation.NonNull;
+
 import java.util.HashMap;
 
 public class user {
@@ -17,6 +19,20 @@ public class user {
         this.userPassword = userPassword;
 
         return this;
+    }
+
+    public HashMap<String, Item> addToCart(@NonNull Item item, Integer amount)
+    {
+        String itemId = String.valueOf(item.getID());
+        item.itemCount = amount;
+        cart.put(itemId, item);
+
+        return getCart();
+    }
+
+    public HashMap<String, Item> getCart()
+    {
+        return cart;
     }
 
     public Integer getID()
