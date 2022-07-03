@@ -2,12 +2,16 @@ package com.example.findandbuy.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,6 +19,8 @@ import com.example.findandbuy.R;
 import com.example.findandbuy.models.Shop;
 import com.example.findandbuy.user.ShopDetailsActivity;
 import com.squareup.picasso.Picasso;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -71,6 +77,7 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ShopHolder>{
                 context.startActivity(intent);
             }
         });
+
     }
 
     @Override
