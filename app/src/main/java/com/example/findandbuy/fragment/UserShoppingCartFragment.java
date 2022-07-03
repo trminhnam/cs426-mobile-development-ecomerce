@@ -3,11 +3,15 @@ package com.example.findandbuy.fragment;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+
+import com.example.findandbuy.adapters.ShoppingCartAdapter;
 import com.example.findandbuy.models.Item;
 
 import com.example.findandbuy.R;
@@ -31,7 +35,7 @@ public class UserShoppingCartFragment extends Fragment {
     private String mParam2;
 
     private RecyclerView recyclerView;
-    private ArrayList<Item> itemsList;
+    private ArrayList<Item> itemsList = new ArrayList<>();
 
     public UserShoppingCartFragment() {
         // Required empty public constructor
@@ -57,10 +61,10 @@ public class UserShoppingCartFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+                super.onCreate(savedInstanceState);
+                if (getArguments() != null) {
+                    mParam1 = getArguments().getString(ARG_PARAM1);
+                    mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -68,14 +72,21 @@ public class UserShoppingCartFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        itemsList = new ArrayList<>();
+        // fake data for shopping cart
         for(int i = 0; i < 10; ++i)
         {
             Item item = new Item("1", "Iphone", "phone", "122", "12", "HELLO", "123", "1232", "123");
             itemsList.add(item);
         }
 
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_user_shopping_cart, container, false);
+        View view = inflater.inflate(R.layout.fragment_user_shopping_cart, container, false);
+        recyclerView = view.findViewById(R.id.shoppingCartRv);
+
+        ShoppingCartAdapter adapter = new ShoppingCartAdapter(getContext(), itemsList);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setAdapter(adapter);
+
+        return view;
     }
 }
