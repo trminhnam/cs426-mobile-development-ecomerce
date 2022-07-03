@@ -22,20 +22,25 @@ public class Store {
     {
         this.storeID = storeID;
         this.storeName = storeName;
-        this.items = items;
+        if (items != null)
+            this.items = items;
+        else
+            this.items = new HashMap<>();
         this.storeDescription = storeDescription;
         return this;
     }
 
-    public void addItem(@NonNull Item item)
+    public HashMap<String, Item> addItem(@NonNull Item item)
     {
         Integer itemID = item.itemID;
         items.put(String.valueOf(itemID), item);
+        return getItems();
     }
 
-    public void changeName(String storeName)
+    public Store changeName(String storeName)
     {
         this.storeName = storeName;
+        return this;
     }
 
     public Integer getID()
