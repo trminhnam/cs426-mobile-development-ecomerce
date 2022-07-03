@@ -190,6 +190,7 @@ public class SellerAddItem extends AppCompatActivity {
             hashMap.put("itemCount", itemCount);
             hashMap.put("itemDescription", itemCount);
 
+            hashMap.put("timestamp", timestamp);
             hashMap.put("itemImage", "");
             hashMap.put("uid", ""+firebaseAuth.getUid());
             DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
@@ -236,7 +237,7 @@ public class SellerAddItem extends AppCompatActivity {
                                 hashMap.put("itemCount", itemCount);
                                 hashMap.put("itemDescription", itemCount);
 
-                                hashMap.put("itemImage", ""+downloadImageUri);
+                                hashMap.put("timestamp", timestamp);                                hashMap.put("itemImage", ""+downloadImageUri);
                                 hashMap.put("uid", ""+firebaseAuth.getUid());
                                 DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
                                 databaseReference.child(firebaseAuth.getUid()).child("Items").child(timestamp).setValue(hashMap)

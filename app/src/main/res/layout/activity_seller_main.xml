@@ -1,87 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".seller.SellerMainActivity">
+    tools:context=".user.UserMainActivity">
 
-    <RelativeLayout
+    <include layout="@layout/toolbar" />
+
+    <FrameLayout
+        android:id="@+id/seller_frame_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="60dp"
+        android:layout_marginBottom="60dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    </FrameLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/seller_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:background="@drawable/shape_rect01">
-
-
-        <ImageView
-            android:id="@+id/shopIcon"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_alignParentStart="true"
-            android:layout_marginLeft="16dp"
-            android:background="@null"
-            android:src="@drawable/ic_baseline_storefront_24" />
-
-        <TextView
-            android:id="@+id/shopNameTextView"
-            style="@style/TextAppearance.MaterialComponents.Headline6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_toEndOf="@+id/shopIcon"
-            android:textColor="@color/white"
-            tools:text="Seller Name" />
-
-<!--        <ImageButton-->
-<!--            android:id="@+id/addProductButton"-->
-<!--            android:layout_width="30dp"-->
-<!--            android:layout_height="30dp"-->
-<!--            android:layout_marginHorizontal="8dp"-->
-<!--            android:layout_toStartOf="@id/editSellerProfileButton"-->
-<!--            android:background="@null"-->
-<!--            android:src="@drawable/ic_add_shopping_white" />-->
-
-<!--        <ImageButton-->
-<!--            android:id="@+id/editSellerProfileButton"-->
-<!--            android:layout_width="30dp"-->
-<!--            android:layout_height="30dp"-->
-<!--            android:layout_marginHorizontal="8dp"-->
-<!--            android:layout_toStartOf="@id/logoutButton"-->
-<!--            android:background="@null"-->
-<!--            android:src="@drawable/ic_edit_white" />-->
-
-        <ImageButton
-            android:id="@+id/logoutButton"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_alignParentEnd="true"
-            android:layout_marginHorizontal="8dp"
-            android:src="@drawable/ic_logout_white"
-            android:background="@null"/>
-
-    </RelativeLayout>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/editItemButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/margin"
-        android:layout_marginBottom="@dimen/margin"
-        android:src="@drawable/ic_edit_white"
-        app:layout_constraintBottom_toTopOf="@+id/addItemButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:tint="@android:color/white" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/addItemButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/margin"
-        android:layout_marginBottom="@dimen/margin"
-        android:src="@drawable/ic_add"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:tint="@android:color/white" />
+        android:background="?android:windowBackground"
+        android:foreground="?android:selectableItemBackground"
+        app:itemBackground="@color/bgBottomNavigation"
+        app:itemIconTint="@color/white"        app:itemTextColor="@color/white"
+        app:menu="@menu/seller_navigation" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <!--<?xml version="1.0" encoding="utf-8"?>-->
+    <!--<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+    <!--    xmlns:tools="http://schemas.android.com/tools"-->
+    <!--    android:layout_width="match_parent"-->
+    <!--    android:layout_height="match_parent"-->
+    <!--    tools:context=".seller.SellerMainActivity">-->
+
+    <!--    <RelativeLayout-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:padding="10dp"-->
+    <!--        android:background="@drawable/shape_rect01">-->
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <!--        <ImageView-->
+    <!--            android:id="@+id/shopIcon"-->
+    <!--            android:layout_width="30dp"-->
+    <!--            android:layout_height="30dp"-->
+    <!--            android:layout_alignParentStart="true"-->
+    <!--            android:layout_marginLeft="16dp"-->
+    <!--            android:background="@null"-->
+    <!--            android:src="@drawable/ic_baseline_storefront_24" />-->
+
+    <!--        <TextView-->
+    <!--            android:id="@+id/shopNameTextView"-->
+    <!--            style="@style/TextAppearance.MaterialComponents.Headline6"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_marginLeft="8dp"-->
+    <!--            android:layout_toEndOf="@+id/shopIcon"-->
+    <!--            android:textColor="@color/white"-->
+    <!--            tools:text="Seller Name" />-->
+
+    <!--&lt;!&ndash;        <ImageButton&ndash;&gt;-->
+    <!--&lt;!&ndash;            android:id="@+id/addProductButton"&ndash;&gt;-->
+    <!--&lt;!&ndash;            android:layout_width="30dp"&ndash;&gt;-->
+    <!--&lt;!&ndash;            android:layout_height="30dp"&ndash;&gt;-->
+    <!--&lt;!&ndash;            android:layout_marginHorizontal="8dp"&ndash;&gt;-->
+    <!--&lt;!&ndash;            android:layout_toStartOf="@id/editSellerProfileButton"&ndash;&gt;-->
+    <!--&lt;!&ndash;            android:background="@null"&ndash;&gt;-->
+    <!--&lt;!&ndash;            android:src="@drawable/ic_add_shopping_white" />&ndash;&gt;-->
+
+    <!--&lt;!&ndash;        <ImageButton&ndash;&gt;-->
+    <!--&lt;!&ndash;            android:id="@+id/editSellerProfileButton"&ndash;&gt;-->
+    <!--&lt;!&ndash;            android:layout_width="30dp"&ndash;&gt;-->
+    <!--&lt;!&ndash;            android:layout_height="30dp"&ndash;&gt;-->
+    <!--&lt;!&ndash;            android:layout_marginHorizontal="8dp"&ndash;&gt;-->
+    <!--&lt;!&ndash;            android:layout_toStartOf="@id/logoutButton"&ndash;&gt;-->
+    <!--&lt;!&ndash;            android:background="@null"&ndash;&gt;-->
+    <!--&lt;!&ndash;            android:src="@drawable/ic_edit_white" />&ndash;&gt;-->
+
+    <!--        <ImageButton-->
+    <!--            android:id="@+id/logoutButton"-->
+    <!--            android:layout_width="30dp"-->
+    <!--            android:layout_height="30dp"-->
+    <!--            android:layout_alignParentEnd="true"-->
+    <!--            android:layout_marginHorizontal="8dp"-->
+    <!--            android:src="@drawable/ic_logout_white"-->
+    <!--            android:background="@null"/>-->
+
+    <!--    </RelativeLayout>-->
+
+    <!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+    <!--        android:id="@+id/editItemButton"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginEnd="@dimen/margin"-->
+    <!--        android:layout_marginBottom="@dimen/margin"-->
+    <!--        android:src="@drawable/ic_edit_white"-->
+    <!--        app:layout_constraintBottom_toTopOf="@+id/addItemButton"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:tint="@android:color/white" />-->
+
+    <!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+    <!--        android:id="@+id/addItemButton"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginEnd="@dimen/margin"-->
+    <!--        android:layout_marginBottom="@dimen/margin"-->
+    <!--        android:src="@drawable/ic_add"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:tint="@android:color/white" />-->
+
+
+    <!--</androidx.constraintlayout.widget.ConstraintLayout>-->
+
+

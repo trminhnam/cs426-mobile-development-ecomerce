@@ -22,10 +22,11 @@ public class RegisterUserActivity extends AppCompatActivity {
 
 
     private ImageButton backButton;
-    private EditText nameEt, phoneEt, streetEt, districtEt, cityEt, emailEt, passwordEt, confirmPasswordEt;
+    private EditText nameEt, phoneEt, emailEt, passwordEt, confirmPasswordEt;
     private Button registerButton;
     private ImageButton gpsButton;
     private TextView registerSellerTv;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,14 +35,10 @@ public class RegisterUserActivity extends AppCompatActivity {
         backButton = findViewById(R.id.backBtn);
         nameEt = findViewById(R.id.fullNameEt);
         phoneEt = findViewById(R.id.phoneEt);
-        streetEt = findViewById(R.id.streetEt);
-        districtEt = findViewById(R.id.districtEt);
-        cityEt = findViewById(R.id.cityEt);
         emailEt = findViewById(R.id.emailEt);
         passwordEt = findViewById(R.id.passwordEt);
         confirmPasswordEt = findViewById(R.id.confirmPasswordEt);
         registerButton = findViewById(R.id.register_btn);
-        gpsButton = findViewById(R.id.gpsBtn);
         registerSellerTv = findViewById(R.id.registerSeller);
 
 
@@ -61,14 +58,8 @@ public class RegisterUserActivity extends AppCompatActivity {
             }
         });
 
-        gpsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Get the location lng ltn
-            }
-        });
-
     }
+
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
