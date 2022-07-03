@@ -11,6 +11,8 @@ public class Item {
     private String itemImage;
     private String uid;
 
+    public Item() {}
+
     public Item(String itemID, String itemName, String itemCategory, String itemPrice, String itemCount, String itemDescription, String timestamp, String itemImage, String uid) {
         this.itemID = itemID;
         this.itemName = itemName;

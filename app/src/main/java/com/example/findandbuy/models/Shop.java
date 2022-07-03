@@ -3,6 +3,7 @@ package com.example.findandbuy.models;
 public class Shop {
     private String uid, fullName, shopNames, phoneNum, district, city, country, address, email, password, confirmPassword, profileImage;
 
+    public Shop() {}
 
     public Shop(String uid, String fullName, String shopNames, String phoneNum, String district, String city, String country, String address, String email, String password, String confirmPassword, String profileImage) {
         this.uid = uid;

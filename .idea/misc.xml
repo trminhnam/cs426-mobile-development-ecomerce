@@ -3,8 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/AndroidStudio/cs426-mobile-development-ecomerce/app/src/main/res/layout/activity_register_seller.xml" value="0.1" />
+        <entry key="..\:/AndroidStudio/cs426-mobile-development-ecomerce/app/src/main/res/layout/fragment_user_shopping_cart.xml" value="0.259375" />
         <entry key="..\:/Users/trmin/Desktop/cs426-mobile-development-ecomerce/app/src/main/res/drawable/bg_gradient.xml" value="0.1" />
-        <entry key="..\:/Users/trmin/Desktop/cs426-mobile-development-ecomerce/app/src/main/res/drawable/ic_add.xml" value="0.1625" />
         <entry key="..\:/Users/trmin/Desktop/cs426-mobile-development-ecomerce/app/src/main/res/drawable/ic_add_photo_gray.xml" value="0.216" />
         <entry key="..\:/Users/trmin/Desktop/cs426-mobile-development-ecomerce/app/src/main/res/drawable/ic_category_gray.xml" value="0.1625" />
         <entry key="..\:/Users/trmin/Desktop/cs426-mobile-development-ecomerce/app/src/main/res/drawable/ic_dropdown_gray.xml" value="0.216" />
