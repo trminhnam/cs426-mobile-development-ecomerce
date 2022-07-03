@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_item_list"
+        android:icon="@drawable/ic_storage_white"
+        android:title="Items" />
+
+    <item
+        android:id="@+id/navigation_add_item"
+        android:icon="@drawable/ic_add"
+        android:title="Add Items" />
+
+    <item
+        android:id="@+id/navigation_modify_items"
+        android:icon="@drawable/ic_edit_white"
+        android:title="Modify Items" />
+
+    <item
+        android:id="@+id/navigation_seller_profile"
+        android:icon="@drawable/ic_person_white"
+        android:title="Seller profile" />
+</menu>

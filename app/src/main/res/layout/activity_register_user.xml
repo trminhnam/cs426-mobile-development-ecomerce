@@ -8,6 +8,8 @@
     android:background="@color/white"
     tools:context=".LoginActivity"
     android:focusableInTouchMode="true">
+
+
     <RelativeLayout
         android:id="@+id/navBar"
         android:layout_width="match_parent"
@@ -74,88 +76,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <EditText
-                android:id="@+id/streetEt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:background="@drawable/shape_rect02"
-                android:drawableStart="@drawable/ic_baseline_location_on_24"
-                android:drawablePadding="5dp"
-                android:drawableTint="@color/htmlGrey"
-                android:hint="Street"
-                android:inputType="text"
-                android:minHeight="48dp"
-                android:padding="10dp"
-                android:layout_weight="1"/>
-            <EditText
-                android:id="@+id/districtEt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/shape_rect02"
-                android:drawableStart="@drawable/ic_baseline_location_on_24"
-                android:drawablePadding="5dp"
-                android:drawableTint="@color/htmlGrey"
-                android:hint="District"
-                android:inputType="text"
-                android:minHeight="48dp"
-                android:padding="10dp"
-                android:layout_weight="1"/>
-            <EditText
-                android:id="@+id/cityEt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:background="@drawable/shape_rect02"
-                android:drawableStart="@drawable/ic_baseline_location_on_24"
-                android:drawablePadding="5dp"
-                android:drawableTint="@color/htmlGrey"
-                android:hint="City"
-                android:inputType="text"
-                android:minHeight="48dp"
-                android:padding="10dp"
-                android:layout_weight="1"/>
-        </LinearLayout>
+            android:orientation="horizontal"/>
 
         <RelativeLayout
             android:id="@+id/completeAddressContainer"
             android:layout_below="@id/address"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/completeAddressEt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/shape_rect02"
-                android:drawableStart="@drawable/ic_baseline_location_on_24"
-                android:drawablePadding="5dp"
-                android:drawableTint="@color/htmlGrey"
-                android:hint="Complete address"
-                android:inputType="textPostalAddress"
-                android:minHeight="48dp"
-                android:padding="10dp" />
-
-            <ImageButton
-                android:id="@+id/gpsBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
-                android:backgroundTint="@color/transparent"
-                android:padding="10dp"
-                android:src="@drawable/ic_outline_gps_fixed_24"
-                app:tint="@color/green_dark" />
-        </RelativeLayout>
+            android:layout_height="wrap_content"/>
 
         <EditText
             android:id="@+id/emailEt"
