@@ -108,7 +108,14 @@
                     android:background="@color/transparent"
                     android:paddingLeft="5dp"
                     android:src="@drawable/ic_map_white" />
+                <Spinner
+                    android:id="@+id/categorySpinner"
+                    android:layout_width="100dp"
+                    android:layout_height="25dp"
+                    android:layout_marginStart="5dp"
+                    />
             </LinearLayout>
+
         </RelativeLayout>
         </RelativeLayout>
 
