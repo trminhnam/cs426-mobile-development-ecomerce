@@ -1,18 +1,28 @@
 package com.example.findandbuy.fragment;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.findandbuy.R;
 import com.example.findandbuy.adapters.ShopAdapter;
-import com.example.findandbuy.models.Shop;
+import com.example.findandbuy.models.Seller;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -33,15 +43,19 @@ public class UserShopFragment extends Fragment {
     private String mParam2;
 
     private RecyclerView recyclerView;
-    private ArrayList<Shop> shopsList;
+    private ArrayList<Seller> sellerArrayList;
+
+    private FirebaseAuth firebaseAuth;
+    private ProgressDialog progressDialog;
 
     public UserShopFragment() {
-        shopsList = new ArrayList<Shop>();
-
-        for (int i = 0; i < 10; ++i){
-            Shop shop = new Shop("1", "a", "NFT1", "0708624730", "HocMon", "HCM", "VietNam", "122 Ba Diem, Hoc Mon, Ho Chi Minh City", "a", "1", "1", "a");
-            shopsList.add(shop);
-        }
+//        shopsList = new ArrayList<Shop>();
+//
+//        for (int i = 0; i < 10; ++i){
+//            Shop shop = new Shop("1", "a", "NFT1", "0708624730", "HocMon", "HCM", "VietNam", "122 Ba Diem, Hoc Mon, Ho Chi Minh City", "a", "1", "1", "a");
+//            shopsList.add(shop);
+//        }
+//        load
     }
 
     /**
@@ -69,6 +83,20 @@ public class UserShopFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        progressDialog = new ProgressDialog(getContext());
+        progressDialog.setTitle("Please wait");
+        progressDialog.setCanceledOnTouchOutside(false);
+
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        loadSellerLists();
     }
 
     @Override
@@ -76,13 +104,50 @@ public class UserShopFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
+
+        progressDialog.setMessage("Loading shops");
+        progressDialog.show();
+        loadSellerLists();
+
         View view = inflater.inflate(R.layout.fragment_user_shop, container, false);
         recyclerView = view.findViewById(R.id.shopRv);
-        ShopAdapter shopAdapter = new ShopAdapter(getContext(), shopsList);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(shopAdapter);
 
         return view;
     }
+
+
+    private void loadSellerLists() {
+        sellerArrayList = new ArrayList<>();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
+        databaseReference
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        sellerArrayList.clear();
+                        sellerArrayList = new ArrayList<>();
+                        for (DataSnapshot ds: snapshot.getChildren()){
+                            String accountType = ""+ds.child("accountType").getValue();
+                            Log.d("SELLER_RETRIEVAL", "" + ds.child("email").getValue() + ": " + ds.child("accountType").getValue());
+                            if (accountType.equals("Seller")){
+                                Seller seller = ds.getValue(Seller.class);
+                                sellerArrayList.add(seller);
+                            }
+                        }
+                        progressDialog.dismiss();
+
+                        ShopAdapter shopAdapter = new ShopAdapter(getContext(), sellerArrayList);
+                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+                        recyclerView.setLayoutManager(linearLayoutManager);
+                        recyclerView.setAdapter(shopAdapter);
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(getContext() , "Action canceled", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+
 }
