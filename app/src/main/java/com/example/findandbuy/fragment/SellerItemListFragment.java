@@ -97,11 +97,6 @@ public class SellerItemListFragment extends Fragment {
 
         loadAllItems();
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(linearLayoutManager);
-
-        sellerItemAdapter = new SellerItemAdapter(getContext(), itemArrayList);
-        recyclerView.setAdapter(sellerItemAdapter);
 
         return view;
     }
@@ -118,6 +113,12 @@ public class SellerItemListFragment extends Fragment {
                             Item item = ds.getValue(Item.class);
                             itemArrayList.add(item);
                         }
+
+                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+                        recyclerView.setLayoutManager(linearLayoutManager);
+
+                        sellerItemAdapter = new SellerItemAdapter(getContext(), itemArrayList, "Seller");
+                        recyclerView.setAdapter(sellerItemAdapter);
                     }
 
                     @Override

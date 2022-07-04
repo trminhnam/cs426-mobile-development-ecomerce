@@ -33,8 +33,8 @@ public class ShopDetailsActivity extends AppCompatActivity {
     private String shopUid;
 
     // TODO: Load from database
-    private final ArrayList<Item> listItems = Constants.listItems();
-    private final ArrayList<Item> fillteredListItems = Constants.listItems();
+    private ArrayList<Item> listItems = new ArrayList<>();
+    private ArrayList<Item> fillteredListItems = new ArrayList<>();
 
     private final String[] listCategories = Constants.options;
 
@@ -62,7 +62,7 @@ public class ShopDetailsActivity extends AppCompatActivity {
 
         RecyclerView listItemRv = (RecyclerView) findViewById(R.id.listProductsRv);
 
-        SellerItemAdapter sellerItemAdapter = new SellerItemAdapter(this, fillteredListItems);
+        SellerItemAdapter sellerItemAdapter = new SellerItemAdapter(this, fillteredListItems, "User");
 
         listItemRv.setAdapter(sellerItemAdapter);
 

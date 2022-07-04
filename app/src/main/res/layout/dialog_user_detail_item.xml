@@ -5,17 +5,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/shadow_background"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        >
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
         <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:layout_marginStart="1dp"
-            android:layout_marginTop="1dp"
-            android:layout_marginEnd="1dp"
             android:orientation="vertical"
+            android:layout_margin="@dimen/margin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -26,6 +23,7 @@
                 android:layout_height="180dp"
                 android:layout_gravity="center_horizontal"
                 android:src="@drawable/ic_image_gray" />
+
             <ScrollView
                 android:layout_width="wrap_content"
                 android:layout_height="200dp">
@@ -33,7 +31,7 @@
                     android:id="@+id/itemInforLinearLayout"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginStart="@dimen/margin"
+                    android:layout_margin="@dimen/margin"
                     android:orientation="vertical"
                     android:padding="4dp"
                     app:layout_constraintStart_toEndOf="@+id/itemImageView">
@@ -54,24 +52,27 @@
                         android:text="Category" />
 
                     <TextView
-                        android:id="@+id/descriptionTextView"
-                        style="@style/TextAppearance.MaterialComponents.Body1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Channel new levels of speed and power in shoes designed for Zion and built for ballers at any level. An adjustable strap up top helps lock your foot in place while a firm midsole supports high-paced play. A wider outsole provides extra stability—perfect for playing on outdoor courts. And the Zion 2 has more Air cushioning than its predecessor, so you'll get into the clouds easier and land softer." />
-
-                    <TextView
                         android:id="@+id/priceTextView"
                         style="@style/TextAppearance.MaterialComponents.Body1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="$ 0.5" />
+
+                    <TextView
+                        android:id="@+id/descriptionTextView"
+                        style="@style/TextAppearance.MaterialComponents.Body1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="4dp"
+                        android:text="Channel new levels of speed and power in shoes designed for Zion and built for ballers at any level. An adjustable strap up top helps lock your foot in place while a firm midsole supports high-paced play. A wider outsole provides extra stability—perfect for playing on outdoor courts. And the Zion 2 has more Air cushioning than its predecessor, so you'll get into the clouds easier and land softer." />
+
                 </LinearLayout>
             </ScrollView>
 
             <LinearLayout
+                android:layout_marginHorizontal="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -85,7 +86,7 @@
                     android:backgroundTint="@color/green_light"
                     android:src="@drawable/ic_baseline_remove_24"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:tint="@color/white" />
+                    app:tint="@color/green_dark" />
 
                 <TextView
                     android:id="@+id/itemCountTv"
@@ -104,16 +105,16 @@
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/green_light"
                     android:src="@drawable/ic_add"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/green_dark"/>
 
-                <androidx.appcompat.widget.AppCompatButton
+                <Button
                     android:id="@+id/addItemButton"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@color/holo_blue"
-                    android:drawableStart="@drawable/ic_add_shopping_white"
-                    android:paddingStart="10dp"
-                    android:text="Add to cart" />
+                    android:drawableLeft="@drawable/ic_add_shopping_white"
+                    android:text="Add to cart"/>
             </LinearLayout>
 
         </LinearLayout>

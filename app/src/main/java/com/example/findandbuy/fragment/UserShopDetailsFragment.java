@@ -1,19 +1,18 @@
 package com.example.findandbuy.fragment;
 
-import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,9 +20,14 @@ import com.example.findandbuy.Constants;
 import com.example.findandbuy.R;
 import com.example.findandbuy.adapters.SellerItemAdapter;
 import com.example.findandbuy.models.Item;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class UserShopDetailsFragment extends Fragment {
 
@@ -44,10 +48,14 @@ public class UserShopDetailsFragment extends Fragment {
     private String shopUid;
 
     // TODO: Load from database
-    private final ArrayList<Item> listItems = Constants.listItems();
-    private final ArrayList<Item> fillteredListItems = Constants.listItems();
-    private final String[] listCategories = Constants.options;
+    private ArrayList<Item> listItems = new ArrayList<>();
+    private ArrayList<Item> fillteredListItems = new ArrayList<>();
+    private String[] listCategories = Constants.options;
 
+    RecyclerView listItemRv;
+
+    private FirebaseAuth firebaseAuth;
+    private ProgressDialog progressDialog;
 
     public UserShopDetailsFragment() {
 
@@ -79,6 +87,11 @@ public class UserShopDetailsFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            this.shopUid = bundle.getString("shopUid");
+        }
     }
 
 
@@ -97,40 +110,40 @@ public class UserShopDetailsFragment extends Fragment {
         backButton = view.findViewById(R.id.backBtn);
         categorySpinner = view.findViewById(R.id.categorySpinner);
 
-        ArrayAdapter ad = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, listCategories);
-        ad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        categorySpinner.setAdapter(ad);
-        categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @SuppressLint("NotifyDataSetChanged")
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selectedCategory = listCategories[position];
-                if (selectedCategory.equals("All")) {
-                    fillteredListItems.clear();
-                    fillteredListItems.addAll(listItems);
-                } else {
-                    fillteredListItems.clear();
-                    for (Item item : listItems) {
-                        if (item.getItemCategory().equals(selectedCategory)) {
-                            fillteredListItems.add(item);
-                        }
-                    }
-                }
-                ((SellerItemAdapter) ((RecyclerView) getView()
-                        .findViewById(R.id.listProductsRv)).getAdapter())
-                        .notifyDataSetChanged();
-            }
+        listItemRv = (RecyclerView) view.findViewById(R.id.listProductsRv);
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+//
+//        ArrayAdapter ad = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, listCategories);
+//        ad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        categorySpinner.setAdapter(ad);
+//        categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @SuppressLint("NotifyDataSetChanged")
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                String selectedCategory = listCategories[position];
+//                if (selectedCategory.equals("All")) {
+//                    fillteredListItems.clear();
+//                    fillteredListItems.addAll(listItems);
+//                } else {
+//                    fillteredListItems.clear();
+//                    for (Item item : listItems) {
+//                        if (item.getItemCategory().equals(selectedCategory)) {
+//                            fillteredListItems.add(item);
+//                        }
+//                    }
+//                }
+//                ((SellerItemAdapter) ((RecyclerView) getView()
+//                        .findViewById(R.id.listProductsRv)).getAdapter())
+//                        .notifyDataSetChanged();
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//
+//            }
+//        });
 
-            }
-        });
-
-        RecyclerView listItemRv = (RecyclerView) view.findViewById(R.id.listProductsRv);
-        SellerItemAdapter sellerItemAdapter = new SellerItemAdapter(getContext(), fillteredListItems);
-        listItemRv.setAdapter(sellerItemAdapter);
-        listItemRv.setLayoutManager(new LinearLayoutManager(getContext()));
+        loadSellerItems();
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,4 +156,41 @@ public class UserShopDetailsFragment extends Fragment {
         return view;
     }
 
+    private void loadSellerItems() {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
+        databaseReference.orderByChild("uid").equalTo(shopUid)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        listItems.clear();
+                        listItems = new ArrayList<>();
+                        for (DataSnapshot ds: snapshot.getChildren()){
+//                            String accountType = ""+ds.child("accountType").getValue();
+//                            String fullname = ""+ds.child("fullname").getValue();
+//                            if (accountType.equals("Seller")){
+//                                progressDialog.dismiss();
+//
+//                            }
+//                            else{
+//                                progressDialog.dismiss();
+//
+//                            }
+
+                            for (DataSnapshot dsItem: ds.child("Items").getChildren()){
+                                Item item = dsItem.getValue(Item.class);
+                                listItems.add(item);
+                            }
+                        }
+
+                        SellerItemAdapter sellerItemAdapter = new SellerItemAdapter(getContext(), listItems, "User");
+                        listItemRv.setAdapter(sellerItemAdapter);
+                        listItemRv.setLayoutManager(new LinearLayoutManager(getContext()));
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(getContext(), ""+error.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
 }
