@@ -43,7 +43,7 @@ import java.util.Objects;
 
 public class RegisterSellerActivity extends AppCompatActivity implements LocationListener {
     private ImageButton backButton, gpsButton;
-    private EditText nameEt, phoneEt, shopName, streetEt, districtEt, cityEt, passwordEt, emailEt, completeAddress, confirmPasswordEt;
+    private EditText nameEt, phoneEt, shopName, passwordEt, emailEt, completeAddress, confirmPasswordEt;
     private Button registerButton;
 
     private FirebaseAuth firebaseAuth;
@@ -68,9 +68,6 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
         nameEt = findViewById(R.id.fullNameEt);
         phoneEt = findViewById(R.id.phoneEt);
         shopName = findViewById(R.id.shopNameEt);
-        streetEt = findViewById(R.id.streetEt);
-        districtEt = findViewById(R.id.districtEt);
-        cityEt = findViewById(R.id.cityEt);
         completeAddress = findViewById(R.id.completeAddressEt);
         emailEt = findViewById(R.id.emailEt);
         passwordEt = findViewById(R.id.passwordEt);
@@ -124,16 +121,13 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
         });
     }
 
-    private String fullName, shopNames, phoneNum, street, district, city, address, email, password, confirmPassword;
+    private String fullName, shopNames, phoneNum, address, email, password, confirmPassword;
 
     private void inputData() {
         //input
         fullName = nameEt.getText().toString().trim();
         shopNames = shopName.getText().toString().trim();
         phoneNum = phoneEt.getText().toString().trim();
-        street = streetEt.getText().toString().trim();
-        district = districtEt.getText().toString().trim();
-        city = cityEt.getText().toString().trim();
         address = completeAddress.getText().toString().trim();
         email = emailEt.getText().toString().trim();
         password = passwordEt.getText().toString().trim();
@@ -222,15 +216,13 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
         hashMap.put("email", "" + email);
         hashMap.put("fullname", "" + fullName);
         hashMap.put("shopName", "" + shopNames);
-        hashMap.put("street", "" + street);
-        hashMap.put("district", "" + district);
-        hashMap.put("city", "" + city);
         hashMap.put("address", "" + address);
         hashMap.put("lat", "" + lat);
         hashMap.put("lng", "" + lng);
         hashMap.put("timestamp", "" + timestamp);
         hashMap.put("accountType", "Seller");
         hashMap.put("available", "true");
+        hashMap.put("online", "true");
 
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
@@ -329,12 +321,10 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
             addresses = geocoder.getFromLocation(lat, lng, 1);
 
             String address = addresses.get(0).getAddressLine(0);
-            String city = addresses.get(0).getLocality();
-            String state = addresses.get(0).getAdminArea();
-            String country = addresses.get(0).getCountryName();
+//            String city = addresses.get(0).getLocality();
+//            String state = addresses.get(0).getAdminArea();
+//            String country = addresses.get(0).getCountryName();
 
-            districtEt.setText(city);
-            cityEt.setText(state);
             completeAddress.setText(address);
         }
         catch (Exception e){

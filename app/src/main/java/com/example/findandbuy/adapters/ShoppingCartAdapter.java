@@ -1,5 +1,6 @@
 package com.example.findandbuy.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,10 +20,16 @@ import java.util.ArrayList;
 public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapter.HolderCartItem> {
     private Context context;
     private ArrayList<Item> cartItems;
+    private ShoppingCartAdapter.updateTotalPrice callback;
 
-    public ShoppingCartAdapter(Context context, ArrayList<Item> cartItems) {
+    public ShoppingCartAdapter(Context context, ArrayList<Item> cartItems, ShoppingCartAdapter.updateTotalPrice callback) {
         this.context = context;
         this.cartItems = cartItems;
+        this.callback = callback;
+    }
+
+    public interface updateTotalPrice{
+        void onItemClicked(int position);
     }
 
     @NonNull
@@ -33,7 +40,7 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull HolderCartItem holder, int position) {
+    public void onBindViewHolder(@NonNull HolderCartItem holder, @SuppressLint("RecyclerView") int position) {
 
         Item item = cartItems.get(position);
 
@@ -45,6 +52,50 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
         holder.itemNameTextView.setText(title);
         holder.priceTextView.setText(price);
         holder.categoryTextView.setText(category);
+        callback.onItemClicked(position);
+
+        holder.btnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int count = Integer.parseInt(cartItems.get(position).getItemCount());
+                count++;
+                holder.itemCountTextView.setText(String.valueOf(count));
+
+                // update total price
+                cartItems.get(position).setItemCount(String.valueOf(count));
+                callback.onItemClicked(position);
+            }
+        });
+
+        holder.btnMinus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int count = Integer.parseInt(cartItems.get(position).getItemCount());
+                if(count > 1)
+                {
+                    count--;
+                    holder.itemCountTextView.setText(String.valueOf(count));
+
+                    // update total price
+                    cartItems.get(position).setItemCount(String.valueOf(count));
+                    callback.onItemClicked(position);
+                }
+            }
+        });
+
+        holder.btnRemove.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void onClick(View v) {
+                // remove item from cart
+                cartItems.remove(position);
+                // remove item from recycler view
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(position, cartItems.size(), cartItems);
+                // update total price
+                callback.onItemClicked(position);
+            }
+        });
     }
 
 
@@ -73,27 +124,6 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
             btnRemove = itemView.findViewById(R.id.btnRemove);
 
             itemCountTextView.setText("1");
-
-            btnAdd.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int count = Integer.parseInt(itemCountTextView.getText().toString());
-                    count++;
-                    itemCountTextView.setText(String.valueOf(count));
-                }
-            });
-
-            btnMinus.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int count = Integer.parseInt(itemCountTextView.getText().toString());
-                    if(count > 1)
-                    {
-                        count--;
-                        itemCountTextView.setText(String.valueOf(count));
-                    }
-                }
-            });
         }
     }
 }
