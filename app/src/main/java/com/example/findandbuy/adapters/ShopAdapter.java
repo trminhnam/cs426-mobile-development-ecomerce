@@ -2,34 +2,28 @@ package com.example.findandbuy.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.findandbuy.R;
-import com.example.findandbuy.models.Shop;
+import com.example.findandbuy.models.Seller;
 import com.example.findandbuy.user.ShopDetailsActivity;
 import com.squareup.picasso.Picasso;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
 public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ShopHolder>{
 
     private Context context;
-    public ArrayList<Shop> shopsList;
+    public ArrayList<Seller> shopsList;
 
-    public ShopAdapter(Context context, ArrayList<Shop> shopsList) {
+    public ShopAdapter(Context context, ArrayList<Seller> shopsList) {
         this.context = context;
         this.shopsList = shopsList;
     }
@@ -45,23 +39,23 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ShopHolder>{
     @Override
     public void onBindViewHolder(@NonNull ShopHolder holder, int position) {
         //get data from shop model
-        Shop shop = shopsList.get(position);
+        Seller shop = shopsList.get(position);
         //uid, fullName, shopNames, phoneNum, street, district, city, address, email, password, confirmPassword, profileImage;
         String uid = shop.getUid();
-        String fullName = shop.getFullName();
-        String shopNames = shop.getShopNames();
-        String phoneNum = shop.getPhoneNum();
-        String district = shop.getDistrict();
-        String city = shop.getCity();
+        String shopNames = shop.getShopName();
+//        String phoneNum = shop.();
         String address = shop.getAddress();
         String email = shop.getEmail();
-        String profileImage = shop.getProfileImage();
 
         //set necessary data for holder
         holder.shopNameTv.setText(shopNames);
         holder.addressTv.setText(address);
-        holder.phoneTv.setText(phoneNum);
+        holder.phoneTv.setVisibility(View.INVISIBLE);
+//        holder.phoneTv.setText(phoneNum);
 
+        // auto show shop icon
+        // replace shop image in the future
+        String profileImage = "";
         try {
             Picasso.get().load(profileImage).placeholder(R.drawable.ic_baseline_storefront_24).into(holder.shopIv);
         }

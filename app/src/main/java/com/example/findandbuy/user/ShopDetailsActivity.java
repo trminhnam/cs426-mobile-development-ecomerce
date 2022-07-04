@@ -68,7 +68,6 @@ public class ShopDetailsActivity extends AppCompatActivity {
 
         listItemRv.setLayoutManager(new LinearLayoutManager(this));
 
-
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
