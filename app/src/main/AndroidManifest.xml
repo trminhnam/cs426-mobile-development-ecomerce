@@ -31,12 +31,16 @@
 
              Once you have your API key (it starts with "AIza"), define a new property in your
              project's local.properties file (e.g. MAPS_API_KEY=Aiza...), and replace the
-             "YOUR_API_KEY" string in this filme with "${MAPS_API_KEY}".
+             "YOUR_API_KEY" string in this file with "${MAPS_API_KEY}".
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAf6Hx9owvLDQvMEb_z0ssAxkI65USCDmU" />
+            android:value="AIzaSyAE7VSRqbArc6Nj37yzLDYHpGXiPZwy9ac" />
 
+        <activity
+            android:name=".MapsActivity"
+            android:exported="false"
+            android:label="@string/title_activity_maps" />
         <activity
             android:name=".MainActivity"
             android:exported="true" />
@@ -52,15 +56,22 @@
             android:exported="false" />
         <activity
             android:name=".seller.SellerAddItem"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".user.RegisterUserActivity"
+            android:exported="false" />
+        <activity
+            android:name=".user.ShopDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".user.UserMainActivity"
             android:exported="false" />
         <activity
             android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
