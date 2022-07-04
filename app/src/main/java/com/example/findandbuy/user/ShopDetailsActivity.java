@@ -4,16 +4,22 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Filter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.findandbuy.R;
 import com.example.findandbuy.adapters.SellerItemAdapter;
 import com.example.findandbuy.models.Item;
+import com.example.findandbuy.Constants;
 
 import java.util.ArrayList;
 
@@ -22,9 +28,17 @@ public class ShopDetailsActivity extends AppCompatActivity {
     private ImageView shopIv;
     private TextView shopName, phoneNum, email, address;
     private ImageButton callButton, mapButton, backButton;
+    private Spinner categorySpinner;
 
     private String shopUid;
-    private ArrayList<Item> listItems = new ArrayList<Item>();
+
+    // TODO: Load from database
+    private final ArrayList<Item> listItems = Constants.listItems();
+    private final ArrayList<Item> fillteredListItems = Constants.listItems();
+
+    private final String[] listCategories = Constants.options;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,19 +52,17 @@ public class ShopDetailsActivity extends AppCompatActivity {
         callButton = findViewById(R.id.callBtn);
         mapButton = findViewById(R.id.mapBtn);
         backButton = findViewById(R.id.backBtn);
+        categorySpinner = findViewById(R.id.categorySpinner);
+
+        ArrayAdapter ad = new ArrayAdapter(this, android.R.layout.simple_spinner_item, listCategories);
+        ad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        categorySpinner.setAdapter(ad);
 
         shopUid = getIntent().getStringExtra("shopUid");
 
         RecyclerView listItemRv = (RecyclerView) findViewById(R.id.listProductsRv);
 
-        //Initial the fake  data
-        //String itemID, String itemName, String itemCategory, String itemPrice, String itemCount, String itemDescription, String timestamp, String itemImage, String uid
-        for (int i = 0; i < 10; ++i){
-            Item item = new Item("1", "Cute bear", "NFT", "20", "10", "ABC", "123", "123", "2");
-            listItems.add(item);
-        }
-
-        SellerItemAdapter sellerItemAdapter = new SellerItemAdapter(this, listItems);
+        SellerItemAdapter sellerItemAdapter = new SellerItemAdapter(this, fillteredListItems);
 
         listItemRv.setAdapter(sellerItemAdapter);
 
@@ -65,6 +77,25 @@ public class ShopDetailsActivity extends AppCompatActivity {
             }
         });
 
+        categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String selectedCategory = adapterView.getItemAtPosition(i).toString();
+                fillteredListItems.clear();
+                for (Item item : listItems) {
+                    if (item.getItemCategory().equals(selectedCategory)) {
+                        fillteredListItems.add(item);
+                    }
+                }
+                sellerItemAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
     }
 }
