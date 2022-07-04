@@ -46,12 +46,14 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
 
         String title = item.getItemName();
         String price = item.getItemPrice();
-        String category = item.getItemCategory();
+        String uID = item.getUid();
+        String itemCount = item.getItemCount();
 
         // set data to views
         holder.itemNameTextView.setText(title);
-        holder.priceTextView.setText(price);
-        holder.categoryTextView.setText(category);
+        holder.priceTextView.setText("$ " + price);
+        holder.uIDTextView.setText("Shop " + uID);
+        holder.itemCountTextView.setText(itemCount);
         callback.onItemClicked(position);
 
         holder.btnAdd.setOnClickListener(new View.OnClickListener() {
@@ -108,22 +110,20 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
     static class HolderCartItem extends RecyclerView.ViewHolder {
 
         // ui views for cart item row
-        private TextView itemNameTextView, categoryTextView, priceTextView, itemCountTextView;
+        private TextView itemNameTextView, uIDTextView, priceTextView, itemCountTextView;
         private ImageButton btnAdd, btnMinus, btnRemove;
 
         // constructor
         public HolderCartItem(View itemView) {
             super(itemView);
             itemNameTextView = itemView.findViewById(R.id.itemNameTextView);
-            categoryTextView = itemView.findViewById(R.id.categoryTextView);
+            uIDTextView = itemView.findViewById(R.id.uIDTextView);
             priceTextView = itemView.findViewById(R.id.priceTextView);
             itemCountTextView = itemView.findViewById(R.id.itemCountTextView);
 
             btnAdd = itemView.findViewById(R.id.btnAdd);
             btnMinus = itemView.findViewById(R.id.btnMinus);
             btnRemove = itemView.findViewById(R.id.btnRemove);
-
-            itemCountTextView.setText("1");
         }
     }
 }

@@ -34,8 +34,14 @@ public class UserShopFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private ArrayList<Shop> shopsList;
+
     public UserShopFragment() {
-        // Required empty public constructor
+        shopsList = new ArrayList<Shop>();
+
+        for (int i = 0; i < 10; ++i){
+            Shop shop = new Shop("1", "a", "NFT1", "0708624730", "HocMon", "HCM", "VietNam", "122 Ba Diem, Hoc Mon, Ho Chi Minh City", "a", "1", "1", "a");
+            shopsList.add(shop);
+        }
     }
 
     /**
@@ -68,13 +74,8 @@ public class UserShopFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        shopsList = new ArrayList<Shop>();
 
-        for (int i = 0; i < 10; ++i){
-            Shop shop = new Shop("1", "a", "NFT1", "0708624730", "HocMon", "HCM", "VietNam", "122 Ba Diem, Hoc Mon, Ho Chi Minh City", "a", "1", "1", "a");
-            shopsList.add(shop);
-        }
+        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_user_shop, container, false);
         recyclerView = view.findViewById(R.id.shopRv);
         ShopAdapter shopAdapter = new ShopAdapter(getContext(), shopsList);

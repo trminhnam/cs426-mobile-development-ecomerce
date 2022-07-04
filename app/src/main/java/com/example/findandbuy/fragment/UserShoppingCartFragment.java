@@ -36,15 +36,53 @@ public class UserShoppingCartFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private ShoppingCartAdapter shoppingCartAdapter;
     private TextView totalPriceTextView;
     private Button checkoutButton;
     private RecyclerView recyclerView;
 
     private ArrayList<Item> itemsList = new ArrayList<>();
+    private double totalPrice = 0;
 
     public UserShoppingCartFragment() {
-        // Required empty public constructor
+
+        Item item1 = new Item("1", "Iphone X", "phone","980", "1","Iphone X, 256GB, Camera 10mp", "111", "111", "112");
+        Item item2 = new Item("2", "Iphone Xs", "phone","1000", "3", "Iphone Xs, 256GB, Camera 10mp", "111", "111", "113");
+        Item item3 = new Item("3", "Iphone 11", "phone","1020", "1", "Iphone Xs Max, 256GB, Camera 10mp", "111", "111", "112");
+        Item item4 = new Item("4", "Iphone 12", "phone","1030", "2", "Iphone Xs Max, 256GB, Camera 10mp", "111", "111", "111");
+        Item item5 = new Item("5", "Iphone 13", "phone","2020", "1", "Iphone Xs Max, 256GB, Camera 10mp", "111", "111", "114");
+        itemsList.add(item1);
+        itemsList.add(item2);
+        itemsList.add(item3);
+        itemsList.add(item4);
+        itemsList.add(item5);
+
+        reOrderItemList();
+    }
+
+    private void reOrderItemList()
+    {
+        // sort itemList by uID, itemName
+        for(int i = 0; i < itemsList.size(); ++i)
+        {
+            for(int j = i + 1; j < itemsList.size(); ++j)
+            {
+                if(itemsList.get(i).getUid().compareTo(itemsList.get(j).getUid()) > 0)
+                {
+                    Item temp = itemsList.get(i);
+                    itemsList.set(i, itemsList.get(j));
+                    itemsList.set(j, temp);
+                }
+                else if(itemsList.get(i).getUid().compareTo(itemsList.get(j).getUid()) == 0)
+                {
+                    if(itemsList.get(i).getItemName().compareTo(itemsList.get(j).getItemName()) > 0)
+                    {
+                        Item temp = itemsList.get(i);
+                        itemsList.set(i, itemsList.get(j));
+                        itemsList.set(j, temp);
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -67,16 +105,15 @@ public class UserShoppingCartFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-                super.onCreate(savedInstanceState);
-                if (getArguments() != null) {
-                    mParam1 = getArguments().getString(ARG_PARAM1);
-                    mParam2 = getArguments().getString(ARG_PARAM2);
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
     private final ShoppingCartAdapter.updateTotalPrice callback = (position) -> {
         // get total price
-        double totalPrice = 0;
         for(Item item : itemsList)
         {
             totalPrice += Double.parseDouble(item.getItemPrice()) * Double.parseDouble(item.getItemCount());
@@ -88,18 +125,10 @@ public class UserShoppingCartFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        // fake data for shopping cart
-        for(int i = 0; i < 5; ++i)
-        {
-            Item item = new Item("1", "Iphone", "phone", "122.0", "1", "HELLO", "123", "1232", "123");
-            itemsList.add(item);
-        }
-
         View view = inflater.inflate(R.layout.fragment_user_shopping_cart, container, false);
         recyclerView = view.findViewById(R.id.shoppingCartRv);
         totalPriceTextView = view.findViewById(R.id.totalTv);
         checkoutButton = view.findViewById(R.id.checkoutBtn);
-
 
         ShoppingCartAdapter adapter = new ShoppingCartAdapter(getContext(), itemsList, callback);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());

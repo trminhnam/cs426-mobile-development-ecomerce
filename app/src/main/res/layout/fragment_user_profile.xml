@@ -6,9 +6,80 @@
     tools:context=".fragment.UserProfileFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Profile" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="40dp"
+        android:layout_centerVertical="false"
+        android:layout_below="@+id/navBar"
+        android:focusableInTouchMode="true">
+
+        <TextView
+            style="@style/TextAppearance.MaterialComponents.Headline6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="16dp"
+            android:text="@string/user_profile_head"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/fullNameProfileTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/shape_rect02"
+            android:drawableStart="@drawable/ic_person_white"
+            android:drawablePadding="5dp"
+            android:drawableTint="@color/htmlGrey"
+            android:hint="Full Name"
+            android:inputType="text"
+            android:minHeight="48dp"
+            android:padding="10dp" />
+
+        <TextView
+            android:id="@+id/phoneProfileTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/shape_rect02"
+            android:drawableStart="@drawable/ic_baseline_smartphone_24"
+            android:drawablePadding="5dp"
+            android:drawableTint="@color/htmlGrey"
+            android:hint="Phone"
+            android:inputType="numberSigned"
+            android:minHeight="48dp"
+            android:padding="10dp" />
+
+        <TextView
+            android:id="@+id/addressProfileTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/shape_rect02"
+            android:drawableStart="@drawable/ic_baseline_location_on_24"
+            android:drawablePadding="5dp"
+            android:drawableTint="@color/htmlGrey"
+            android:hint="Address"
+            android:inputType="numberSigned"
+            android:minHeight="48dp"
+            android:padding="10dp" />
+
+        <TextView
+            android:id="@+id/emailProfileTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/shape_rect02"
+            android:drawableStart="@drawable/ic_outline_email_24"
+            android:drawablePadding="5dp"
+            android:drawableTint="@color/htmlGrey"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            android:minHeight="48dp"
+            android:padding="10dp" />
+
+    </LinearLayout>
 
 </FrameLayout>

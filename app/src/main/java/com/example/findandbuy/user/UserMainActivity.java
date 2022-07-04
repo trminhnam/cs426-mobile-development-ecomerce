@@ -4,13 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 
-import com.example.findandbuy.MapsActivity;
 import com.example.findandbuy.R;
 import com.example.findandbuy.fragment.CustomMapFragment;
 import com.example.findandbuy.fragment.UserGameFragment;
@@ -18,90 +17,94 @@ import com.example.findandbuy.fragment.UserProfileFragment;
 import com.example.findandbuy.fragment.UserShopFragment;
 import com.example.findandbuy.fragment.UserShoppingCartFragment;
 import com.example.findandbuy.navigation.BottomNavigationBehavior;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
 public class UserMainActivity extends AppCompatActivity {
 
+    // save all the fragments in this array
+    private static Fragment[] fragments;
+    private static BottomNavigationView navigation;
+    private CoordinatorLayout.LayoutParams layoutParams;
+
+    // initialize the fragments
+    private void initFragments() {
+        fragments = new Fragment[5];
+        fragments[0] = null;
+        fragments[1] = null;
+        fragments[2] = null;
+        fragments[3] = null;
+        fragments[4] = null;
+    }
+
+    // get the current fragment
+    private Fragment getCurrentFragment(int index) {
+        if (fragments[index] == null) {
+            switch (index) {
+                case 0:
+                    fragments[index] = new UserProfileFragment();
+                    break;
+                case 1:
+                    fragments[index] = new UserShopFragment();
+                    break;
+                case 2:
+                    fragments[index] = new UserGameFragment();
+                    break;
+                case 3:
+                    fragments[index] = new UserShoppingCartFragment();
+                    break;
+                case 4:
+                    fragments[index] = new CustomMapFragment();
+                    break;
+            }
+        }
+        return fragments[index];
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_main);
+        initFragments();
 
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .setReorderingAllowed(true)
-                    .add(R.id.frame_container, UserShopFragment.class, null)
-                    .commit();
-        }
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) navigation.getLayoutParams();
+        // set the bottom navigation bar
+        navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        layoutParams = (CoordinatorLayout.LayoutParams) navigation.getLayoutParams();
         layoutParams.setBehavior(new BottomNavigationBehavior());
+
+        // set the default fragment
+        switchFragment(1);
+
+        // set the listener for the bottom navigation bar
         navigation.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Fragment fragment;
-                //Delete all fragment in container before switch tab
-                for (Fragment fragmentInContainer : getSupportFragmentManager().getFragments()) {
-                    if (fragmentInContainer != null) {
-                        getSupportFragmentManager().beginTransaction().remove(fragmentInContainer).commit();
-                    }
-                }
                 switch (item.getItemId()) {
+                    case R.id.navigation_profile:
+                        switchFragment(0);
+                        return true;
                     case R.id.navigation_shop:
-                        Log.d("shop", "onNavigationItemSelected: Im shop");
-                        if (savedInstanceState == null) {
-                            getSupportFragmentManager().beginTransaction()
-                                    .setReorderingAllowed(true)
-                                    .add(R.id.frame_container, UserShopFragment.class, null)
-                                    .commit();
-                        }
+                        switchFragment(1);
                         return true;
                     case R.id.navigation_game:
-                        Log.d("game", "onNavigationItemSelected: Im game");
-                        if (savedInstanceState == null) {
-                            getSupportFragmentManager().beginTransaction()
-                                    .setReorderingAllowed(true)
-                                    .add(R.id.frame_container, UserGameFragment.class, null)
-                                    .commit();
-                        }
+                        switchFragment(2);
+                        return true;
+                    case R.id.navigation_cart:
+                        switchFragment(3);
                         return true;
                     case R.id.navigation_map:
-//                        Log.d("game", "onNavigationItemSelected: Im map");
-//                        if (savedInstanceState == null) {
-//                            getSupportFragmentManager()
-//                                    .beginTransaction()
-//                                    .replace(R.id.frame_container, CustomMapFragment.class, null)
-//                                    .commit();
-//                        }
-                        startActivity(new Intent(UserMainActivity.this, MapsActivity.class));
-                        return true;
-
-                    case R.id.navigation_cart:
-                        Log.d("card", "onNavigationItemSelected: Im card");
-                        if (savedInstanceState == null) {
-                            getSupportFragmentManager().beginTransaction()
-                                    .setReorderingAllowed(true)
-                                    .add(R.id.frame_container, UserShoppingCartFragment.class, null)
-                                    .commit();
-                        }
-                        return true;
-                    case R.id.navigation_profile:
-                        Log.d("profile", "onNavigationItemSelected: Im profile");
-                        if (savedInstanceState == null) {
-                            getSupportFragmentManager().beginTransaction()
-                                    .setReorderingAllowed(true)
-                                    .add(R.id.frame_container, UserProfileFragment.class, null)
-                                    .commit();
-                        }
+                        switchFragment(4);
                         return true;
                 }
-                return true;
+                return false;
             }
         });
+
     }
 
-
-
+    private void switchFragment(int index) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.frame_container, getCurrentFragment(index));
+        transaction.commit();
+    }
 }
