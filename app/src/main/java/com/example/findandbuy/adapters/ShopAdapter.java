@@ -8,17 +8,21 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.findandbuy.R;
 import com.example.findandbuy.models.Seller;
+import com.example.findandbuy.fragment.UserShopDetailsFragment;
 import com.example.findandbuy.user.ShopDetailsActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ShopHolder>{
+public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ShopHolder> {
 
     private Context context;
     public ArrayList<Seller> shopsList;
@@ -66,9 +70,13 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ShopHolder>{
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, ShopDetailsActivity.class);
-                intent.putExtra("shopUid",uid);
-                context.startActivity(intent);
+//                Intent intent = new Intent(context, ShopDetailsActivity.class);
+//                intent.putExtra("shopUid",uid);
+//                context.startActivity(intent);
+                Fragment fragment = new UserShopDetailsFragment();
+                ((AppCompatActivity)context).getSupportFragmentManager()
+                        .beginTransaction().replace(R.id.frame_container, fragment).addToBackStack(null)
+                        .commit();
             }
         });
 
