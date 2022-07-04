@@ -150,7 +150,7 @@ public class CustomMapFragment extends Fragment {
         // Reference: https://stackoverflow.com/questions/22553792/how-set-zoom-level-on-google-map-dynamically-in-android
         LatLngBounds bounds = b.build();
         //Change the padding as per needed
-        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 25,25,5);
+        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 700,700,2);
         googleMap.animateCamera(cu);
     }
 
