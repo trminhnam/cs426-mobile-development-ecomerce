@@ -1,9 +1,11 @@
 package com.example.findandbuy.user;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -19,8 +21,66 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
 public class UserMainActivity extends AppCompatActivity {
+    private ActionBar toolbar;
 
     @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        toolbar = getSupportActionBar();
+
+        // load the store fragment by default
+        assert toolbar != null;
+        toolbar.setTitle("Shop");
+        loadFragment(new UserShopFragment());
+    }
+
+    private NavigationBarView.OnItemSelectedListener mOnNavigationItemSelectedListener
+            = new NavigationBarView.OnItemSelectedListener() {
+
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            Fragment fragment;
+            switch (item.getItemId()) {
+                case R.id.navigation_shop:
+                    toolbar.setTitle("Shop");
+                    fragment = new UserShopFragment();
+                    loadFragment(fragment);
+                    return true;
+                case R.id.navigation_game:
+                    toolbar.setTitle("My Gifts");
+                    fragment = new UserGameFragment();
+                    loadFragment(fragment);
+                    return true;
+                case R.id.navigation_cart:
+                    toolbar.setTitle("Cart");
+                    fragment = new UserShoppingCartFragment();
+                    loadFragment(fragment);
+                    return true;
+                case R.id.navigation_profile:
+                    toolbar.setTitle("Profile");
+                    fragment = new UserProfileFragment();
+                    loadFragment(fragment);
+                    return true;
+            }
+
+            return false;
+        }
+    };
+
+    private void loadFragment(Fragment fragment) {
+        // load fragment
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.frame_container, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
+
+
+
+    /*
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_main);
@@ -31,9 +91,11 @@ public class UserMainActivity extends AppCompatActivity {
                     .add(R.id.frame_container, UserShopFragment.class, null)
                     .commit();
         }
+
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) navigation.getLayoutParams();
         layoutParams.setBehavior(new BottomNavigationBehavior());
+
         navigation.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -86,7 +148,5 @@ public class UserMainActivity extends AppCompatActivity {
             }
         });
     }
-
-
-
+     */
 }
