@@ -3,7 +3,6 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-      
         <entry key="..\:/AndroidStudio/cs426-mobile-development-ecomerce/app/src/main/res/drawable/ic_add_item.xml" value="0.171" />
         <entry key="..\:/AndroidStudio/cs426-mobile-development-ecomerce/app/src/main/res/layout/activity_login2.xml" value="0.259375" />
         <entry key="..\:/AndroidStudio/cs426-mobile-development-ecomerce/app/src/main/res/layout/activity_main.xml" value="0.259375" />
@@ -11,6 +10,7 @@
         <entry key="..\:/AndroidStudio/cs426-mobile-development-ecomerce/app/src/main/res/layout/activity_register_user.xml" value="0.259375" />
         <entry key="..\:/AndroidStudio/cs426-mobile-development-ecomerce/app/src/main/res/layout/activity_shop_details.xml" value="0.259375" />
         <entry key="..\:/AndroidStudio/cs426-mobile-development-ecomerce/app/src/main/res/layout/activity_user_main.xml" value="0.259375" />
+        <entry key="..\:/AndroidStudio/cs426-mobile-development-ecomerce/app/src/main/res/layout/dialog_user_detail_item.xml" value="0.20425724637681159" />
         <entry key="..\:/AndroidStudio/cs426-mobile-development-ecomerce/app/src/main/res/layout/fragment_location_picker.xml" value="0.259375" />
         <entry key="..\:/AndroidStudio/cs426-mobile-development-ecomerce/app/src/main/res/layout/fragment_user_game.xml" value="0.259375" />
         <entry key="..\:/AndroidStudio/cs426-mobile-development-ecomerce/app/src/main/res/layout/fragment_user_profile.xml" value="0.259375" />
@@ -20,7 +20,6 @@
         <entry key="..\:/AndroidStudio/cs426-mobile-development-ecomerce/app/src/main/res/layout/row_item_cart.xml" value="0.264" />
         <entry key="..\:/AndroidStudio/cs426-mobile-development-ecomerce/app/src/main/res/layout/row_shop.xml" value="0.259375" />
         <entry key="..\:/AndroidStudio/cs426-mobile-development-ecomerce/app/src/main/res/layout/toolbar.xml" value="0.259375" />
-
         <entry key="..\:/Users/trmin/Desktop/cs426-mobile-development-ecomerce/app/src/main/res/drawable/bg_gradient.xml" value="0.1" />
         <entry key="..\:/Users/trmin/Desktop/cs426-mobile-development-ecomerce/app/src/main/res/drawable/ic_add.xml" value="0.1625" />
         <entry key="..\:/Users/trmin/Desktop/cs426-mobile-development-ecomerce/app/src/main/res/drawable/ic_add_photo_gray.xml" value="0.216" />
