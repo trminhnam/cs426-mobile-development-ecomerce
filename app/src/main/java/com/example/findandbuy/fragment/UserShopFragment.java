@@ -112,6 +112,7 @@ public class UserShopFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_user_shop, container, false);
         recyclerView = view.findViewById(R.id.shopRv);
 
+
         return view;
     }
 
@@ -139,7 +140,6 @@ public class UserShopFragment extends Fragment {
                         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
                         recyclerView.setLayoutManager(linearLayoutManager);
                         recyclerView.setAdapter(shopAdapter);
-
                     }
 
                     @Override
