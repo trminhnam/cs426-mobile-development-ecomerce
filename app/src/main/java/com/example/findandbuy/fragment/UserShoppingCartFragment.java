@@ -45,11 +45,11 @@ public class UserShoppingCartFragment extends Fragment {
 
     public UserShoppingCartFragment() {
 
-        Item item1 = new Item("1", "Iphone X", "phone","980", "1","Iphone X, 256GB, Camera 10mp", "111", "111", "112");
-        Item item2 = new Item("2", "Iphone Xs", "phone","1000", "3", "Iphone Xs, 256GB, Camera 10mp", "111", "111", "113");
-        Item item3 = new Item("3", "Iphone 11", "phone","1020", "1", "Iphone Xs Max, 256GB, Camera 10mp", "111", "111", "112");
-        Item item4 = new Item("4", "Iphone 12", "phone","1030", "2", "Iphone Xs Max, 256GB, Camera 10mp", "111", "111", "111");
-        Item item5 = new Item("5", "Iphone 13", "phone","2020", "1", "Iphone Xs Max, 256GB, Camera 10mp", "111", "111", "114");
+        Item item1 = new Item("1", "Iphone X", "Electronic devices","980", "1","Iphone X, 256GB, Camera 10mp", "111", "111", "112");
+        Item item2 = new Item("2", "Iphone Xs", "Electronic devices","1000", "3", "Iphone Xs, 256GB, Camera 10mp", "111", "111", "113");
+        Item item3 = new Item("3", "Iphone 11", "NTF","1020", "1", "Iphone Xs Max, 256GB, Camera 10mp", "111", "111", "112");
+        Item item4 = new Item("4", "Iphone 12", "Songs","1030", "2", "Iphone Xs Max, 256GB, Camera 10mp", "111", "111", "111");
+        Item item5 = new Item("5", "Iphone 13", "Songs","2020", "1", "Iphone Xs Max, 256GB, Camera 10mp", "111", "111", "114");
         itemsList.add(item1);
         itemsList.add(item2);
         itemsList.add(item3);
