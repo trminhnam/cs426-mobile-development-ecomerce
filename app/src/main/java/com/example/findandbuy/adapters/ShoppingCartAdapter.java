@@ -47,11 +47,13 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
         String title = item.getItemName();
         String price = item.getItemPrice();
         String category = item.getItemCategory();
+        String itemCount = item.getItemCount();
 
         // set data to views
         holder.itemNameTextView.setText(title);
         holder.priceTextView.setText(price);
         holder.categoryTextView.setText(category);
+        holder.itemCountTextView.setText(itemCount);
         callback.onItemClicked(position);
 
         holder.btnAdd.setOnClickListener(new View.OnClickListener() {
@@ -122,8 +124,6 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
             btnAdd = itemView.findViewById(R.id.btnAdd);
             btnMinus = itemView.findViewById(R.id.btnMinus);
             btnRemove = itemView.findViewById(R.id.btnRemove);
-
-            itemCountTextView.setText("1");
         }
     }
 }
