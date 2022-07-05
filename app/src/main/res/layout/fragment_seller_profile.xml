@@ -43,20 +43,20 @@
 
     <TextView
         android:id="@+id/sellerShopnameProfileTextView"
+        style="@style/TextAppearance.AppCompat.Medium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:background="@drawable/shape_rect02"
-        android:drawableStart="@drawable/ic_person_white"
-        style="@style/TextAppearance.AppCompat.Medium"
-        android:textColor="@color/black"
-        android:gravity="center_vertical"
+        android:drawableStart="@drawable/ic_store_gray"
         android:drawablePadding="5dp"
         android:drawableTint="@color/htmlGrey"
+        android:gravity="center_vertical"
         android:hint="Shop Name"
         android:inputType="text"
         android:minHeight="48dp"
-        android:padding="10dp" />
+        android:padding="10dp"
+        android:textColor="@color/black" />
 
     <TextView
         android:id="@+id/sellerEmailProfileTẽtView"
@@ -92,26 +92,26 @@
         android:minHeight="48dp"
         android:padding="10dp"
         android:gravity="center_vertical"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
         />
 
     <TextView
         android:id="@+id/sellerPhoneNumberProfileTextView"
+        style="@style/TextAppearance.AppCompat.Medium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        style="@style/TextAppearance.AppCompat.Medium"
-        android:textColor="@color/black"
         android:background="@drawable/shape_rect02"
-        android:drawableStart="@drawable/ic_numberfield_gray"
+        android:drawableStart="@drawable/ic_contact_phone_gray"
         android:drawablePadding="5dp"
         android:drawableTint="@color/htmlGrey"
+        android:gravity="center_vertical"
         android:hint="Phone Number"
         android:inputType="numberSigned"
         android:minHeight="48dp"
         android:padding="10dp"
-        android:gravity="center_vertical"/>
-
-
+        android:textColor="@color/black" />
 
 
 </LinearLayout>
