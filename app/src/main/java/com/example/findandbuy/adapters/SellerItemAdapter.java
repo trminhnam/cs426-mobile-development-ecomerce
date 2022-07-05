@@ -187,6 +187,7 @@ public class SellerItemAdapter
                 @Override
                 public void onClick(View v) {
                     addItemToUserCart(item, itemCountTv.getText().toString());
+                    dialog.dismiss();
                 }
             });
         }
@@ -199,6 +200,7 @@ public class SellerItemAdapter
                 @Override
                 public void onClick(View v) {
                     applySellerItemChanges(item, itemCountTv.getText().toString());
+                    dialog.dismiss();
                 }
             });
         }
