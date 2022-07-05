@@ -122,7 +122,6 @@ public class UserShopDetailsFragment extends Fragment {
         email = view.findViewById(R.id.emailDetailTv);
         address = view.findViewById(R.id.addressDetailTv);
         callButton = view.findViewById(R.id.callBtn);
-        mapButton = view.findViewById(R.id.mapBtn);
         backButton = view.findViewById(R.id.backBtn);
         categorySpinner = view.findViewById(R.id.categorySpinner);
         listItemRv = view.findViewById(R.id.listProductsRv);
