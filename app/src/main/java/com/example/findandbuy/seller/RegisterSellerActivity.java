@@ -1,7 +1,6 @@
 package com.example.findandbuy.seller;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -120,13 +119,13 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
         });
     }
 
-    private String fullName, shopNames, phoneNum, address, email, password, confirmPassword;
+    private String fullName, shopNames, phoneNumber, address, email, password, confirmPassword;
 
     private void inputData() {
         //input
         fullName = nameEt.getText().toString().trim();
         shopNames = shopName.getText().toString().trim();
-        phoneNum = phoneEt.getText().toString().trim();
+        phoneNumber = phoneEt.getText().toString().trim();
         address = completeAddress.getText().toString().trim();
         email = emailEt.getText().toString().trim();
         password = passwordEt.getText().toString().trim();
@@ -143,7 +142,7 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
             return;
         }
 
-        if (phoneNum.isEmpty()) {
+        if (phoneNumber.isEmpty()) {
             Toast.makeText(this, "Phone number is required ...", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -222,6 +221,7 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
         hashMap.put("accountType", "Seller");
         hashMap.put("available", "true");
         hashMap.put("online", "true");
+        hashMap.put("phoneNumber", phoneNumber);
 
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");

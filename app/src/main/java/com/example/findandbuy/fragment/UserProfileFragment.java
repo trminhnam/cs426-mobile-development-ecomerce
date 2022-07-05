@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.findandbuy.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -113,12 +114,13 @@ public class UserProfileFragment extends Fragment {
                             fullNameTextView.setText(fullName);
                             emailTextView.setText(email);
                             bonusTextView.setText(bonus + " coin");
+                            Toast.makeText(getContext(), "Load user profile successfully", Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-
+                        Toast.makeText(getContext(), "Failed to load user profile", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
