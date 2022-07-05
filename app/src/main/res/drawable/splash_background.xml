@@ -4,6 +4,6 @@
         android:drawable="@drawable/bg_gradient"/>
     <item>
         <bitmap android:gravity="center"
-            android:src="@drawable/findandbuylogo"/>
+            android:src="@drawable/splashscreenlogo"/>
     </item>
 </layer-list>
