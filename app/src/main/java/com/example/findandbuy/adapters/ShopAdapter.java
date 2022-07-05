@@ -2,6 +2,7 @@ package com.example.findandbuy.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,8 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ShopHolder> {
         this.context = context;
         this.shopsList = shopsList;
     }
+
+
 
     @NonNull
     @Override
@@ -73,13 +76,15 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ShopHolder> {
 //                Intent intent = new Intent(context, ShopDetailsActivity.class);
 //                intent.putExtra("shopUid",uid);
 //                context.startActivity(intent);
+                Bundle bundle = new Bundle();
                 Fragment fragment = new UserShopDetailsFragment();
+                bundle.putString("shopUid", uid);
+                fragment.setArguments(bundle);
                 ((AppCompatActivity)context).getSupportFragmentManager()
                         .beginTransaction().replace(R.id.frame_container, fragment).addToBackStack(null)
                         .commit();
             }
         });
-
     }
 
     @Override
