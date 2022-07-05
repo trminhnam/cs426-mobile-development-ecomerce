@@ -1,5 +1,6 @@
 package com.example.findandbuy.fragment;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -7,6 +8,7 @@ import android.graphics.Canvas;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
@@ -20,10 +22,17 @@ import android.widget.RelativeLayout;
 import com.example.findandbuy.R;
 import com.example.findandbuy.Sound;
 import com.example.findandbuy.Sprite2D;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.Objects;
 
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -49,7 +58,10 @@ public class UserGameFragment extends Fragment {
     private String mParam2;
 
     private TextView showCoinTV;
-    private Integer userCoin = 100;
+    private Integer userCoin;
+
+    private FirebaseAuth firebaseAuth;
+    private ProgressDialog progressDialog;
 
     public UserGameFragment() {
         // Required empty public constructor
@@ -80,6 +92,11 @@ public class UserGameFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        progressDialog = new ProgressDialog(getContext());
+        progressDialog.setTitle("Please wait.");
+        progressDialog.setCanceledOnTouchOutside(false);
     }
 
     @Override
@@ -92,6 +109,8 @@ public class UserGameFragment extends Fragment {
         showCoinTV = (TextView) view.findViewById(R.id.showCoinTV);
         showCoinTV.setText("Total coins: " + userCoin.toString());
         relativeLayout.addView(new AnimationView(getActivity()));
+
+        loadUserBonusFromFirebase();
 
         return view;
     }
@@ -136,6 +155,8 @@ public class UserGameFragment extends Fragment {
 
             soundCoinDrop.getSource().start();
             invalidate();
+
+            updateBonusToFirebase(String.valueOf(userCoin));
         }
 
         public AnimationView(Context context) {
@@ -229,6 +250,55 @@ public class UserGameFragment extends Fragment {
             public void onAccuracyChanged(Sensor sensor, int accuracy) {
             }
         };
+
+    }
+
+    private void loadUserBonusFromFirebase() {
+        progressDialog.setMessage("Loading bonus");
+        progressDialog.show();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference.child("User")
+                .child(Objects.requireNonNull(firebaseAuth.getUid()))
+                .child("bonus")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        if (!task.isSuccessful()) {
+                            progressDialog.dismiss();
+                            Toast.makeText(getContext(), "Error getting bonus", Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            userCoin = Integer.valueOf(String.valueOf(task.getResult().getValue()));
+                            progressDialog.dismiss();
+                            Toast.makeText(getContext(), "Bonus loaded", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    private void updateBonusToFirebase(String coins) {
+        progressDialog.setMessage("Updating bonus");
+        progressDialog.show();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference.child("User")
+                .child(Objects.requireNonNull(firebaseAuth.getUid()))
+                .child("bonus")
+                .setValue(coins)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        progressDialog.dismiss();
+                        Toast.makeText(getContext(), "Bonus updated", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        progressDialog.dismiss();
+                        Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
 
     }
 }
