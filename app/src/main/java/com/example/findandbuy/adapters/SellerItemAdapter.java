@@ -58,7 +58,7 @@ public class SellerItemAdapter
         this.userType = userType;
 
         firebaseAuth = FirebaseAuth.getInstance();
-        progressDialog = new ProgressDialog(context.getApplicationContext());
+        progressDialog = new ProgressDialog(context);
         progressDialog.setTitle("Please wait.");
         progressDialog.setCanceledOnTouchOutside(false);
     }
@@ -187,6 +187,7 @@ public class SellerItemAdapter
                 @Override
                 public void onClick(View v) {
                     addItemToUserCart(item, itemCountTv.getText().toString());
+                    dialog.dismiss();
                 }
             });
         }
@@ -199,6 +200,7 @@ public class SellerItemAdapter
                 @Override
                 public void onClick(View v) {
                     applySellerItemChanges(item, itemCountTv.getText().toString());
+                    dialog.dismiss();
                 }
             });
         }
@@ -207,6 +209,7 @@ public class SellerItemAdapter
     private void addItemToUserCart(Item item, String newItemCount) {
 
         progressDialog.setMessage("Adding item to cart");
+        progressDialog.show();
 
         item.setItemCount(newItemCount);
 
@@ -214,7 +217,10 @@ public class SellerItemAdapter
         newItemToCart.put(item.getItemID(), item);
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
-        databaseReference.child(Objects.requireNonNull(firebaseAuth.getUid())).child("Cart").setValue(newItemToCart)
+        databaseReference
+                .child(Objects.requireNonNull(firebaseAuth.getUid()))
+                .child("Cart")
+                .updateChildren(newItemToCart)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {

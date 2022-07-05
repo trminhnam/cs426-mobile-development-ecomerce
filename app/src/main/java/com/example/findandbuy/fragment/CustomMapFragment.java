@@ -56,6 +56,8 @@ import java.util.TimerTask;
 
 public class CustomMapFragment extends Fragment {
 
+    private static CustomMapFragment INSTANCE = null;
+
     MapView mMapView;
     private GoogleMap googleMap;
 
@@ -95,6 +97,16 @@ public class CustomMapFragment extends Fragment {
         latLngArrayList = new ArrayList<>();
 
         new DetectLocation();
+    }
+
+    public CustomMapFragment() {
+        // Required empty public constructor
+    }
+    public static synchronized CustomMapFragment getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new CustomMapFragment();
+        }
+        return(INSTANCE);
     }
 
     @Override
@@ -295,7 +307,12 @@ public class CustomMapFragment extends Fragment {
             Log.d("REGISTER_LOCATION", "Longtitude = " + String.valueOf(cur_lng));
 
             if (!firstTime)
+            try {
                 drawCurrentPosition();
+            }
+            catch (Exception e){
+                Log.d("REGISTER_LOCATION", "Error: " + e.getMessage());
+            }
         }
 
         private void detectLocation() {

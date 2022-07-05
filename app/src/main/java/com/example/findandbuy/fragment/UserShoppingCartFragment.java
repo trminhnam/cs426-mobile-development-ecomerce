@@ -38,6 +38,8 @@ import java.util.Objects;
  */
 public class UserShoppingCartFragment extends Fragment {
 
+    private static UserShoppingCartFragment INSTANCE = null;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -60,7 +62,12 @@ public class UserShoppingCartFragment extends Fragment {
 
     public UserShoppingCartFragment() {
     }
-
+    public static UserShoppingCartFragment getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new UserShoppingCartFragment();
+        }
+        return INSTANCE;
+    }
 
     /**
      * Use this factory method to create a new instance of
@@ -111,7 +118,7 @@ public class UserShoppingCartFragment extends Fragment {
     private void loadSellerItems() {
         progressDialog.setMessage("Loading cart");
         progressDialog.show();
-        
+
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
         databaseReference.child(Objects.requireNonNull(firebaseAuth.getUid())).child("Cart")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -169,6 +176,7 @@ public class UserShoppingCartFragment extends Fragment {
 
     private final ShoppingCartAdapter.updateTotalPrice callback = (position) -> {
         // get total price
+        totalPrice = 0.0;
         for(Item item : itemsList)
         {
             totalPrice += Double.parseDouble(item.getItemPrice()) * Double.parseDouble(item.getItemCount());

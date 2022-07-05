@@ -1,6 +1,7 @@
 package com.example.findandbuy.adapters;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,24 +9,40 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.findandbuy.R;
 import com.example.findandbuy.models.Item;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Objects;
 
 public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapter.HolderCartItem> {
     private Context context;
     private ArrayList<Item> cartItems;
     private ShoppingCartAdapter.updateTotalPrice callback;
 
+    private FirebaseAuth firebaseAuth;
+    private ProgressDialog progressDialog;
+
     public ShoppingCartAdapter(Context context, ArrayList<Item> cartItems, ShoppingCartAdapter.updateTotalPrice callback) {
         this.context = context;
         this.cartItems = cartItems;
         this.callback = callback;
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        progressDialog = new ProgressDialog(context);
+        progressDialog.setTitle("Please wait");
+        progressDialog.setCanceledOnTouchOutside(false);
     }
 
     public interface updateTotalPrice{
@@ -61,10 +78,15 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
             public void onClick(View v) {
                 int count = Integer.parseInt(cartItems.get(position).getItemCount());
                 count++;
+
+                // update text view and item in list
                 holder.itemCountTextView.setText(String.valueOf(count));
+                cartItems.get(position).setItemCount(String.valueOf(count));
+
+                // update data on firebase
+                updateItemInCartToFirebase(cartItems.get(position));
 
                 // update total price
-                cartItems.get(position).setItemCount(String.valueOf(count));
                 callback.onItemClicked(position);
             }
         });
@@ -75,12 +97,21 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
                 int count = Integer.parseInt(cartItems.get(position).getItemCount());
                 if(count > 1)
                 {
+                    holder.btnMinus.setEnabled(true);
                     count--;
+
+                    // update text view and item in list
                     holder.itemCountTextView.setText(String.valueOf(count));
+                    cartItems.get(position).setItemCount(String.valueOf(count));
+
+                    // update data on firebase
+                    updateItemInCartToFirebase(cartItems.get(position));
 
                     // update total price
-                    cartItems.get(position).setItemCount(String.valueOf(count));
                     callback.onItemClicked(position);
+                }
+                else {
+                    holder.btnMinus.setEnabled(false);
                 }
             }
         });
@@ -90,16 +121,74 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
             @Override
             public void onClick(View v) {
                 // remove item from cart
+                removeItemInCartInFirebase(cartItems.get(position));
                 cartItems.remove(position);
                 // remove item from recycler view
                 notifyItemRemoved(position);
                 notifyItemRangeChanged(position, cartItems.size(), cartItems);
                 // update total price
                 callback.onItemClicked(position);
+
             }
         });
     }
 
+    private void removeItemInCartInFirebase(Item item) {
+        progressDialog.setMessage("Removing item from cart");
+        progressDialog.show();
+
+        HashMap<String, Object> newData = new HashMap<>();
+        newData.put(item.getItemID(), item);
+
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference.child("Users")
+                .child(Objects.requireNonNull(firebaseAuth.getUid()))
+                .child("Cart")
+                .child(item.getItemID())
+                .removeValue()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        progressDialog.dismiss();
+                        Toast.makeText(context, "Item removed", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        progressDialog.dismiss();
+                        Toast.makeText(context, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void updateItemInCartToFirebase(Item item) {
+        progressDialog.setMessage("Updating cart");
+        progressDialog.show();
+
+        HashMap<String, Object> newData = new HashMap<>();
+        newData.put(item.getItemID(), item);
+
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference.child("Users")
+                .child(Objects.requireNonNull(firebaseAuth.getUid()))
+                .child("Cart")
+                .updateChildren(newData)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        progressDialog.dismiss();
+                        Toast.makeText(context, "Cart updated", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        progressDialog.dismiss();
+                        Toast.makeText(context, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
 
     @Override
     public int getItemCount() {
