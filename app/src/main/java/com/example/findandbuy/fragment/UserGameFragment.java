@@ -121,6 +121,10 @@ public class UserGameFragment extends Fragment {
     }
 
     private void loadUserBonusFromFirebase() {
+        if (getContext() == null) {
+            userCoin = 0;
+            return;
+        }
         progressDialog.setMessage("Loading bonus");
         progressDialog.show();
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -150,6 +154,8 @@ public class UserGameFragment extends Fragment {
     }
 
     private void updateBonusToFirebase(String coins) {
+        if (getContext() == null)
+            return;
         progressDialog.setMessage("Updating bonus");
         progressDialog.show();
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
