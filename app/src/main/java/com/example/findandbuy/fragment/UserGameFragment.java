@@ -58,10 +58,11 @@ public class UserGameFragment extends Fragment {
     private String mParam2;
 
     private TextView showCoinTV;
-    private Integer userCoin;
+    private Integer userCoin=0;
 
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
+    private View view;
 
     public UserGameFragment() {
         // Required empty public constructor
@@ -99,20 +100,70 @@ public class UserGameFragment extends Fragment {
         progressDialog.setCanceledOnTouchOutside(false);
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_user_game, container, false);
-
-        RelativeLayout relativeLayout = (RelativeLayout) view.findViewById(R.id.game_animation);
-        showCoinTV = (TextView) view.findViewById(R.id.showCoinTV);
-        showCoinTV.setText("Total coins: " + userCoin.toString());
-        relativeLayout.addView(new AnimationView(getActivity()));
+        view =  inflater.inflate(R.layout.fragment_user_game, container, false);
 
         loadUserBonusFromFirebase();
 
         return view;
+    }
+
+    private void loadUserBonusFromFirebase() {
+        progressDialog.setMessage("Loading bonus");
+        progressDialog.show();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference.child("Users")
+                .child(Objects.requireNonNull(firebaseAuth.getUid()))
+                .child("bonus")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        if (!task.isSuccessful()) {
+                            progressDialog.dismiss();
+                            userCoin = 0;
+                            Toast.makeText(getContext(), "Error getting bonus. Set bonus to 0", Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            userCoin = Integer.valueOf(task.getResult().getValue().toString());
+                            progressDialog.dismiss();
+                            Toast.makeText(getContext(), "Bonus loaded", Toast.LENGTH_SHORT).show();
+                        }
+                        RelativeLayout relativeLayout = (RelativeLayout) view.findViewById(R.id.game_animation);
+                        showCoinTV = (TextView) view.findViewById(R.id.showCoinTV);
+                        showCoinTV.setText("Total coins: " + userCoin.toString());
+                        relativeLayout.addView(new AnimationView(getActivity()));
+                    }
+                });
+    }
+
+    private void updateBonusToFirebase(String coins) {
+        progressDialog.setMessage("Updating bonus");
+        progressDialog.show();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference.child("Users")
+                .child(Objects.requireNonNull(firebaseAuth.getUid()))
+                .child("bonus")
+                .setValue(coins)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        progressDialog.dismiss();
+                        Toast.makeText(getContext(), "Bonus updated", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        progressDialog.dismiss();
+                        Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+
     }
 
     private class AnimationView extends View {
@@ -250,56 +301,6 @@ public class UserGameFragment extends Fragment {
             public void onAccuracyChanged(Sensor sensor, int accuracy) {
             }
         };
-
-    }
-
-    private void loadUserBonusFromFirebase() {
-        progressDialog.setMessage("Loading bonus");
-        progressDialog.show();
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-        databaseReference.child("User")
-                .child(Objects.requireNonNull(firebaseAuth.getUid()))
-                .child("bonus")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DataSnapshot> task) {
-                        if (!task.isSuccessful()) {
-                            progressDialog.dismiss();
-                            userCoin = 0;
-                            Toast.makeText(getContext(), "Error getting bonus. Set bonus to 0", Toast.LENGTH_SHORT).show();
-                        }
-                        else {
-                            userCoin = Integer.valueOf(String.valueOf(task.getResult().getValue()));
-                            progressDialog.dismiss();
-                            Toast.makeText(getContext(), "Bonus loaded", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-    }
-
-    private void updateBonusToFirebase(String coins) {
-        progressDialog.setMessage("Updating bonus");
-        progressDialog.show();
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-        databaseReference.child("User")
-                .child(Objects.requireNonNull(firebaseAuth.getUid()))
-                .child("bonus")
-                .setValue(coins)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        progressDialog.dismiss();
-                        Toast.makeText(getContext(), "Bonus updated", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        progressDialog.dismiss();
-                        Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
 
     }
 }
