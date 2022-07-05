@@ -295,7 +295,12 @@ public class CustomMapFragment extends Fragment {
             Log.d("REGISTER_LOCATION", "Longtitude = " + String.valueOf(cur_lng));
 
             if (!firstTime)
+            try {
                 drawCurrentPosition();
+            }
+            catch (Exception e){
+                Log.d("REGISTER_LOCATION", "Error: " + e.getMessage());
+            }
         }
 
         private void detectLocation() {
