@@ -111,7 +111,7 @@ public class UserMainActivity extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 if (item.getItemId() == R.id.logoutBtn){
                     //Add logout here
-                    new AlertDialog.Builder(UserMainActivity.this).setIcon(R.drawable.ic_logout_white)
+                    new AlertDialog.Builder(UserMainActivity.this).setIcon(R.drawable.ic_logout_black)
                             .setTitle("Logging out").setMessage("Are you sure you want to logging out?")
                             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                 @Override
