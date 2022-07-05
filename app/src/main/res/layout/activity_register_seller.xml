@@ -115,7 +115,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginBottom="20dp"
                     android:background="@drawable/shape_rect02"
                     android:drawableStart="@drawable/ic_baseline_location_on_24"
                     android:drawablePadding="5dp"
@@ -133,7 +133,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"
                     android:layout_marginBottom="10dp"
-                    android:backgroundTint="@color/transparent"
+                    android:backgroundTint="@color/white"
                     android:padding="10dp"
                     android:src="@drawable/ic_outline_gps_fixed_24"
                     app:tint="@color/green_dark" />
