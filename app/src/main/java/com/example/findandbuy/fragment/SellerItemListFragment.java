@@ -87,6 +87,13 @@ public class SellerItemListFragment extends Fragment {
         progressDialog = new ProgressDialog(getContext());
         progressDialog.setTitle("Please wait");
         progressDialog.setCanceledOnTouchOutside(false);
+        
+        loadAllItems();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     @Override
@@ -96,7 +103,6 @@ public class SellerItemListFragment extends Fragment {
         recyclerView = view.findViewById(R.id.itemRecyclerView);
 
         loadAllItems();
-
 
         return view;
     }
