@@ -14,6 +14,7 @@ import android.widget.ImageButton;
 
 import com.example.findandbuy.R;
 import com.example.findandbuy.fragment.SellerItemListFragment;
+import com.example.findandbuy.fragment.SellerProfileFragment;
 import com.example.findandbuy.fragment.UserProfileFragment;
 import com.example.findandbuy.navigation.BottomNavigationBehavior;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -69,21 +70,21 @@ public class SellerMainActivity extends AppCompatActivity {
 //                        }
                         startActivity(new Intent(SellerMainActivity.this, SellerAddItem.class));
                         return true;
-                    case R.id.navigation_modify_items:
-                        Log.d("card", "onNavigationItemSelected: Im card");
-//                        if (savedInstanceState == null) {
-//                            getSupportFragmentManager().beginTransaction()
-//                                    .setReorderingAllowed(true)
-//                                    .add(R.id.seller_frame_container, UserShoppingCartFragment.class, null)
-//                                    .commit();
-//                        }
-                        return true;
+//                    case R.id.navigation_modify_items:
+//                        Log.d("card", "onNavigationItemSelected: Im card");
+////                        if (savedInstanceState == null) {
+////                            getSupportFragmentManager().beginTransaction()
+////                                    .setReorderingAllowed(true)
+////                                    .add(R.id.seller_frame_container, UserShoppingCartFragment.class, null)
+////                                    .commit();
+////                        }
+//                        return true;
                     case R.id.navigation_seller_profile:
                         Log.d("profile", "onNavigationItemSelected: Im profile");
                         if (savedInstanceState == null) {
                             getSupportFragmentManager().beginTransaction()
                                     .setReorderingAllowed(true)
-                                    .add(R.id.seller_frame_container, UserProfileFragment.class, null)
+                                    .add(R.id.seller_frame_container, SellerProfileFragment.class, null)
                                     .commit();
                         }
                         return true;

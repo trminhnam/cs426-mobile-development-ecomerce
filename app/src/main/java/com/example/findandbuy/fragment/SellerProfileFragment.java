@@ -12,7 +12,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.findandbuy.LoginActivity;
 import com.example.findandbuy.R;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -20,16 +23,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.w3c.dom.Text;
-
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link UserProfileFragment#newInstance} factory method to
+ * Use the {@link SellerProfileFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class UserProfileFragment extends Fragment {
-
-    private static UserProfileFragment INSTANCE = null;
+public class SellerProfileFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -43,14 +42,10 @@ public class UserProfileFragment extends Fragment {
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
 
-    public UserProfileFragment() {
-    }
+    private TextView fullNameTextView, shopNameTextView, emailTextView, addressTextView, phoneNumberTextView;
 
-    public static UserProfileFragment getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new UserProfileFragment();
-        }
-        return INSTANCE;
+    public SellerProfileFragment() {
+        // Required empty public constructor
     }
 
     /**
@@ -59,11 +54,11 @@ public class UserProfileFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment ProfileFragment.
+     * @return A new instance of fragment SellerProfileFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static UserProfileFragment newInstance(String param1, String param2) {
-        UserProfileFragment fragment = new UserProfileFragment();
+    public static SellerProfileFragment newInstance(String param1, String param2) {
+        SellerProfileFragment fragment = new SellerProfileFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -84,44 +79,51 @@ public class UserProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_user_profile, container, false);
+        View view = inflater.inflate(R.layout.fragment_seller_profile, container, false);
+
         firebaseAuth = FirebaseAuth.getInstance();
 
         progressDialog = new ProgressDialog(getContext());
         progressDialog.setTitle("Please wait");
         progressDialog.setCanceledOnTouchOutside(false);
 
-        TextView fullnameTextView = view.findViewById(R.id.fullNameProfileTv);
-        TextView emailTextView = view.findViewById(R.id.emailProfileTv);
-        TextView bonusTextView = view.findViewById(R.id.bonusProfileTv);
+        fullNameTextView = view.findViewById(R.id.sellerFullnameProfileTextView);
+        shopNameTextView = view.findViewById(R.id.sellerShopnameProfileTextView);
+        emailTextView = view.findViewById(R.id.sellerEmailProfileTẽtView);
+        addressTextView = view.findViewById(R.id.sellerAddressProfileTextView);
+        phoneNumberTextView = view.findViewById(R.id.sellerPhoneNumberProfileTextView);
 
-        loadUserProfile(fullnameTextView, emailTextView, bonusTextView);
+        loadSellerProfileFromFirebase();
+
         return view;
     }
 
-    private void loadUserProfile(TextView fullNameTextView, TextView emailTextView, TextView bonusTextView) {
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
-        ref.orderByChild("uid").equalTo(firebaseAuth.getUid())
-                .addValueEventListener(new ValueEventListener() {
+    private void loadSellerProfileFromFirebase() {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
+        databaseReference.orderByChild("uid").equalTo(firebaseAuth.getUid())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         for (DataSnapshot ds: snapshot.getChildren()){
-                            String accountType = "" + ds.child("accountType").getValue();
-                            String fullName = "" + ds.child("fullname").getValue();
-                            String email = "" + ds.child("email").getValue();
-                            String bonus = "" + ds.child("bonus").getValue();
+                            String fullname = ""+ds.child("fullname").getValue();
+                            String email = ""+ds.child("email").getValue();
+                            String address = ""+ds.child("address").getValue();
+                            String shopName = ""+ds.child("shopName").getValue();
+                            String phoneNumber = ""+ds.child("phoneNumber").getValue();
 
-                            fullNameTextView.setText(fullName);
+                            fullNameTextView.setText(fullname);
                             emailTextView.setText(email);
-                            bonusTextView.setText(bonus + " coin");
-                            Toast.makeText(getContext(), "Load user profile successfully", Toast.LENGTH_SHORT).show();
+                            addressTextView.setText(address);
+                            shopNameTextView.setText(shopName);
+                            phoneNumberTextView.setText(phoneNumber);
                         }
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-                        Toast.makeText(getContext(), "Failed to load user profile", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), ""+error.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
+
     }
 }
