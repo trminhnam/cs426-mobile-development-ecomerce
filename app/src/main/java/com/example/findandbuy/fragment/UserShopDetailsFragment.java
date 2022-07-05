@@ -2,7 +2,10 @@ package com.example.findandbuy.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,7 +52,7 @@ public class UserShopDetailsFragment extends Fragment {
     private ImageButton callButton, mapButton, backButton;
     private Spinner categorySpinner;
 
-    private String shopUid;
+    private String shopUid, shopNameDetail, emailDetail, addressDetail;
 
     // TODO: Load from database
     private ArrayList<Item> listItems = new ArrayList<>();
@@ -101,6 +104,9 @@ public class UserShopDetailsFragment extends Fragment {
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             this.shopUid = bundle.getString("shopUid");
+            this.shopNameDetail = bundle.getString("shopName");
+            this.emailDetail = bundle.getString("email");
+            this.addressDetail = bundle.getString("address");
         }
     }
 
@@ -116,7 +122,6 @@ public class UserShopDetailsFragment extends Fragment {
         email = view.findViewById(R.id.emailDetailTv);
         address = view.findViewById(R.id.addressDetailTv);
         callButton = view.findViewById(R.id.callBtn);
-        mapButton = view.findViewById(R.id.mapBtn);
         backButton = view.findViewById(R.id.backBtn);
         categorySpinner = view.findViewById(R.id.categorySpinner);
         listItemRv = view.findViewById(R.id.listProductsRv);
@@ -141,6 +146,14 @@ public class UserShopDetailsFragment extends Fragment {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+        
+        //Set data for information
+        shopName.setText(shopNameDetail);
+        email.setText(emailDetail);
+        address.setText(addressDetail);
+        phoneNum.setText("12345678");
+
+        listItemRv = (RecyclerView) view.findViewById(R.id.listProductsRv);
 
         loadSellerItems();
 
@@ -152,6 +165,12 @@ public class UserShopDetailsFragment extends Fragment {
             }
         });
 
+        callButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialPhoneNumber(phoneNum.getText().toString().trim());
+            }
+        });
         return view;
     }
 
@@ -194,5 +213,17 @@ public class UserShopDetailsFragment extends Fragment {
                         Toast.makeText(getContext(), ""+error.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    public void dialPhoneNumber(String phoneNumber) {
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel:" + phoneNumber));
+        Log.d("phone1", "dialPhoneNumber: test" + phoneNumber);
+//        getActivity().startActivity(intent);
+//        Log.d("phone2", "dialPhoneNumber: test");
+        if (intent.resolveActivity(getContext().getPackageManager()) != null) {
+            getActivity().startActivity(intent);
+            Log.d("phone2", "dialPhoneNumber: test");
+        }
     }
 }

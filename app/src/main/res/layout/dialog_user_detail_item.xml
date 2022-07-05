@@ -18,7 +18,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+    <EditText
         android:id="@+id/itemNameTextView"
         style="@style/TextAppearance.MaterialComponents.Headline6"
         android:layout_width="wrap_content"
@@ -30,7 +30,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/itemImageView" />
 
-    <TextView
+    <EditText
         android:id="@+id/categoryTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -38,7 +38,7 @@
         app:layout_constraintStart_toStartOf="@id/itemNameTextView"
         app:layout_constraintTop_toBottomOf="@id/itemNameTextView" />
 
-    <TextView
+    <EditText
         android:id="@+id/priceTextView"
         style="@style/TextAppearance.MaterialComponents.Body1"
         android:layout_width="wrap_content"
@@ -48,7 +48,7 @@
         app:layout_constraintStart_toStartOf="@+id/categoryTextView"
         app:layout_constraintTop_toBottomOf="@id/categoryTextView" />
 
-    <TextView
+    <EditText
         android:id="@+id/descriptionTextView"
         style="@style/TextAppearance.MaterialComponents.Body1"
         android:layout_width="0dp"
