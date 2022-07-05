@@ -167,7 +167,7 @@ public class RegisterUserActivity extends AppCompatActivity {
         hashMap.put("timestamp", ""+timestamp);
         hashMap.put("accountType", "User");
         hashMap.put("available", "true");
-
+        hashMap.put("bonus", "0");
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
         databaseReference.child(firebaseAuth.getUid()).setValue(hashMap)
