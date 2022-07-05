@@ -1,6 +1,7 @@
 package com.example.findandbuy.adapters;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -22,6 +23,8 @@ import com.example.findandbuy.LoginActivity;
 import com.example.findandbuy.R;
 import com.example.findandbuy.models.Item;
 import com.example.findandbuy.models.Seller;
+import com.example.findandbuy.seller.RegisterSellerActivity;
+import com.example.findandbuy.seller.SellerMainActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,6 +38,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class SellerItemAdapter
         extends RecyclerView.Adapter<SellerItemAdapter.ItemHolder> {
@@ -95,41 +99,17 @@ public class SellerItemAdapter
 
         // User button
         if (userType.equals("User")){
-
-//            holder.itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-////                Intent intent = new Intent(context, ItemDetailActivity.class)
-////                intent.putExtra("itemID", itemID);
-////                context.startActivity(intent);
-//                    // handle item click
-//                }
-//            });
-
-            holder.addtoCartButton.setImageResource(R.drawable.ic_edit_white);
-            holder.addtoCartButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    showUserItemDetailDialog(item);
-                }
-            });
+            holder.addtoCartButton.setImageResource(R.drawable.ic_add_shopping_white);
         }
         else {
             holder.addtoCartButton.setImageResource(R.drawable.ic_edit_white);
-            holder.addtoCartButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showUserItemDetailDialog(item);
-                }
-            });
-
-//            holder.itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    showUserItemDetailDialog(item);
-//                }
-//            });
         }
+        holder.addtoCartButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showUserItemDetailDialog(item);
+            }
+        });
 
     }
 
@@ -195,25 +175,23 @@ public class SellerItemAdapter
             }
         });
 
-
         AlertDialog dialog = builder.create();
         dialog.show();
 
-
         if (userType.equals("User")){
+            quantity = 1;
             itemCountTv.setText("1");
             addItemButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_add_shopping_white, 0, 0, 0);
-            addItemButton.setText("Apply changes");
+            addItemButton.setText("Add to cart");
             addItemButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     addItemToUserCart(item, itemCountTv.getText().toString());
                 }
             });
-
-
         }
         else {
+            quantity = Integer.parseInt(item.getItemCount());
             itemCountTv.setText("" + String.valueOf(quantity));
             addItemButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_upload_white, 0, 0, 0);
             addItemButton.setText("Apply changes");
@@ -226,11 +204,36 @@ public class SellerItemAdapter
         }
     }
 
-    private void addItemToUserCart(Item item, String toString) {
+    private void addItemToUserCart(Item item, String newItemCount) {
 
+        progressDialog.setMessage("Adding item to cart");
+
+        item.setItemCount(newItemCount);
+
+        HashMap<String, Object> newItemToCart = new HashMap<>();
+        newItemToCart.put(item.getItemID(), item);
+
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
+        databaseReference.child(Objects.requireNonNull(firebaseAuth.getUid())).child("Cart").setValue(newItemToCart)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        progressDialog.dismiss();
+                        Toast.makeText(context, "Added successfully", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        progressDialog.dismiss();
+                        Toast.makeText(context, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     private void applySellerItemChanges(Item item, String newItemCount) {
+
+        progressDialog.setMessage("Updating item");
         item.setItemCount(newItemCount);
 
         HashMap<String, Object> newdata = new HashMap<>();
@@ -242,7 +245,8 @@ public class SellerItemAdapter
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-                        Toast.makeText(context.getApplicationContext(), "Update item successfully", Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
+                        Toast.makeText(context.getApplicationContext(), "Updated successfully", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
