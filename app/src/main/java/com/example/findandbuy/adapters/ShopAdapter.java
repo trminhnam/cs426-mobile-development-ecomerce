@@ -64,10 +64,10 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ShopHolder> {
         // replace shop image in the future
         String profileImage = "";
         try {
-            Picasso.get().load(profileImage).placeholder(R.drawable.ic_baseline_storefront_24).into(holder.shopIv);
+            Picasso.get().load(profileImage).placeholder(R.drawable.store).into(holder.shopIv);
         }
         catch (Exception e){
-            holder.shopIv.setImageResource(R.drawable.ic_baseline_storefront_24);
+            holder.shopIv.setImageResource(R.drawable.store);
         }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
