@@ -78,13 +78,16 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
             public void onClick(View v) {
                 int count = Integer.parseInt(cartItems.get(position).getItemCount());
                 count++;
+
+                // update text view and item in list
                 holder.itemCountTextView.setText(String.valueOf(count));
+                cartItems.get(position).setItemCount(String.valueOf(count));
+
+                // update data on firebase
+                updateItemInCartToFirebase(cartItems.get(position));
 
                 // update total price
-                cartItems.get(position).setItemCount(String.valueOf(count));
                 callback.onItemClicked(position);
-
-                updateItemInCartToFirebase(cartItems.get(position));
             }
         });
 
@@ -96,13 +99,16 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
                 {
                     holder.btnMinus.setEnabled(true);
                     count--;
+
+                    // update text view and item in list
                     holder.itemCountTextView.setText(String.valueOf(count));
+                    cartItems.get(position).setItemCount(String.valueOf(count));
+
+                    // update data on firebase
+                    updateItemInCartToFirebase(cartItems.get(position));
 
                     // update total price
-                    cartItems.get(position).setItemCount(String.valueOf(count));
                     callback.onItemClicked(position);
-
-                    updateItemInCartToFirebase(cartItems.get(position));
                 }
                 else {
                     holder.btnMinus.setEnabled(false);
@@ -135,7 +141,7 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
         newData.put(item.getItemID(), item);
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-        databaseReference.child("User")
+        databaseReference.child("Users")
                 .child(Objects.requireNonNull(firebaseAuth.getUid()))
                 .child("Cart")
                 .child(item.getItemID())
@@ -164,7 +170,7 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
         newData.put(item.getItemID(), item);
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-        databaseReference.child("User")
+        databaseReference.child("Users")
                 .child(Objects.requireNonNull(firebaseAuth.getUid()))
                 .child("Cart")
                 .updateChildren(newData)
