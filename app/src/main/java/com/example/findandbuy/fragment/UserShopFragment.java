@@ -33,6 +33,8 @@ import java.util.ArrayList;
  */
 public class UserShopFragment extends Fragment {
 
+    private static UserShopFragment INSTANCE = null;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -49,13 +51,13 @@ public class UserShopFragment extends Fragment {
     private ProgressDialog progressDialog;
 
     public UserShopFragment() {
-//        shopsList = new ArrayList<Shop>();
-//
-//        for (int i = 0; i < 10; ++i){
-//            Shop shop = new Shop("1", "a", "NFT1", "0708624730", "HocMon", "HCM", "VietNam", "122 Ba Diem, Hoc Mon, Ho Chi Minh City", "a", "1", "1", "a");
-//            shopsList.add(shop);
-//        }
-//        load
+    }
+
+    public static UserShopFragment getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new UserShopFragment();
+        }
+        return INSTANCE;
     }
 
     /**
