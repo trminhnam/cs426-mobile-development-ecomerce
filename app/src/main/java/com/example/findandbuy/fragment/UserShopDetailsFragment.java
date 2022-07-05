@@ -1,5 +1,6 @@
 package com.example.findandbuy.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
@@ -8,6 +9,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -31,6 +34,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class UserShopDetailsFragment extends Fragment {
 
@@ -54,6 +58,7 @@ public class UserShopDetailsFragment extends Fragment {
     private ArrayList<Item> listItems = new ArrayList<>();
     private ArrayList<Item> fillteredListItems = new ArrayList<>();
     private String[] listCategories = Constants.options;
+    private String currentFilter = "All";
 
     RecyclerView listItemRv;
 
@@ -105,6 +110,7 @@ public class UserShopDetailsFragment extends Fragment {
         }
     }
 
+    @SuppressLint("ResourceType")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -119,7 +125,29 @@ public class UserShopDetailsFragment extends Fragment {
         mapButton = view.findViewById(R.id.mapBtn);
         backButton = view.findViewById(R.id.backBtn);
         categorySpinner = view.findViewById(R.id.categorySpinner);
+        listItemRv = view.findViewById(R.id.listProductsRv);
 
+        ArrayList<String> categories = new ArrayList<>();
+        categories.add("All");
+        categories.addAll(Arrays.asList(listCategories));
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, categories);
+        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        Spinner spinner = view.findViewById(R.id.categorySpinner);
+        spinner.setAdapter(spinnerArrayAdapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedItem = parent.getItemAtPosition(position).toString();
+                setFillteredListItems(selectedItem);
+                listItemRv.getAdapter().notifyDataSetChanged();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+        
         //Set data for information
         shopName.setText(shopNameDetail);
         email.setText(emailDetail);
@@ -147,6 +175,19 @@ public class UserShopDetailsFragment extends Fragment {
         return view;
     }
 
+    private void setFillteredListItems(String category) {
+        fillteredListItems.clear();
+        if (category.equals("All")) {
+            fillteredListItems.addAll(listItems);
+        } else {
+            for (Item item : listItems) {
+                if (item.getItemCategory().equals(category)) {
+                    fillteredListItems.add(item);
+                }
+            }
+        }
+    }
+
     private void loadSellerItems() {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
         databaseReference.orderByChild("uid").equalTo(shopUid)
@@ -161,8 +202,9 @@ public class UserShopDetailsFragment extends Fragment {
                                 listItems.add(item);
                             }
                         }
-
-                        SellerItemAdapter sellerItemAdapter = new SellerItemAdapter(getContext(), listItems, "User");
+                        fillteredListItems.clear();
+                        fillteredListItems.addAll(listItems);
+                        SellerItemAdapter sellerItemAdapter = new SellerItemAdapter(getContext(), fillteredListItems, "User");
                         listItemRv.setAdapter(sellerItemAdapter);
                         listItemRv.setLayoutManager(new LinearLayoutManager(getContext()));
                     }
