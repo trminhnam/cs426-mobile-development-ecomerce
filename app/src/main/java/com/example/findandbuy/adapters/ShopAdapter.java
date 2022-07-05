@@ -79,6 +79,9 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ShopHolder> {
                 Bundle bundle = new Bundle();
                 Fragment fragment = new UserShopDetailsFragment();
                 bundle.putString("shopUid", uid);
+                bundle.putString("shopName", shopNames);
+                bundle.putString("email", email);
+                bundle.putString("address", address);
                 fragment.setArguments(bundle);
                 ((AppCompatActivity)context).getSupportFragmentManager()
                         .beginTransaction().replace(R.id.frame_container, fragment).addToBackStack(null)
