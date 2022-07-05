@@ -1,6 +1,7 @@
 package com.example.findandbuy.user;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -8,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -109,7 +111,15 @@ public class UserMainActivity extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 if (item.getItemId() == R.id.logoutBtn){
                     //Add logout here
-                    logOutUser();
+                    new AlertDialog.Builder(UserMainActivity.this).setIcon(R.drawable.ic_logout_black)
+                            .setTitle("Logging out").setMessage("Are you sure you want to logging out?")
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    logOutUser();
+                                    Toast.makeText(UserMainActivity.this, "Logged out",Toast.LENGTH_SHORT).show();
+                                }
+                            }).setNegativeButton("No", null).show();
                     return true;
                 }
                 return false;
