@@ -266,7 +266,8 @@ public class UserGameFragment extends Fragment {
                     public void onComplete(@NonNull Task<DataSnapshot> task) {
                         if (!task.isSuccessful()) {
                             progressDialog.dismiss();
-                            Toast.makeText(getContext(), "Error getting bonus", Toast.LENGTH_SHORT).show();
+                            userCoin = 0;
+                            Toast.makeText(getContext(), "Error getting bonus. Set bonus to 0", Toast.LENGTH_SHORT).show();
                         }
                         else {
                             userCoin = Integer.valueOf(String.valueOf(task.getResult().getValue()));
