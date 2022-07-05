@@ -1,38 +1,62 @@
 package com.example.findandbuy.adapters;
 
-import android.content.Intent;
+import android.app.ProgressDialog;
+import android.util.Log;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.AppCompatButton;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.example.findandbuy.LoginActivity;
 import com.example.findandbuy.R;
 import com.example.findandbuy.models.Item;
+import com.example.findandbuy.models.Seller;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class SellerItemAdapter
         extends RecyclerView.Adapter<SellerItemAdapter.ItemHolder> {
 
     private Context context;
     public ArrayList<Item> itemArrayList;
+    private String userType;
 
-    public SellerItemAdapter(Context context, ArrayList<Item> itemArrayList){
+    private Item currentItem;
+
+    private FirebaseAuth firebaseAuth;
+    private ProgressDialog progressDialog;
+
+    public SellerItemAdapter(Context context, ArrayList<Item> itemArrayList, String userType){
         this.context = context;
         this.itemArrayList = itemArrayList;
+        this.userType = userType;
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        progressDialog = new ProgressDialog(context.getApplicationContext());
+        progressDialog.setTitle("Please wait.");
+        progressDialog.setCanceledOnTouchOutside(false);
     }
 
     @NonNull
@@ -69,25 +93,47 @@ public class SellerItemAdapter
             holder.itemImageView.setImageResource(R.drawable.ic_image_gray);
         }
 
-        holder.addtoCartButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showUserItemDetailDialog(item);
-            }
-        });
+        // User button
+        if (userType.equals("User")){
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                Intent intent = new Intent(context, ItemDetailActivity.class)
-//                intent.putExtra("itemID", itemID);
-//                context.startActivity(intent);
-                // handle item click
-            }
-        });
+//            holder.itemView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+////                Intent intent = new Intent(context, ItemDetailActivity.class)
+////                intent.putExtra("itemID", itemID);
+////                context.startActivity(intent);
+//                    // handle item click
+//                }
+//            });
+
+            holder.addtoCartButton.setImageResource(R.drawable.ic_edit_white);
+            holder.addtoCartButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    showUserItemDetailDialog(item);
+                }
+            });
+        }
+        else {
+            holder.addtoCartButton.setImageResource(R.drawable.ic_edit_white);
+            holder.addtoCartButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showUserItemDetailDialog(item);
+                }
+            });
+
+//            holder.itemView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    showUserItemDetailDialog(item);
+//                }
+//            });
+        }
+
     }
 
-    private int quantity = 0;
+    private int quantity = 1;
     private void showUserItemDetailDialog(Item item){
         View view = LayoutInflater.from(context).inflate(R.layout.dialog_user_detail_item, null);
 
@@ -102,7 +148,7 @@ public class SellerItemAdapter
         TextView itemCountTv = view.findViewById(R.id.itemCountTv);
         ImageButton decrementButton = view.findViewById(R.id.decrementItemButton);
 
-        AppCompatButton addItemButton = view.findViewById(R.id.addItemButton);
+        Button addItemButton = view.findViewById(R.id.addItemButton);
 
         //get data
         String itemImage = item.getItemImage();
@@ -125,11 +171,7 @@ public class SellerItemAdapter
         itemNameTv.setText("" + itemName);
         categoryTv.setText("" + itemCategory);
         descriptionTv.setText("" + itemDescription);
-        priceTv.setText("$" + itemPrice);
-        itemCountTv.setText("" + String.valueOf(quantity));
-
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        priceTv.setText("$ " + itemPrice);
 
         //increment
         incrementButton.setOnClickListener(new View.OnClickListener() {
@@ -153,16 +195,65 @@ public class SellerItemAdapter
             }
         });
 
-        addItemButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                //have to insert add to cart function related to database
-                quantity = 0;
-                dialog.dismiss();
-            }
-        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+
+        if (userType.equals("User")){
+            itemCountTv.setText("1");
+            addItemButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_add_shopping_white, 0, 0, 0);
+            addItemButton.setText("Apply changes");
+            addItemButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    addItemToUserCart(item, itemCountTv.getText().toString());
+                }
+            });
+
+
+        }
+        else {
+            itemCountTv.setText("" + String.valueOf(quantity));
+            addItemButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_upload_white, 0, 0, 0);
+            addItemButton.setText("Apply changes");
+            addItemButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    applySellerItemChanges(item, itemCountTv.getText().toString());
+                }
+            });
+        }
     }
+
+    private void addItemToUserCart(Item item, String toString) {
+
+    }
+
+    private void applySellerItemChanges(Item item, String newItemCount) {
+        item.setItemCount(newItemCount);
+
+        HashMap<String, Object> newdata = new HashMap<>();
+        newdata.put(item.getItemID(), item);
+
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
+        databaseReference.child(firebaseAuth.getUid()).child("Items")
+                .updateChildren(newdata)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Toast.makeText(context.getApplicationContext(), "Update item successfully", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        progressDialog.dismiss();
+                        Toast.makeText(context.getApplicationContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
 
     @Override
     public int getItemCount() {
