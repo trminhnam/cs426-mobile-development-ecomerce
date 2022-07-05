@@ -101,19 +101,11 @@
                     android:src="@drawable/ic_baseline_phone_24"
                     app:tint="@color/white" />
 
-                <ImageButton
-                    android:id="@+id/mapBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@color/transparent"
-                    android:paddingLeft="5dp"
-                    android:src="@drawable/ic_map_white" />
                 <Spinner
                     android:id="@+id/categorySpinner"
                     android:layout_width="100dp"
                     android:layout_height="25dp"
-                    android:layout_marginStart="5dp"
-                    />
+                    android:layout_marginStart="5dp" />
             </LinearLayout>
 
         </RelativeLayout>
