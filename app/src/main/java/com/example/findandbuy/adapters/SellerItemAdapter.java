@@ -2,6 +2,8 @@ package com.example.findandbuy.adapters;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageButton;
