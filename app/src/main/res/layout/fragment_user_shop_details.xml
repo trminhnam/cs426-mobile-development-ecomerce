@@ -87,7 +87,7 @@
                 android:text="Address"
                 android:textColor="@color/white" />
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
@@ -99,30 +99,26 @@
                     android:id="@+id/callBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
                     android:background="@color/transparent"
                     android:paddingRight="5dp"
                     android:src="@drawable/ic_baseline_phone_24"
+                    app:layout_constraintEnd_toStartOf="@+id/categorySpinner"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/categorySpinner"
                     app:tint="@color/white" />
-
-                <ImageButton
-                    android:id="@+id/mapBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@color/transparent"
-                    android:paddingLeft="5dp"
-                    android:src="@drawable/ic_map_white" />
-
-                <Space
-                    android:layout_width="50dp"
-                    android:layout_height="25dp"/>
 
                 <Spinner
                     android:id="@+id/categorySpinner"
                     android:layout_width="100dp"
-                    android:layout_height="25dp"
-                    android:background="@color/white"
-                    android:layout_marginStart="5dp" />
-            </LinearLayout>
+                    android:layout_height="0dp"
+                    android:layout_marginStart="250dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/callBtn"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:background="@color/white"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </RelativeLayout>
     </RelativeLayout>

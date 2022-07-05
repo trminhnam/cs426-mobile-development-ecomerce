@@ -50,7 +50,6 @@ public class ShopDetailsActivity extends AppCompatActivity {
         email = findViewById(R.id.emailDetailTv);
         address = findViewById(R.id.addressDetailTv);
         callButton = findViewById(R.id.callBtn);
-        mapButton = findViewById(R.id.mapBtn);
         backButton = findViewById(R.id.backBtn);
         categorySpinner = findViewById(R.id.categorySpinner);
 
