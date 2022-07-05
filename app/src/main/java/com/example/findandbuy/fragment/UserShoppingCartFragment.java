@@ -61,7 +61,6 @@ public class UserShoppingCartFragment extends Fragment {
     public UserShoppingCartFragment() {
     }
 
-
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -111,7 +110,7 @@ public class UserShoppingCartFragment extends Fragment {
     private void loadSellerItems() {
         progressDialog.setMessage("Loading cart");
         progressDialog.show();
-        
+
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
         databaseReference.child(Objects.requireNonNull(firebaseAuth.getUid())).child("Cart")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -169,6 +168,7 @@ public class UserShoppingCartFragment extends Fragment {
 
     private final ShoppingCartAdapter.updateTotalPrice callback = (position) -> {
         // get total price
+        totalPrice = 0.0;
         for(Item item : itemsList)
         {
             totalPrice += Double.parseDouble(item.getItemPrice()) * Double.parseDouble(item.getItemCount());
