@@ -88,12 +88,16 @@ public class UserShopDetailsFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
+        firebaseAuth = FirebaseAuth.getInstance();
+        progressDialog = new ProgressDialog(getContext());
+        progressDialog.setTitle("Please wait");
+        progressDialog.setCanceledOnTouchOutside(false);
+
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             this.shopUid = bundle.getString("shopUid");
         }
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -111,37 +115,6 @@ public class UserShopDetailsFragment extends Fragment {
         categorySpinner = view.findViewById(R.id.categorySpinner);
 
         listItemRv = (RecyclerView) view.findViewById(R.id.listProductsRv);
-
-//
-//        ArrayAdapter ad = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, listCategories);
-//        ad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        categorySpinner.setAdapter(ad);
-//        categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @SuppressLint("NotifyDataSetChanged")
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                String selectedCategory = listCategories[position];
-//                if (selectedCategory.equals("All")) {
-//                    fillteredListItems.clear();
-//                    fillteredListItems.addAll(listItems);
-//                } else {
-//                    fillteredListItems.clear();
-//                    for (Item item : listItems) {
-//                        if (item.getItemCategory().equals(selectedCategory)) {
-//                            fillteredListItems.add(item);
-//                        }
-//                    }
-//                }
-//                ((SellerItemAdapter) ((RecyclerView) getView()
-//                        .findViewById(R.id.listProductsRv)).getAdapter())
-//                        .notifyDataSetChanged();
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//
-//            }
-//        });
 
         loadSellerItems();
 
@@ -165,17 +138,6 @@ public class UserShopDetailsFragment extends Fragment {
                         listItems.clear();
                         listItems = new ArrayList<>();
                         for (DataSnapshot ds: snapshot.getChildren()){
-//                            String accountType = ""+ds.child("accountType").getValue();
-//                            String fullname = ""+ds.child("fullname").getValue();
-//                            if (accountType.equals("Seller")){
-//                                progressDialog.dismiss();
-//
-//                            }
-//                            else{
-//                                progressDialog.dismiss();
-//
-//                            }
-
                             for (DataSnapshot dsItem: ds.child("Items").getChildren()){
                                 Item item = dsItem.getValue(Item.class);
                                 listItems.add(item);

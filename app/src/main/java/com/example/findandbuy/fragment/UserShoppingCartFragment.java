@@ -1,7 +1,9 @@
 package com.example.findandbuy.fragment;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,13 +14,22 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.findandbuy.adapters.SellerItemAdapter;
 import com.example.findandbuy.adapters.ShoppingCartAdapter;
 import com.example.findandbuy.models.Item;
 
 import com.example.findandbuy.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,52 +49,18 @@ public class UserShoppingCartFragment extends Fragment {
 
     private TextView totalPriceTextView;
     private Button checkoutButton;
-    private RecyclerView recyclerView;
 
+
+    private RecyclerView recyclerView;
     private ArrayList<Item> itemsList = new ArrayList<>();
     private double totalPrice = 0;
 
+    private FirebaseAuth firebaseAuth;
+    private ProgressDialog progressDialog;
+
     public UserShoppingCartFragment() {
-
-        Item item1 = new Item("1", "Iphone X", "Electronic devices","980", "1","Iphone X, 256GB, Camera 10mp", "111", "111", "112");
-        Item item2 = new Item("2", "Iphone Xs", "Electronic devices","1000", "3", "Iphone Xs, 256GB, Camera 10mp", "111", "111", "113");
-        Item item3 = new Item("3", "Iphone 11", "NTF","1020", "1", "Iphone Xs Max, 256GB, Camera 10mp", "111", "111", "112");
-        Item item4 = new Item("4", "Iphone 12", "Songs","1030", "2", "Iphone Xs Max, 256GB, Camera 10mp", "111", "111", "111");
-        Item item5 = new Item("5", "Iphone 13", "Songs","2020", "1", "Iphone Xs Max, 256GB, Camera 10mp", "111", "111", "114");
-        itemsList.add(item1);
-        itemsList.add(item2);
-        itemsList.add(item3);
-        itemsList.add(item4);
-        itemsList.add(item5);
-
-        reOrderItemList();
     }
 
-    private void reOrderItemList()
-    {
-        // sort itemList by uID, itemName
-        for(int i = 0; i < itemsList.size(); ++i)
-        {
-            for(int j = i + 1; j < itemsList.size(); ++j)
-            {
-                if(itemsList.get(i).getUid().compareTo(itemsList.get(j).getUid()) > 0)
-                {
-                    Item temp = itemsList.get(i);
-                    itemsList.set(i, itemsList.get(j));
-                    itemsList.set(j, temp);
-                }
-                else if(itemsList.get(i).getUid().compareTo(itemsList.get(j).getUid()) == 0)
-                {
-                    if(itemsList.get(i).getItemName().compareTo(itemsList.get(j).getItemName()) > 0)
-                    {
-                        Item temp = itemsList.get(i);
-                        itemsList.set(i, itemsList.get(j));
-                        itemsList.set(j, temp);
-                    }
-                }
-            }
-        }
-    }
 
     /**
      * Use this factory method to create a new instance of
@@ -112,15 +89,6 @@ public class UserShoppingCartFragment extends Fragment {
         }
     }
 
-    private final ShoppingCartAdapter.updateTotalPrice callback = (position) -> {
-        // get total price
-        for(Item item : itemsList)
-        {
-            totalPrice += Double.parseDouble(item.getItemPrice()) * Double.parseDouble(item.getItemCount());
-        }
-        totalPriceTextView.setText(String.format("Total: $%.2f", totalPrice));
-    };
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -130,12 +98,81 @@ public class UserShoppingCartFragment extends Fragment {
         totalPriceTextView = view.findViewById(R.id.totalTv);
         checkoutButton = view.findViewById(R.id.checkoutBtn);
 
-        ShoppingCartAdapter adapter = new ShoppingCartAdapter(getContext(), itemsList, callback);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        firebaseAuth = FirebaseAuth.getInstance();
+        progressDialog = new ProgressDialog(getContext());
+        progressDialog.setTitle("Please wait");
+        progressDialog.setCanceledOnTouchOutside(false);
 
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(adapter);
+        loadSellerItems();
 
         return view;
     }
+
+    private void loadSellerItems() {
+        progressDialog.setMessage("Loading cart");
+        progressDialog.show();
+        
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
+        databaseReference.child(Objects.requireNonNull(firebaseAuth.getUid())).child("Cart")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        itemsList.clear();
+                        itemsList = new ArrayList<>();
+                        for (DataSnapshot ds: snapshot.getChildren()){
+                            Item item = ds.getValue(Item.class);
+                            itemsList.add(item);
+                        }
+
+                        reOrderItemList();
+
+                        ShoppingCartAdapter shoppingCartAdapter = new ShoppingCartAdapter(getContext(), itemsList, callback);
+                        recyclerView.setAdapter(shoppingCartAdapter);
+                        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                        progressDialog.dismiss();
+                        Toast.makeText(getContext(), "Loaded successfully", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(getContext(), ""+error.getMessage(), Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
+                    }
+                });
+    }
+
+    private void reOrderItemList()
+    {
+        // sort itemList by uID, itemName
+        for(int i = 0; i < itemsList.size(); ++i)
+        {
+            for(int j = i + 1; j < itemsList.size(); ++j)
+            {
+                if(itemsList.get(i).getUid().compareTo(itemsList.get(j).getUid()) > 0)
+                {
+                    Item temp = itemsList.get(i);
+                    itemsList.set(i, itemsList.get(j));
+                    itemsList.set(j, temp);
+                }
+                else if(itemsList.get(i).getUid().compareTo(itemsList.get(j).getUid()) == 0)
+                {
+                    if(itemsList.get(i).getItemName().compareTo(itemsList.get(j).getItemName()) > 0)
+                    {
+                        Item temp = itemsList.get(i);
+                        itemsList.set(i, itemsList.get(j));
+                        itemsList.set(j, temp);
+                    }
+                }
+            }
+        }
+    }
+
+    private final ShoppingCartAdapter.updateTotalPrice callback = (position) -> {
+        // get total price
+        for(Item item : itemsList)
+        {
+            totalPrice += Double.parseDouble(item.getItemPrice()) * Double.parseDouble(item.getItemCount());
+        }
+        totalPriceTextView.setText(String.format("Total: $%.2f", totalPrice));
+    };
 }
