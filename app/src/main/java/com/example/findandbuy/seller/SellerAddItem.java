@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -48,6 +49,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.HashMap;
 
 public class SellerAddItem extends AppCompatActivity {
@@ -248,6 +252,19 @@ public class SellerAddItem extends AppCompatActivity {
             String filePathAndName = "item_images/" + timestamp;
 
             StorageReference storageReference = FirebaseStorage.getInstance().getReference(filePathAndName);
+
+            // resize 255*255 image from uri before upload and return uri of image
+            Bitmap bitmap = null;
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), image_uri);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Bitmap bitmapResized = Bitmap.createScaledBitmap(bitmap, 255, 255, false);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmapResized.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            image_uri = Uri.parse(MediaStore.Images.Media.insertImage(getContentResolver(), bitmapResized, timestamp, null));
+
             storageReference.putFile(image_uri)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
