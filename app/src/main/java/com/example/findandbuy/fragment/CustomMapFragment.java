@@ -204,10 +204,9 @@ public class CustomMapFragment extends Fragment {
             currentMarker.remove();
             currentMarker=null;
         }
-
         LatLng latLng = new LatLng(cur_lat, cur_lng);
         currentMarker = googleMap.addMarker(currentMarkerOptions.position(latLng).icon(bitmapDescriptorFromVector(getContext(),
-                            R.drawable.ic_current_person_place)));
+                R.drawable.ic_current_person_place)));
     }
 
     private void loadSellersLatLngLists() {
@@ -255,6 +254,10 @@ public class CustomMapFragment extends Fragment {
 
     // Reference https://stackoverflow.com/questions/42365658/custom-marker-in-google-maps-in-android-with-vector-asset-icon
     private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {
+        // check context is null
+        if (context == null) {
+            return null;
+        }
         Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
         vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
         Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
@@ -307,12 +310,7 @@ public class CustomMapFragment extends Fragment {
             Log.d("REGISTER_LOCATION", "Longtitude = " + String.valueOf(cur_lng));
 
             if (!firstTime)
-            try {
                 drawCurrentPosition();
-            }
-            catch (Exception e){
-                Log.d("REGISTER_LOCATION", "Error: " + e.getMessage());
-            }
         }
 
         private void detectLocation() {
