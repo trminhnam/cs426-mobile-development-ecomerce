@@ -14,18 +14,21 @@ tools:context=".user.UserMainActivity">
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="60dp"
+    android:layout_marginBottom="60dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"></FrameLayout>
 
-<com.google.android.material.bottomnavigation.BottomNavigationView
-    android:id="@+id/navigation"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_gravity="bottom"
-    android:background="?android:windowBackground"
-    android:foreground="?android:selectableItemBackground"
-    app:itemBackground="@color/bgBottomNavigation"
-    app:itemIconTint="@color/white"
-    app:itemTextColor="@color/white"
-    app:menu="@menu/navigation" />
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/navigation"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="bottom"
+        android:background="?android:windowBackground"
+        android:foreground="?android:selectableItemBackground"
+        app:itemBackground="@color/bgBottomNavigation"
+        app:itemIconTint="@color/white"
+        app:itemTextColor="@color/white"
+        app:layout_anchor="@+id/frame_container"
+        app:layout_anchorGravity="bottom|center"
+        app:menu="@menu/navigation" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -189,7 +189,7 @@ public class SellerAddItem extends AppCompatActivity {
             hashMap.put("itemCategory", itemCategory);
             hashMap.put("itemPrice", itemPrice);
             hashMap.put("itemCount", itemCount);
-            hashMap.put("itemDescription", itemCount);
+            hashMap.put("itemDescription", itemDescription );
 
             hashMap.put("timestamp", timestamp);
             hashMap.put("itemImage", "");
