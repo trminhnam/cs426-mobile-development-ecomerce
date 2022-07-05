@@ -19,23 +19,32 @@ mobile-development-ecomerce
 │   README.md
 │       
 └───app
-    └───src
-        └───main
-            │   java
-                │   findandbuy
-                │   activity
-                │   fragment
-                │   map
-                │   adapter
-                │   songAdapter
-                │   song
-                │   listView
-                │   CustomizeView
-                │   Sprint/Animation
-                │   HelperFunction
-                │   Model
-            │   res
-            │   assets
+    ├───java
+    │   └───com
+    │       └───example
+    │           └───findandbuy
+    │               ├───adapters
+    │               ├───dataStructure
+    │               ├───fragment
+    │               ├───models
+    │               ├───navigation
+    │               ├───seller
+    │               └───user
+    └───res
+        ├───drawable
+        ├───drawable-v24
+        ├───layout
+        ├───menu
+        ├───mipmap-anydpi-v26
+        ├───mipmap-hdpi
+        ├───mipmap-mdpi
+        ├───mipmap-xhdpi
+        ├───mipmap-xxhdpi
+        ├───mipmap-xxxhdpi
+        ├───raw
+        ├───values
+        ├───values-night
+        └───xml
 ```
 
 ## Defaut accounts:
