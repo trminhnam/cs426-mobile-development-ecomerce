@@ -21,16 +21,13 @@ tools:context=".user.UserMainActivity">
             app:logoScaleType= "fitStart"
             app:titleCentered="true"
             app:menu="@menu/top_app_bar"
-            style="@style/Widget.MaterialComponents.Toolbar.Primary"
-            />
-
+            style="@style/Widget.MaterialComponents.Toolbar.Primary" />
     </com.google.android.material.appbar.AppBarLayout>
 
 <FrameLayout
     android:id="@+id/frame_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="60dp"
     android:layout_marginBottom="60dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"></FrameLayout>
 
