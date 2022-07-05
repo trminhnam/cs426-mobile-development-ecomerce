@@ -32,13 +32,18 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.PackageManagerCompat;
 
 import com.example.findandbuy.Constants;
+import com.example.findandbuy.LoginActivity;
 import com.example.findandbuy.R;
+import com.example.findandbuy.user.UserMainActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -75,6 +80,8 @@ public class SellerAddItem extends AppCompatActivity {
 
     private ProgressDialog progressDialog;
     private FirebaseAuth firebaseAuth;
+
+    private String shopName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,6 +144,27 @@ public class SellerAddItem extends AppCompatActivity {
             }
         });
 
+        // get shop name from firebase to add shopName to item
+        getShopName();
+    }
+
+    private void getShopName() {
+        // start main screen of user or seller
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
+        databaseReference.orderByChild("uid").equalTo(firebaseAuth.getUid())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot ds: snapshot.getChildren()){
+                            shopName = ""+ds.child("shopName");
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(getApplicationContext(), ""+error.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     private String itemName, itemPrice, itemCategory, itemCount, itemDescription;
@@ -194,6 +222,7 @@ public class SellerAddItem extends AppCompatActivity {
             hashMap.put("timestamp", timestamp);
             hashMap.put("itemImage", "");
             hashMap.put("uid", ""+firebaseAuth.getUid());
+            hashMap.put("shopName", shopName);
             DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
             databaseReference.child(firebaseAuth.getUid()).child("Items").child(timestamp).setValue(hashMap)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {

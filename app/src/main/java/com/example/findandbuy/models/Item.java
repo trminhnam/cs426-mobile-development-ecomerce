@@ -10,10 +10,12 @@ public class Item {
     private String timestamp;
     private String itemImage;
     private String uid;
+    private String shopName;
 
-    public Item() {}
+    public Item() {
+    }
 
-    public Item(String itemID, String itemName, String itemCategory, String itemPrice, String itemCount, String itemDescription, String timestamp, String itemImage, String uid) {
+    public Item(String itemID, String itemName, String itemCategory, String itemPrice, String itemCount, String itemDescription, String timestamp, String itemImage, String uid, String shopName) {
         this.itemID = itemID;
         this.itemName = itemName;
         this.itemCategory = itemCategory;
@@ -23,6 +25,7 @@ public class Item {
         this.timestamp = timestamp;
         this.itemImage = itemImage;
         this.uid = uid;
+        this.shopName = shopName;
     }
 
     public String getItemID() {
@@ -95,5 +98,13 @@ public class Item {
 
     public void setUid(String uid) {
         this.uid = uid;
+    }
+
+    public String getShopName() {
+        return shopName;
+    }
+
+    public void setShopName(String shopName) {
+        this.shopName = shopName;
     }
 }
