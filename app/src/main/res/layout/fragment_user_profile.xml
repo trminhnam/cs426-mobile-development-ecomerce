@@ -16,7 +16,7 @@
         android:focusableInTouchMode="true">
 
         <TextView
-            style="@style/TextAppearance.MaterialComponents.Headline6"
+            style="@style/TextAppearance.MaterialComponents.Headline5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -31,6 +31,9 @@
             android:layout_margin="10dp"
             android:background="@drawable/shape_rect02"
             android:drawableStart="@drawable/ic_person_white"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/black"
+            android:gravity="center_vertical"
             android:drawablePadding="5dp"
             android:drawableTint="@color/htmlGrey"
             android:hint="Full Name"
@@ -39,38 +42,12 @@
             android:padding="10dp" />
 
         <TextView
-            android:id="@+id/phoneProfileTv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:background="@drawable/shape_rect02"
-            android:drawableStart="@drawable/ic_baseline_smartphone_24"
-            android:drawablePadding="5dp"
-            android:drawableTint="@color/htmlGrey"
-            android:hint="Phone"
-            android:inputType="numberSigned"
-            android:minHeight="48dp"
-            android:padding="10dp" />
-
-        <TextView
-            android:id="@+id/addressProfileTv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:background="@drawable/shape_rect02"
-            android:drawableStart="@drawable/ic_baseline_location_on_24"
-            android:drawablePadding="5dp"
-            android:drawableTint="@color/htmlGrey"
-            android:hint="Address"
-            android:inputType="numberSigned"
-            android:minHeight="48dp"
-            android:padding="10dp" />
-
-        <TextView
             android:id="@+id/emailProfileTv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/black"
             android:background="@drawable/shape_rect02"
             android:drawableStart="@drawable/ic_outline_email_24"
             android:drawablePadding="5dp"
@@ -78,7 +55,27 @@
             android:hint="Email"
             android:inputType="textEmailAddress"
             android:minHeight="48dp"
-            android:padding="10dp" />
+            android:padding="10dp"
+            android:gravity="center_vertical"
+            />
+
+        <TextView
+            android:id="@+id/bonusProfileTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/black"
+            android:background="@drawable/shape_rect02"
+            android:drawableStart="@drawable/ic_baseline_currency_bitcoin_24"
+            android:drawablePadding="5dp"
+            android:drawableTint="@color/htmlGrey"
+            android:hint="Address"
+            android:inputType="numberSigned"
+            android:minHeight="48dp"
+            android:padding="10dp"
+            android:gravity="center_vertical"
+            />
 
     </LinearLayout>
 

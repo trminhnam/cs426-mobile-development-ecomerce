@@ -2,6 +2,8 @@ package com.example.findandbuy.adapters;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -187,6 +189,7 @@ public class SellerItemAdapter
                 @Override
                 public void onClick(View v) {
                     addItemToUserCart(item, itemCountTv.getText().toString());
+                    dialog.dismiss();
                 }
             });
         }
@@ -199,6 +202,7 @@ public class SellerItemAdapter
                 @Override
                 public void onClick(View v) {
                     applySellerItemChanges(item, itemCountTv.getText().toString());
+                    dialog.dismiss();
                 }
             });
         }

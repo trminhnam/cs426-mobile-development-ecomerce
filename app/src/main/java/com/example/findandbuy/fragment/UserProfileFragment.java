@@ -1,14 +1,25 @@
 package com.example.findandbuy.fragment;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.findandbuy.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import org.w3c.dom.Text;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -16,6 +27,8 @@ import com.example.findandbuy.R;
  * create an instance of this fragment.
  */
 public class UserProfileFragment extends Fragment {
+
+    private static UserProfileFragment INSTANCE = null;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,8 +39,17 @@ public class UserProfileFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    private FirebaseAuth firebaseAuth;
+    private ProgressDialog progressDialog;
+
     public UserProfileFragment() {
-        // Required empty public constructor
+    }
+
+    public static UserProfileFragment getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new UserProfileFragment();
+        }
+        return INSTANCE;
     }
 
     /**
@@ -61,6 +83,43 @@ public class UserProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_user_profile, container, false);
+        View view = inflater.inflate(R.layout.fragment_user_profile, container, false);
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        progressDialog = new ProgressDialog(getContext());
+        progressDialog.setTitle("Please wait");
+        progressDialog.setCanceledOnTouchOutside(false);
+
+        TextView fullnameTextView = view.findViewById(R.id.fullNameProfileTv);
+        TextView emailTextView = view.findViewById(R.id.emailProfileTv);
+        TextView bonusTextView = view.findViewById(R.id.bonusProfileTv);
+
+        loadUserProfile(fullnameTextView, emailTextView, bonusTextView);
+        return view;
+    }
+
+    private void loadUserProfile(TextView fullNameTextView, TextView emailTextView, TextView bonusTextView) {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
+        ref.orderByChild("uid").equalTo(firebaseAuth.getUid())
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot ds: snapshot.getChildren()){
+                            String accountType = "" + ds.child("accountType").getValue();
+                            String fullName = "" + ds.child("fullname").getValue();
+                            String email = "" + ds.child("email").getValue();
+                            String bonus = "" + ds.child("bonus").getValue();
+
+                            fullNameTextView.setText(fullName);
+                            emailTextView.setText(email);
+                            bonusTextView.setText(bonus + " coin");
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
     }
 }
