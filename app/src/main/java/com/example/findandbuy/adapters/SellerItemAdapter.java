@@ -150,14 +150,16 @@ public class SellerItemAdapter
         itemNameTv.setFocusable(false);
         itemNameTv.setSelected(false);
         itemNameTv.setKeyListener(null);
+        itemNameTv.setBackgroundResource(android.R.color.transparent);
 
-        // set categoryTv to readonly
+            // set categoryTv to readonly
         categoryTv.setCursorVisible(false);
         categoryTv.setLongClickable(false);
         categoryTv.setClickable(false);
         categoryTv.setFocusable(false);
         categoryTv.setSelected(false);
         categoryTv.setKeyListener(null);
+        categoryTv.setBackgroundResource(android.R.color.transparent);
 
         // set descriptionTv to readonly
         descriptionTv.setCursorVisible(false);
@@ -166,6 +168,7 @@ public class SellerItemAdapter
         descriptionTv.setFocusable(false);
         descriptionTv.setSelected(false);
         descriptionTv.setKeyListener(null);
+        descriptionTv.setBackgroundResource(android.R.color.transparent);
 
         // set priceTv to readonly
         priceTv.setCursorVisible(false);
@@ -174,7 +177,7 @@ public class SellerItemAdapter
         priceTv.setFocusable(false);
         priceTv.setSelected(false);
         priceTv.setKeyListener(null);
-
+        priceTv.setBackgroundResource(android.R.color.transparent);
         }
         else
         {
