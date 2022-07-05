@@ -56,8 +56,30 @@ mobile-development-ecomerce
 - Seller 2 - Shop 2:
   - seller2@gmail.com
   - 123456
-
-
+- Seller 3 - Shop 3:
+  - seller3@gmail.com
+  - 123456
+- Seller 4 - Shop 4:
+  - seller4@gmail.com
+  - 123456
+- Seller 5 - Shop 5:
+  - seller5@gmail.com
+  - 123456
+- Seller 6 - Shop 6:
+  - seller6@gmail.com
+  - 123456
+- Seller 7 - Shop 7:
+  - seller7@gmail.com
+  - 123456
+- Seller 8 - Shop 2:
+  - seller8@gmail.com
+  - 123456
+- Seller 9 - Shop 2:
+  - seller9@gmail.com
+  - 123456
+- Seller 10 - Shop 2:
+  - seller10@gmail.com
+  - 123456
 ## References
 
 <a href="https://www.flaticon.com/free-icons/online-shop" title="online-shop icons">Online-shop icons created by itim2101 - Flaticon</a>

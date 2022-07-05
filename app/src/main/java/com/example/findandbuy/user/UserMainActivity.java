@@ -2,6 +2,7 @@ package com.example.findandbuy.user;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -17,6 +18,7 @@ import com.example.findandbuy.fragment.UserProfileFragment;
 import com.example.findandbuy.fragment.UserShopFragment;
 import com.example.findandbuy.fragment.UserShoppingCartFragment;
 import com.example.findandbuy.navigation.BottomNavigationBehavior;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
@@ -25,6 +27,7 @@ public class UserMainActivity extends AppCompatActivity {
     // save all the fragments in this array
     private static Fragment[] fragments;
     private static BottomNavigationView navigation;
+    private MaterialToolbar toolbar;
     private CoordinatorLayout.LayoutParams layoutParams;
 
     // initialize the fragments
@@ -67,6 +70,8 @@ public class UserMainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_main);
         initFragments();
 
+        // set toolbar
+        toolbar = (MaterialToolbar) findViewById(R.id.topAppBar);
         // set the bottom navigation bar
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
         layoutParams = (CoordinatorLayout.LayoutParams) navigation.getLayoutParams();
@@ -75,6 +80,18 @@ public class UserMainActivity extends AppCompatActivity {
         // set the default fragment
         switchFragment(1);
 
+        //set listener for toolbar
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == R.id.logoutBtn){
+                    Log.d("test logout", "onMenuItemClick: here");
+                    //Add logout here
+                    return true;
+                }
+                return false;
+            }
+        });
         // set the listener for the bottom navigation bar
         navigation.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override

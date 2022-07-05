@@ -14,14 +14,15 @@
             android:id="@+id/shopIv"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:src="@drawable/ic_baseline_storefront_24" />
+            android:layout_centerVertical="true"
+            android:src="@drawable/store" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/shopNameTv"
             android:layout_width="108dp"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="5dp"
+            android:layout_marginLeft="10dp"
             android:layout_marginRight="80dp"
             android:layout_toEndOf="@+id/shopIv"
             android:text="Shop name"
