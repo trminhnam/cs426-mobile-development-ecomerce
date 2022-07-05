@@ -1,14 +1,36 @@
 package com.example.findandbuy.fragment;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import com.example.findandbuy.R;
+import com.example.findandbuy.Sound;
+import com.example.findandbuy.Sprite2D;
+
+import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,6 +47,9 @@ public class UserGameFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private TextView showCoinTV;
+    private Integer userCoin = 100;
 
     public UserGameFragment() {
         // Required empty public constructor
@@ -61,6 +86,149 @@ public class UserGameFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_user_game, container, false);
+        View view =  inflater.inflate(R.layout.fragment_user_game, container, false);
+
+        RelativeLayout relativeLayout = (RelativeLayout) view.findViewById(R.id.game_animation);
+        showCoinTV = (TextView) view.findViewById(R.id.showCoinTV);
+        showCoinTV.setText("Total coins: " + userCoin.toString());
+        relativeLayout.addView(new AnimationView(getActivity()));
+
+        return view;
+    }
+
+    private class AnimationView extends View {
+        private ArrayList<Sprite2D> sprites;
+
+        // sensor variables
+        private SensorManager mSensorManager;
+        private float mAccel;
+        private float mAccelCurrent;
+        private float mAccelLast;
+
+        // sound effect
+        private Sound soundCoinDrop;
+
+        private void initSensor() {
+            mSensorManager = (SensorManager) requireActivity().getSystemService(Context.SENSOR_SERVICE);
+
+            mSensorManager.registerListener(mSensorListener,
+                    mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+                    SensorManager.SENSOR_DELAY_NORMAL);
+
+            mAccel = 0.00f;
+            mAccelCurrent = SensorManager.GRAVITY_EARTH;
+            mAccelLast = SensorManager.GRAVITY_EARTH;
+        }
+
+        private void prepareContent()
+        {
+            sprites = new ArrayList<>();
+            CreateAnimation(getWidthResources()/2, getHeightResources()/2 - getHeightResources()/8);
+            soundCoinDrop = new Sound("coin Sound Effect", MediaPlayer.create(getContext(), R.raw.coinsoundeffect));
+        }
+
+        private void shaking() {
+            for (int i=0; i<sprites.size(); i++)
+                sprites.get(i).update();
+
+            userCoin += 1;
+            showCoinTV.setText("Total coins: " + userCoin.toString());
+
+            soundCoinDrop.getSource().start();
+            invalidate();
+        }
+
+        public AnimationView(Context context) {
+            super(context);
+            initSensor();
+            prepareContent();
+        }
+
+        public AnimationView(Context context, @Nullable AttributeSet attrs) {
+            super(context, attrs);
+            initSensor();
+            prepareContent();
+        }
+
+        public AnimationView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+            super(context, attrs, defStyleAttr);
+            initSensor();
+        }
+
+        public AnimationView(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+            super(context, attrs, defStyleAttr, defStyleRes);
+            initSensor();
+            prepareContent();
+        }
+
+        private void CreateAnimation(int center_left, int center_top) {
+            Bitmap[] bitmaps = new Bitmap[8];
+            for (int i=0; i<bitmaps.length; i++)
+                bitmaps[i] = BitmapFactory.decodeResource(getResources(), R.raw.frame_0+i);
+
+            // get the width and height of the bitmap
+            int width = bitmaps[0].getWidth();
+            int height = bitmaps[0].getHeight();
+
+            // set left and top to the middle of the screen
+            center_left = center_left - width/2;
+            center_top = center_top - height/2;
+
+            Sprite2D newSprite = new Sprite2D(bitmaps, center_left, center_top, 0, 0);
+            sprites.add(newSprite);
+        }
+
+        @Override
+        protected void onDraw(Canvas canvas) {
+            super.onDraw(canvas);
+            for (int i=0; i<sprites.size(); i++)
+                sprites.get(i).draw(canvas);
+        }
+
+        private void selectSprite(int newIndex) {
+            for (int i=0; i<sprites.size(); i++)
+                if (i == newIndex)
+                    sprites.get(i).State = 1;
+                else
+                    sprites.get(i).State = 0;
+
+        }
+
+        private int getSelectedSpriteIndex(float x, float y) {
+            for (int i=sprites.size()-1;i>=0; i--)
+                if (sprites.get(i).isSelected(x, y))
+                    return i;
+            return -1;
+        }
+
+        private int getHeightResources() {
+            return getResources().getDisplayMetrics().heightPixels;
+        }
+
+        private int getWidthResources() {
+            return getResources().getDisplayMetrics().widthPixels;
+        }
+
+        private final SensorEventListener mSensorListener = new SensorEventListener() {
+            @Override
+            public void onSensorChanged(SensorEvent event) {
+                float x = event.values[0];
+                float y = event.values[1];
+                float z = event.values[2];
+                mAccelLast = mAccelCurrent;
+                mAccelCurrent = (float) Math.sqrt((double) (x * x + y * y + z * z));
+                float delta = mAccelCurrent - mAccelLast;
+                mAccel = mAccel * 0.9f + delta;
+                if (mAccel > 12) {
+//                    Toast.makeText(getContext().getApplicationContext(), "Shake event detected", Toast.LENGTH_SHORT).show();
+                    Log.d("Shake event", "Shake event detected");
+                    shaking();
+                }
+            }
+            @Override
+            public void onAccuracyChanged(Sensor sensor, int accuracy) {
+            }
+        };
+
     }
 }
