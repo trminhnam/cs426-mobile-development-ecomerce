@@ -46,13 +46,13 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
 
         String title = item.getItemName();
         String price = item.getItemPrice();
-        String uID = item.getUid();
+        String shopName = item.getShopName();
         String itemCount = item.getItemCount();
 
         // set data to views
         holder.itemNameTextView.setText(title);
         holder.priceTextView.setText("$ " + price);
-        holder.uIDTextView.setText("Shop " + uID);
+        holder.shopNameTextView.setText(shopName);
         holder.itemCountTextView.setText(itemCount);
         callback.onItemClicked(position);
 
@@ -110,14 +110,14 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
     static class HolderCartItem extends RecyclerView.ViewHolder {
 
         // ui views for cart item row
-        private TextView itemNameTextView, uIDTextView, priceTextView, itemCountTextView;
+        private TextView itemNameTextView, shopNameTextView, priceTextView, itemCountTextView;
         private ImageButton btnAdd, btnMinus, btnRemove;
 
         // constructor
         public HolderCartItem(View itemView) {
             super(itemView);
             itemNameTextView = itemView.findViewById(R.id.itemNameTextView);
-            uIDTextView = itemView.findViewById(R.id.uIDTextView);
+            shopNameTextView = itemView.findViewById(R.id.shopNameTextView);
             priceTextView = itemView.findViewById(R.id.priceTextView);
             itemCountTextView = itemView.findViewById(R.id.itemCountTextView);
 
