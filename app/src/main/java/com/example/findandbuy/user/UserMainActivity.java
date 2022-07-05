@@ -7,10 +7,15 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
+import com.example.findandbuy.Database;
+import com.example.findandbuy.LoginActivity;
 import com.example.findandbuy.R;
 import com.example.findandbuy.fragment.CustomMapFragment;
 import com.example.findandbuy.fragment.UserGameFragment;
@@ -18,9 +23,17 @@ import com.example.findandbuy.fragment.UserProfileFragment;
 import com.example.findandbuy.fragment.UserShopFragment;
 import com.example.findandbuy.fragment.UserShoppingCartFragment;
 import com.example.findandbuy.navigation.BottomNavigationBehavior;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
 
 public class UserMainActivity extends AppCompatActivity {
 
@@ -29,6 +42,9 @@ public class UserMainActivity extends AppCompatActivity {
     private static BottomNavigationView navigation;
     private MaterialToolbar toolbar;
     private CoordinatorLayout.LayoutParams layoutParams;
+
+    private FirebaseAuth firebaseAuth;
+    private ProgressDialog progressDialog;
 
     // initialize the fragments
     private void initFragments() {
@@ -70,6 +86,13 @@ public class UserMainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_main);
         initFragments();
 
+        //Firebase
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Please wait");
+        progressDialog.setCanceledOnTouchOutside(false);
+
         // set toolbar
         toolbar = (MaterialToolbar) findViewById(R.id.topAppBar);
         // set the bottom navigation bar
@@ -85,8 +108,8 @@ public class UserMainActivity extends AppCompatActivity {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 if (item.getItemId() == R.id.logoutBtn){
-                    Log.d("test logout", "onMenuItemClick: here");
                     //Add logout here
+                    logOutUser();
                     return true;
                 }
                 return false;
@@ -117,6 +140,46 @@ public class UserMainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void logOutUser() {
+        progressDialog.setMessage("Logging out...");
+
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("online", "false");
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
+        ref.child(firebaseAuth.getUid()).updateChildren(hashMap)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        firebaseAuth.signOut();
+                        checkUser();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        progressDialog.dismiss();
+                        Toast.makeText(UserMainActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+        Log.d("log out", "logOutUser: log out");
+    }
+
+    private void checkUser() {
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        if (user == null){
+            startActivity(new Intent(UserMainActivity.this, LoginActivity.class));
+            finish();
+        }
+        else {
+            loadMyInfor();
+        }
+    }
+
+    private void loadMyInfor() {
+        Log.d("load infor", "loadMyInfor: test");
     }
 
     private void switchFragment(int index) {
