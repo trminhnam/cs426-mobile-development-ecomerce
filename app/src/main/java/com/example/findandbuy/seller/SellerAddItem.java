@@ -423,7 +423,6 @@ public class SellerAddItem extends AppCompatActivity {
                 .show();
     }
 
-
     private void showImagePickDialog() {
         String[] options = {"Camera", "Gallery", "Cancel"};
 

@@ -13,8 +13,10 @@ import android.view.View;
 import android.widget.ImageButton;
 
 import com.example.findandbuy.R;
+import com.example.findandbuy.fragment.SellerAddItemFragment;
 import com.example.findandbuy.fragment.SellerItemListFragment;
 import com.example.findandbuy.fragment.SellerProfileFragment;
+import com.example.findandbuy.fragment.UserGameFragment;
 import com.example.findandbuy.fragment.UserProfileFragment;
 import com.example.findandbuy.navigation.BottomNavigationBehavior;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -61,11 +63,11 @@ public class SellerMainActivity extends AppCompatActivity {
 
                         return true;
                     case R.id.navigation_add_item:
-                        Log.d("game", "onNavigationItemSelected: Im game");
+//                        Log.d("game", "onNavigationItemSelected: Im game");
 //                        if (savedInstanceState == null) {
 //                            getSupportFragmentManager().beginTransaction()
 //                                    .setReorderingAllowed(true)
-//                                    .add(R.id.seller_frame_container, UserGameFragment.class, null)
+//                                    .add(R.id.seller_frame_container, SellerAddItemFragment.class, null)
 //                                    .commit();
 //                        }
                         startActivity(new Intent(SellerMainActivity.this, SellerAddItem.class));
