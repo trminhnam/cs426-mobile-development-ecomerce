@@ -40,7 +40,7 @@ import java.util.HashMap;
 public class UserMainActivity extends AppCompatActivity {
 
     // save all the fragments in this array
-    private static Fragment[] fragments;
+    private static Fragment fragment;
     private static BottomNavigationView navigation;
     private MaterialToolbar toolbar;
     private CoordinatorLayout.LayoutParams layoutParams;
@@ -48,45 +48,32 @@ public class UserMainActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
 
-    // initialize the fragments
-    private void initFragments() {
-        fragments = new Fragment[5];
-        fragments[0] = null;
-        fragments[1] = null;
-        fragments[2] = null;
-        fragments[3] = null;
-        fragments[4] = null;
-    }
-
     // get the current fragment
     private Fragment getCurrentFragment(int index) {
-        if (fragments[index] == null) {
-            switch (index) {
-                case 0:
-                    fragments[index] = new UserProfileFragment();
-                    break;
-                case 1:
-                    fragments[index] = new UserShopFragment();
-                    break;
-                case 2:
-                    fragments[index] = new UserGameFragment();
-                    break;
-                case 3:
-                    fragments[index] = new UserShoppingCartFragment();
-                    break;
-                case 4:
-                    fragments[index] = new CustomMapFragment();
-                    break;
-            }
+        switch (index) {
+            case 0: // profile
+                fragment = UserProfileFragment.getInstance();
+                break;
+            case 1: // shop
+                fragment = UserShopFragment.getInstance();
+                break;
+            case 2: // game
+                fragment = UserGameFragment.getInstance();
+                break;
+            case 3: // shopping cart
+                fragment = UserShoppingCartFragment.getInstance();
+                break;
+            case 4: // map
+                fragment = CustomMapFragment.getInstance();
+                break;
         }
-        return fragments[index];
+        return fragment;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_main);
-        initFragments();
 
         //Firebase
         firebaseAuth = FirebaseAuth.getInstance();

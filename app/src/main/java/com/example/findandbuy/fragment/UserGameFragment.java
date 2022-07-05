@@ -48,6 +48,8 @@ import android.widget.Toast;
  */
 public class UserGameFragment extends Fragment {
 
+    private static UserGameFragment INSTANCE = null;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -65,7 +67,13 @@ public class UserGameFragment extends Fragment {
     private View view;
 
     public UserGameFragment() {
-        // Required empty public constructor
+    }
+
+    public static UserGameFragment getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new UserGameFragment();
+        }
+        return INSTANCE;
     }
 
     /**
@@ -113,6 +121,10 @@ public class UserGameFragment extends Fragment {
     }
 
     private void loadUserBonusFromFirebase() {
+        if (getContext() == null) {
+            userCoin = 0;
+            return;
+        }
         progressDialog.setMessage("Loading bonus");
         progressDialog.show();
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -142,6 +154,8 @@ public class UserGameFragment extends Fragment {
     }
 
     private void updateBonusToFirebase(String coins) {
+        if (getContext() == null)
+            return;
         progressDialog.setMessage("Updating bonus");
         progressDialog.show();
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();

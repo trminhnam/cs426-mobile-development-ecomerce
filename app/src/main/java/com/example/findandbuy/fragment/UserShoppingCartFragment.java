@@ -38,6 +38,8 @@ import java.util.Objects;
  */
 public class UserShoppingCartFragment extends Fragment {
 
+    private static UserShoppingCartFragment INSTANCE = null;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -59,6 +61,12 @@ public class UserShoppingCartFragment extends Fragment {
     private ProgressDialog progressDialog;
 
     public UserShoppingCartFragment() {
+    }
+    public static UserShoppingCartFragment getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new UserShoppingCartFragment();
+        }
+        return INSTANCE;
     }
 
     /**
