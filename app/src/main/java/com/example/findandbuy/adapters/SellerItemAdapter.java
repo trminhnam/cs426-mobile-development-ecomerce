@@ -1,5 +1,6 @@
 package com.example.findandbuy.adapters;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.text.Editable;
@@ -118,6 +119,7 @@ public class SellerItemAdapter
     }
 
     private int quantity = 1;
+    @SuppressLint("SetTextI18n")
     private void showUserItemDetailDialog(Item item){
         View view = LayoutInflater.from(context).inflate(R.layout.dialog_user_detail_item, null);
 
@@ -264,7 +266,7 @@ public class SellerItemAdapter
         itemNameTv.setText("" + itemName);
         categoryTv.setText("" + itemCategory);
         descriptionTv.setText("" + itemDescription);
-        priceTv.setText("$ " + itemPrice);
+        priceTv.setText("" + itemPrice);
 
         //increment
         incrementButton.setOnClickListener(new View.OnClickListener() {
