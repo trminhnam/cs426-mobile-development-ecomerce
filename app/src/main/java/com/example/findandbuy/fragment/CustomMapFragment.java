@@ -91,6 +91,8 @@ public class CustomMapFragment extends Fragment {
         progressDialog.setTitle("Please wait");
         progressDialog.setCanceledOnTouchOutside(false);
 
+        locationPermissions = new String[]{Manifest.permission.ACCESS_FINE_LOCATION};
+
         currentMarkerOptions = new MarkerOptions();
 
         sellerArrayList = new ArrayList<>();
@@ -269,7 +271,19 @@ public class CustomMapFragment extends Fragment {
     class DetectLocation extends AppCompatActivity implements LocationListener {
 
         public DetectLocation() {
-            detectLocation();
+            if (checkLocationPermission()) {
+                // already allowed
+                detectLocation();
+            } else {
+                requestLocationPermission();
+            }
+        }
+
+        // Check location permission
+        private boolean checkLocationPermission() {
+            boolean result = ContextCompat.checkSelfPermission(getContext(),
+                    Manifest.permission.ACCESS_FINE_LOCATION) == (PackageManager.PERMISSION_GRANTED);
+            return result;
         }
 
         @Override
