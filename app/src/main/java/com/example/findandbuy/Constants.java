@@ -14,7 +14,7 @@ public class Constants {
             "Movies",
             "Electronic devices",
             "Courses",
-            "NTF",
+            "NFT",
             "Others"
     };
 
