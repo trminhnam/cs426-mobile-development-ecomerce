@@ -94,19 +94,19 @@ public class RegisterSellerActivity extends AppCompatActivity implements Locatio
         gpsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if (checkLocationPermission()) {
-//                    // already allowed
-//                    detectLocation();
-//                } else {
-//                    requestLocationPermission();
-//                }
+                if (checkLocationPermission()) {
+                    // already allowed
+                    detectLocation();
+                } else {
+                    requestLocationPermission();
+                }
 
-//                Log.d("REGISTER_LOCATION", "Latitude = " + String.valueOf(lat));
-//                Log.d("REGISTER_LOCATION", "Longtitude = " + String.valueOf(lng));
+                Log.d("REGISTER_LOCATION", "Latitude = " + String.valueOf(lat));
+                Log.d("REGISTER_LOCATION", "Longtitude = " + String.valueOf(lng));
 
-                lat = Math.random() * (10.875863 - 10.727280) + 10.727280;
-                lng = Math.random() * (106.702834 - 106.544569) + 106.544569;
-                findAddress();
+//                lat = Math.random() * (10.875863 - 10.727280) + 10.727280;
+//                lng = Math.random() * (106.702834 - 106.544569) + 106.544569;
+//                findAddress();
             }
         });
 
