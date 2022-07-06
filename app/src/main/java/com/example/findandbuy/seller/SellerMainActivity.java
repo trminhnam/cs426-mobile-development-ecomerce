@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,16 +14,22 @@ import android.view.View;
 import android.widget.ImageButton;
 
 import com.example.findandbuy.R;
+import com.example.findandbuy.fragment.CustomMapFragment;
 import com.example.findandbuy.fragment.SellerAddItemFragment;
 import com.example.findandbuy.fragment.SellerItemListFragment;
 import com.example.findandbuy.fragment.SellerProfileFragment;
 import com.example.findandbuy.fragment.UserGameFragment;
 import com.example.findandbuy.fragment.UserProfileFragment;
+import com.example.findandbuy.fragment.UserShopFragment;
+import com.example.findandbuy.fragment.UserShoppingCartFragment;
 import com.example.findandbuy.navigation.BottomNavigationBehavior;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
 public class SellerMainActivity extends AppCompatActivity {
+
+
+    private static Fragment fragment = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,26 +48,29 @@ public class SellerMainActivity extends AppCompatActivity {
 
         layoutParams.setBehavior(new BottomNavigationBehavior());
 
+        switchFragment(0);
+
         navigation.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Fragment fragment;
-                //Delete all fragment in container before switch tab
-                for (Fragment fragmentInContainer : getSupportFragmentManager().getFragments()) {
-                    if (fragmentInContainer != null) {
-                        getSupportFragmentManager().beginTransaction().remove(fragmentInContainer).commit();
-                    }
-                }
+//                Fragment fragment;
+//                //Delete all fragment in container before switch tab
+//                for (Fragment fragmentInContainer : getSupportFragmentManager().getFragments()) {
+//                    if (fragmentInContainer != null) {
+//                        getSupportFragmentManager().beginTransaction().remove(fragmentInContainer).commit();
+//                    }
+//                }
                 switch (item.getItemId()) {
                     case R.id.navigation_item_list:
-                        Log.d("shop", "onNavigationItemSelected: Im shop");
-                        if (savedInstanceState == null) {
-                            getSupportFragmentManager().beginTransaction()
-                                    .setReorderingAllowed(true)
-                                    .add(R.id.seller_frame_container, SellerItemListFragment.class, null)
-                                    .commit();
-                        }
-
+//                        Log.d("shop", "onNavigationItemSelected: Im shop");
+//                        if (savedInstanceState == null) {
+//                            getSupportFragmentManager().beginTransaction()
+//                                    .setReorderingAllowed(true)
+//                                    .add(R.id.seller_frame_container, SellerItemListFragment.class, null)
+//                                    .commit();
+//                        }
+                        fragment = null;
+                        switchFragment(0);
                         return true;
                     case R.id.navigation_add_item:
 //                        Log.d("game", "onNavigationItemSelected: Im game");
@@ -70,6 +80,7 @@ public class SellerMainActivity extends AppCompatActivity {
 //                                    .add(R.id.seller_frame_container, SellerAddItemFragment.class, null)
 //                                    .commit();
 //                        }
+                        fragment = null;
                         startActivity(new Intent(SellerMainActivity.this, SellerAddItem.class));
                         return true;
 //                    case R.id.navigation_modify_items:
@@ -82,13 +93,15 @@ public class SellerMainActivity extends AppCompatActivity {
 ////                        }
 //                        return true;
                     case R.id.navigation_seller_profile:
-                        Log.d("profile", "onNavigationItemSelected: Im profile");
-                        if (savedInstanceState == null) {
-                            getSupportFragmentManager().beginTransaction()
-                                    .setReorderingAllowed(true)
-                                    .add(R.id.seller_frame_container, SellerProfileFragment.class, null)
-                                    .commit();
-                        }
+//                        Log.d("profile", "onNavigationItemSelected: Im profile");
+//                        if (savedInstanceState == null) {
+//                            getSupportFragmentManager().beginTransaction()
+//                                    .setReorderingAllowed(true)
+//                                    .add(R.id.seller_frame_container, SellerProfileFragment.class, null)
+//                                    .commit();
+//                        }
+                        fragment = null;
+                        switchFragment(1);
                         return true;
                 }
                 return true;
@@ -96,7 +109,22 @@ public class SellerMainActivity extends AppCompatActivity {
         });
     }
 
+    private void switchFragment(int index) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.seller_frame_container, getCurrentFragment(index));
+        transaction.commit();
+    }
 
+    private Fragment getCurrentFragment(int index) {
+        switch (index) {
+            case 0: // profile
+                fragment = SellerItemListFragment.getInstance();
+                break;
+            case 1: // shop
+                fragment = SellerProfileFragment.getInstance();
+        }
+        return fragment;
+    }
 
 }
 
