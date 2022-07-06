@@ -1,16 +1,20 @@
 package com.example.findandbuy.seller;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -28,6 +32,7 @@ import com.example.findandbuy.navigation.BottomNavigationBehavior;
 import com.example.findandbuy.user.UserMainActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -43,6 +48,8 @@ public class SellerMainActivity extends AppCompatActivity {
 
     private static Fragment fragment = null;
 
+    private MaterialToolbar toolbar;
+
     private FirebaseAuth firebaseAuth;
 
     @Override
@@ -56,6 +63,9 @@ public class SellerMainActivity extends AppCompatActivity {
                     .add(R.id.seller_frame_container, SellerItemListFragment.class, null)
                     .commit();
         }
+
+        // set toolbar
+        initToolbar();
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.seller_navigation);
         CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) navigation.getLayoutParams();
@@ -120,6 +130,29 @@ public class SellerMainActivity extends AppCompatActivity {
                         return true;
                 }
                 return true;
+            }
+        });
+    }
+
+    private void initToolbar() {
+        toolbar = (MaterialToolbar) findViewById(R.id.topAppBar);
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == R.id.logoutBtn){
+                    //Add logout here
+                    new AlertDialog.Builder(SellerMainActivity.this).setIcon(R.drawable.ic_logout_black)
+                            .setTitle("Logging out").setMessage("Are you sure you want to logging out?")
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    logOutSeller();
+                                    Toast.makeText(SellerMainActivity.this, "Logged out",Toast.LENGTH_SHORT).show();
+                                }
+                            }).setNegativeButton("No", null).show();
+                    return true;
+                }
+                return false;
             }
         });
     }
