@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.SellerProfileFragment">
+
+<!-- TODO: Update blank fragment layout -->
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingTop="40dp"
+    android:layout_centerVertical="false"
+    android:layout_below="@+id/navBar"
+    android:focusableInTouchMode="true">
+
+    <TextView
+        style="@style/TextAppearance.MaterialComponents.Headline5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="16dp"
+        android:text="Seller Profile"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/sellerFullnameProfileTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/shape_rect02"
+        android:drawableStart="@drawable/ic_person_white"
+        style="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@color/black"
+        android:gravity="center_vertical"
+        android:drawablePadding="5dp"
+        android:drawableTint="@color/htmlGrey"
+        android:hint="Full Name"
+        android:inputType="text"
+        android:minHeight="48dp"
+        android:padding="10dp" />
+
+    <TextView
+        android:id="@+id/sellerShopnameProfileTextView"
+        style="@style/TextAppearance.AppCompat.Medium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/shape_rect02"
+        android:drawableStart="@drawable/ic_store_gray"
+        android:drawablePadding="5dp"
+        android:drawableTint="@color/htmlGrey"
+        android:gravity="center_vertical"
+        android:hint="Shop Name"
+        android:inputType="text"
+        android:minHeight="48dp"
+        android:padding="10dp"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/sellerEmailProfileTẽtView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        style="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@color/black"
+        android:background="@drawable/shape_rect02"
+        android:drawableStart="@drawable/ic_outline_email_24"
+        android:drawablePadding="5dp"
+        android:drawableTint="@color/htmlGrey"
+        android:hint="Email"
+        android:inputType="textEmailAddress"
+        android:minHeight="48dp"
+        android:padding="10dp"
+        android:gravity="center_vertical"
+        />
+
+    <TextView
+        android:id="@+id/sellerAddressProfileTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        style="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@color/black"
+        android:background="@drawable/shape_rect02"
+        android:drawableStart="@drawable/ic_baseline_location_on_24"
+        android:drawablePadding="5dp"
+        android:drawableTint="@color/htmlGrey"
+        android:hint="Address"
+        android:inputType="numberSigned"
+        android:minHeight="48dp"
+        android:padding="10dp"
+        android:gravity="center_vertical"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
+        />
+
+    <TextView
+        android:id="@+id/sellerPhoneNumberProfileTextView"
+        style="@style/TextAppearance.AppCompat.Medium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/shape_rect02"
+        android:drawableStart="@drawable/ic_contact_phone_gray"
+        android:drawablePadding="5dp"
+        android:drawableTint="@color/htmlGrey"
+        android:gravity="center_vertical"
+        android:hint="Phone Number"
+        android:inputType="numberSigned"
+        android:minHeight="48dp"
+        android:padding="10dp"
+        android:textColor="@color/black" />
+
+
+</LinearLayout>
+
+</FrameLayout>

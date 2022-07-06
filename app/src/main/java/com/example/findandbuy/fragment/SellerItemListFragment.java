@@ -37,6 +37,19 @@ import java.util.ArrayList;
  */
 public class SellerItemListFragment extends Fragment {
 
+    private static SellerItemListFragment INSTANCE = null;
+
+    public SellerItemListFragment() {
+        // Required empty public constructor
+    }
+
+    public static SellerItemListFragment getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new SellerItemListFragment();
+        }
+        return INSTANCE;
+    }
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -53,9 +66,6 @@ public class SellerItemListFragment extends Fragment {
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
 
-    public SellerItemListFragment() {
-        // Required empty public constructor
-    }
 
     /**
      * Use this factory method to create a new instance of
