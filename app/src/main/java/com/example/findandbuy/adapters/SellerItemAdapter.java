@@ -360,7 +360,9 @@ public class SellerItemAdapter
         newdata.put(newItem.getItemID(), newItem);
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
-        databaseReference.child(firebaseAuth.getUid()).child("Items")
+        databaseReference
+                .child(Objects.requireNonNull(firebaseAuth.getUid()))
+                .child("Items")
                 .updateChildren(newdata)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -387,7 +389,9 @@ public class SellerItemAdapter
         newdata.put(item.getItemID(), item);
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
-        databaseReference.child(firebaseAuth.getUid()).child("Items")
+        databaseReference
+                .child(Objects.requireNonNull(firebaseAuth.getUid()))
+                .child("Items")
                 .updateChildren(newdata)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

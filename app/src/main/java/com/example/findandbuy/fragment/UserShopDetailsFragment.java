@@ -52,7 +52,7 @@ public class UserShopDetailsFragment extends Fragment {
     private ImageButton callButton, mapButton, backButton;
     private Spinner categorySpinner;
 
-    private String shopUid, shopNameDetail, emailDetail, addressDetail;
+    private String shopUid, shopNameDetail, emailDetail, addressDetail, phoneNumDetail;
 
     // TODO: Load from database
     private ArrayList<Item> listItems = new ArrayList<>();
@@ -69,15 +69,6 @@ public class UserShopDetailsFragment extends Fragment {
 
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ShopFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static UserShopDetailsFragment newInstance(String param1, String param2) {
         UserShopDetailsFragment fragment = new UserShopDetailsFragment();
         Bundle args = new Bundle();
@@ -107,6 +98,7 @@ public class UserShopDetailsFragment extends Fragment {
             this.shopNameDetail = bundle.getString("shopName");
             this.emailDetail = bundle.getString("email");
             this.addressDetail = bundle.getString("address");
+            this.phoneNumDetail = bundle.getString("phoneNumber");
         }
     }
 
@@ -151,7 +143,7 @@ public class UserShopDetailsFragment extends Fragment {
         shopName.setText(shopNameDetail);
         email.setText(emailDetail);
         address.setText(addressDetail);
-        phoneNum.setText("12345678");
+        phoneNum.setText(phoneNumDetail);
 
         listItemRv = (RecyclerView) view.findViewById(R.id.listProductsRv);
 
@@ -168,7 +160,7 @@ public class UserShopDetailsFragment extends Fragment {
         callButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dialPhoneNumber(phoneNum.getText().toString().trim());
+                dialPhoneNumber(phoneNumDetail);
             }
         });
         return view;

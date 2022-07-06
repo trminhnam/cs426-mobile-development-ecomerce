@@ -3,6 +3,7 @@ package com.example.findandbuy.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,7 +51,7 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ShopHolder> {
         //uid, fullName, shopNames, phoneNum, street, district, city, address, email, password, confirmPassword, profileImage;
         String uid = shop.getUid();
         String shopNames = shop.getShopName();
-//        String phoneNum = shop.();
+        String phoneNum = shop.getPhoneNumber();
         String address = shop.getAddress();
         String email = shop.getEmail();
 
@@ -58,7 +59,8 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ShopHolder> {
         holder.shopNameTv.setText(shopNames);
         holder.addressTv.setText(address);
         holder.phoneTv.setVisibility(View.INVISIBLE);
-//        holder.phoneTv.setText(phoneNum);
+        holder.phoneTv.setText(phoneNum);
+        Log.d("SHOP_ADAPTER", "Phone number: " + phoneNum);
 
         // auto show shop icon
         // replace shop image in the future
@@ -73,15 +75,13 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ShopHolder> {
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent = new Intent(context, ShopDetailsActivity.class);
-//                intent.putExtra("shopUid",uid);
-//                context.startActivity(intent);
                 Bundle bundle = new Bundle();
                 Fragment fragment = new UserShopDetailsFragment();
                 bundle.putString("shopUid", uid);
                 bundle.putString("shopName", shopNames);
                 bundle.putString("email", email);
                 bundle.putString("address", address);
+                bundle.putString("phoneNumber", phoneNum);
                 fragment.setArguments(bundle);
                 ((AppCompatActivity)context).getSupportFragmentManager()
                         .beginTransaction().replace(R.id.frame_container, fragment).addToBackStack(null)
