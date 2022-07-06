@@ -47,7 +47,6 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ShopHolder> {
     public void onBindViewHolder(@NonNull ShopHolder holder, int position) {
         //get data from shop model
         Seller shop = shopsList.get(position);
-        //uid, fullName, shopNames, phoneNum, street, district, city, address, email, password, confirmPassword, profileImage;
         String uid = shop.getUid();
         String shopNames = shop.getShopName();
 //        String phoneNum = shop.();
@@ -73,9 +72,6 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ShopHolder> {
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent = new Intent(context, ShopDetailsActivity.class);
-//                intent.putExtra("shopUid",uid);
-//                context.startActivity(intent);
                 Bundle bundle = new Bundle();
                 Fragment fragment = new UserShopDetailsFragment();
                 bundle.putString("shopUid", uid);
