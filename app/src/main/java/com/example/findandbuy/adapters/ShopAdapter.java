@@ -48,7 +48,6 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ShopHolder> {
     public void onBindViewHolder(@NonNull ShopHolder holder, int position) {
         //get data from shop model
         Seller shop = shopsList.get(position);
-        //uid, fullName, shopNames, phoneNum, street, district, city, address, email, password, confirmPassword, profileImage;
         String uid = shop.getUid();
         String shopNames = shop.getShopName();
         String phoneNum = shop.getPhoneNumber();
