@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +22,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -65,6 +67,7 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
         String price = item.getItemPrice();
         String shopName = item.getShopName();
         String itemCount = item.getItemCount();
+        String itemImage = item.getItemImage();
 
         // set data to views
         holder.itemNameTextView.setText(title);
@@ -72,6 +75,14 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
         holder.shopNameTextView.setText(shopName);
         holder.itemCountTextView.setText(itemCount);
         callback.onItemClicked(position);
+
+        // set item image
+        try{
+            Picasso.get().load(itemImage).placeholder(R.drawable.ic_baseline_shopping_cart_24).into(holder.itemImageView);
+        }
+        catch (Exception e){
+            holder.itemImageView.setImageResource(R.drawable.ic_baseline_storefront_24);
+        }
 
         holder.btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -201,6 +212,7 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
         // ui views for cart item row
         private TextView itemNameTextView, shopNameTextView, priceTextView, itemCountTextView;
         private ImageButton btnAdd, btnMinus, btnRemove;
+        private ImageView itemImageView;
 
         // constructor
         public HolderCartItem(View itemView) {
@@ -213,6 +225,8 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
             btnAdd = itemView.findViewById(R.id.btnAdd);
             btnMinus = itemView.findViewById(R.id.btnMinus);
             btnRemove = itemView.findViewById(R.id.btnRemove);
+
+            itemImageView = itemView.findViewById(R.id.itemImageView);
         }
     }
 }
