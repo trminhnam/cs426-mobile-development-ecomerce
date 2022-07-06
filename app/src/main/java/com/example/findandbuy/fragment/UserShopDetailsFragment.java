@@ -35,17 +35,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 
 public class UserShopDetailsFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     private ImageView shopIv;
     private TextView shopName, phoneNum, email, address;
@@ -58,46 +50,25 @@ public class UserShopDetailsFragment extends Fragment {
     private ArrayList<Item> listItems = new ArrayList<>();
     private ArrayList<Item> fillteredListItems = new ArrayList<>();
     private String[] listCategories = Constants.options;
-    private String currentFilter = "All";
 
     RecyclerView listItemRv;
 
-    private FirebaseAuth firebaseAuth;
-    private ProgressDialog progressDialog;
+    FirebaseAuth firebaseAuth;
 
     public UserShopDetailsFragment() {
 
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ShopFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static UserShopDetailsFragment newInstance(String param1, String param2) {
-        UserShopDetailsFragment fragment = new UserShopDetailsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+        return new UserShopDetailsFragment();
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
 
         firebaseAuth = FirebaseAuth.getInstance();
-        progressDialog = new ProgressDialog(getContext());
+        ProgressDialog progressDialog = new ProgressDialog(getContext());
         progressDialog.setTitle("Please wait");
         progressDialog.setCanceledOnTouchOutside(false);
 
@@ -110,7 +81,7 @@ public class UserShopDetailsFragment extends Fragment {
         }
     }
 
-    @SuppressLint("ResourceType")
+    @SuppressLint({"ResourceType", "SetTextI18n"})
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -132,15 +103,16 @@ public class UserShopDetailsFragment extends Fragment {
         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, categories);
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        Spinner spinner = view.findViewById(R.id.categorySpinner);
+        @SuppressLint("CutPasteId") Spinner spinner = view.findViewById(R.id.categorySpinner);
         spinner.setAdapter(spinnerArrayAdapter);
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedItem = parent.getItemAtPosition(position).toString();
                 setFillteredListItems(selectedItem);
-                listItemRv.getAdapter().notifyDataSetChanged();
+                Objects.requireNonNull(listItemRv.getAdapter()).notifyDataSetChanged();
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -157,20 +129,12 @@ public class UserShopDetailsFragment extends Fragment {
 
         loadSellerItems();
 
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // commit fragment
-                requireActivity().getSupportFragmentManager().popBackStack();
-            }
+        backButton.setOnClickListener(view12 -> {
+            // commit fragment
+            requireActivity().getSupportFragmentManager().popBackStack();
         });
 
-        callButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialPhoneNumber(phoneNum.getText().toString().trim());
-            }
-        });
+        callButton.setOnClickListener(view1 -> dialPhoneNumber(phoneNum.getText().toString().trim()));
         return view;
     }
 
@@ -221,8 +185,8 @@ public class UserShopDetailsFragment extends Fragment {
         Log.d("phone1", "dialPhoneNumber: test" + phoneNumber);
 //        getActivity().startActivity(intent);
 //        Log.d("phone2", "dialPhoneNumber: test");
-        if (intent.resolveActivity(getContext().getPackageManager()) != null) {
-            getActivity().startActivity(intent);
+        if (intent.resolveActivity(requireContext().getPackageManager()) != null) {
+            requireActivity().startActivity(intent);
             Log.d("phone2", "dialPhoneNumber: test");
         }
     }

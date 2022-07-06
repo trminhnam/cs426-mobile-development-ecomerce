@@ -94,6 +94,5 @@ public class ShopDetailsActivity extends AppCompatActivity {
 
             }
         });
-
     }
 }

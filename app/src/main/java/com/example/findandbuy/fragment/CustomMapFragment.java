@@ -26,24 +26,18 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import com.example.findandbuy.R;
-import com.example.findandbuy.databinding.ActivityMapsBinding;
 import com.example.findandbuy.models.Seller;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
-import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.Task;
-import com.google.common.collect.MapMaker;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -51,8 +45,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class CustomMapFragment extends Fragment {
 
@@ -60,34 +52,24 @@ public class CustomMapFragment extends Fragment {
 
     MapView mMapView;
     private GoogleMap googleMap;
-
-    private FirebaseAuth firebaseAuth;
-    private ProgressDialog progressDialog;
+    private Marker currentMarker;
+    private MarkerOptions currentMarkerOptions;
+    private double cur_lat = 0.0, cur_lng = 0.0;
 
     private ArrayList<Seller> sellerArrayList;
     private ArrayList<LatLng> latLngArrayList;
 
-    private GoogleMap mMap;
-    private ActivityMapsBinding binding;
-
-    private double cur_lat = 0.0, cur_lng = 0.0;
-    private LocationManager locationManager;
     // permission arrays
     private String[] locationPermissions;
-    // permission constants
     private static final int LOCATION_REQUEST_CODE = 100;
 
     private boolean firstTime = true;
-
-    private MarkerOptions currentMarkerOptions;
-    private Marker currentMarker;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        firebaseAuth = FirebaseAuth.getInstance();
-        progressDialog = new ProgressDialog(getContext());
+        ProgressDialog progressDialog = new ProgressDialog(getContext());
         progressDialog.setTitle("Please wait");
         progressDialog.setCanceledOnTouchOutside(false);
 
@@ -119,27 +101,14 @@ public class CustomMapFragment extends Fragment {
         mMapView.onResume(); // needed to get the map to display immediately
 
         try {
-            MapsInitializer.initialize(getActivity().getApplicationContext());
+            MapsInitializer.initialize(requireActivity().getApplicationContext());
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        mMapView.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(GoogleMap mMap) {
-                googleMap = mMap;
-
-
-//                // For dropping a marker at a point on the Map
-//                LatLng sydney = new LatLng(-34, 151);
-//                googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker Title").snippet("Marker Description"));
-//
-//                // For zooming automatically to the location of the marker
-//                CameraPosition cameraPosition = new CameraPosition.Builder().target(sydney).zoom(12).build();
-//                googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
-                loadSellerLists();
-            }
+        mMapView.getMapAsync(mMap -> {
+            googleMap = mMap;
+            loadSellerLists();
         });
 
         return rootView;
@@ -170,16 +139,13 @@ public class CustomMapFragment extends Fragment {
     }
 
     private void drawShopMarkers(GoogleMap googleMap) {
-//        Double avgLat = new Double(0.0), avgLng = new Double(0.0);
-//        Log.d("LAT_LNG", "AVG Latitude = " + avgLat);
-//        Log.d("LAT_LNG", "AVG Longtitude = " + avgLng);
         LatLngBounds.Builder b = new LatLngBounds.Builder();
         for( int i  = 0; i < latLngArrayList.size();i++){
             LatLng latLng = latLngArrayList.get(i);
-//            avgLat = avgLat + latLng.latitude;
-//            avgLng = avgLng + latLng.longitude;
+
             Log.d("LAT_LNG", "Latitude = " + latLng.latitude);
-            Log.d("LAT_LNG", "Longtitude = " + latLng.longitude);
+            Log.d("LAT_LNG", "Longitude = " + latLng.longitude);
+
             MarkerOptions markerOptions = new MarkerOptions()
                     .position(latLng)
                     .icon(bitmapDescriptorFromVector(getContext(), R.drawable.ic_baseline_storefront_24))
@@ -188,7 +154,6 @@ public class CustomMapFragment extends Fragment {
             googleMap.addMarker(markerOptions);
         }
 
-        // Reference: https://stackoverflow.com/questions/22553792/how-set-zoom-level-on-google-map-dynamically-in-android
         LatLngBounds bounds = b.build();
         //Change the padding as per needed
         CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 700,700,2);
@@ -213,8 +178,8 @@ public class CustomMapFragment extends Fragment {
         latLngArrayList = new ArrayList<>();
         for (Seller seller: this.sellerArrayList){
             LatLng latLng = new LatLng(
-                    Double.valueOf(seller.getLat()),
-                    Double.valueOf(seller.getLng())
+                    Double.parseDouble(seller.getLat()),
+                    Double.parseDouble(seller.getLng())
             );
             Log.d("LOAD_LAT_LNG", ""+Double.valueOf(seller.getLat()) + ", " + Double.valueOf(seller.getLng()));
             latLngArrayList.add(latLng);
@@ -238,6 +203,7 @@ public class CustomMapFragment extends Fragment {
                             if (accountType.equals("Seller")){
                                 Seller seller = ds.getValue(Seller.class);
                                 sellerArrayList.add(seller);
+                                assert seller != null;
                                 Log.d("ACCOUNT_RETRIEVAL", seller.getEmail() + ": " + seller.getAccountType());
                                 Log.d("ACCOUNT_RETRIEVAL", "Lat = " + seller.getLat() + ", Lng = " + seller.getLng());
                             }
@@ -259,6 +225,7 @@ public class CustomMapFragment extends Fragment {
             return null;
         }
         Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
+        assert vectorDrawable != null;
         vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
         Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
@@ -274,15 +241,13 @@ public class CustomMapFragment extends Fragment {
 
         @Override
         public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-            switch (requestCode) {
-                case LOCATION_REQUEST_CODE: {
-                    if (grantResults.length > 0) {
-                        boolean locationAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                        if (locationAccepted) {
-                            detectLocation();
-                        } else {
-                            Toast.makeText(getContext(), "Location permission is required ...", Toast.LENGTH_SHORT).show();
-                        }
+            if (requestCode == LOCATION_REQUEST_CODE) {
+                if (grantResults.length > 0) {
+                    boolean locationAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                    if (locationAccepted) {
+                        detectLocation();
+                    } else {
+                        Toast.makeText(getContext(), "Location permission is required ...", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -306,8 +271,8 @@ public class CustomMapFragment extends Fragment {
             cur_lat = location.getLatitude();
             cur_lng = location.getLongitude();
 
-            Log.d("REGISTER_LOCATION", "Latitude = " + String.valueOf(cur_lat));
-            Log.d("REGISTER_LOCATION", "Longtitude = " + String.valueOf(cur_lng));
+            Log.d("REGISTER_LOCATION", "Latitude = " + cur_lat);
+            Log.d("REGISTER_LOCATION", "Longitude = " + cur_lng);
 
             if (!firstTime)
                 drawCurrentPosition();
@@ -316,20 +281,14 @@ public class CustomMapFragment extends Fragment {
         private void detectLocation() {
             Toast.makeText(getContext(), "Please wait...", Toast.LENGTH_SHORT).show();
 
-            locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
+            LocationManager locationManager = (LocationManager) requireContext().getSystemService(Context.LOCATION_SERVICE);
 
-            if (ActivityCompat.checkSelfPermission(getContext(),
+            if (ActivityCompat.checkSelfPermission(requireContext(),
                     Manifest.permission.ACCESS_FINE_LOCATION)
                     != PackageManager.PERMISSION_GRANTED
-                    && ActivityCompat.checkSelfPermission(getContext(),
+                    && ActivityCompat.checkSelfPermission(requireContext(),
                     Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
+
                 requestLocationPermission();
                 return;
             }
@@ -345,10 +304,7 @@ public class CustomMapFragment extends Fragment {
         }
 
         private void requestLocationPermission() {
-            ActivityCompat.requestPermissions((Activity) getContext(), locationPermissions, LOCATION_REQUEST_CODE);
+            ActivityCompat.requestPermissions((Activity) requireContext(), locationPermissions, LOCATION_REQUEST_CODE);
         }
-
-
     }
-
 }

@@ -1,5 +1,6 @@
 package com.example.findandbuy.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -8,7 +9,6 @@ import android.graphics.Canvas;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
@@ -22,12 +22,7 @@ import android.widget.RelativeLayout;
 import com.example.findandbuy.R;
 import com.example.findandbuy.Sound;
 import com.example.findandbuy.Sprite2D;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -41,23 +36,10 @@ import android.hardware.SensorManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link UserGameFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class UserGameFragment extends Fragment {
 
+    @SuppressLint("StaticFieldLeak")
     private static UserGameFragment INSTANCE = null;
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     private TextView showCoinTV;
     private Integer userCoin=0;
@@ -77,31 +59,13 @@ public class UserGameFragment extends Fragment {
         return INSTANCE;
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment GameFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static UserGameFragment newInstance(String param1, String param2) {
-        UserGameFragment fragment = new UserGameFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+        return new UserGameFragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
 
         firebaseAuth = FirebaseAuth.getInstance();
         progressDialog = new ProgressDialog(getContext());
@@ -127,6 +91,7 @@ public class UserGameFragment extends Fragment {
         isUserInGame = false;
     }
 
+    @SuppressLint("SetTextI18n")
     private void loadUserBonusFromFirebase() {
         if (getContext() == null) {
             userCoin = 0;
@@ -139,24 +104,21 @@ public class UserGameFragment extends Fragment {
                 .child(Objects.requireNonNull(firebaseAuth.getUid()))
                 .child("bonus")
                 .get()
-                .addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DataSnapshot> task) {
-                        if (!task.isSuccessful()) {
-                            progressDialog.dismiss();
-                            userCoin = 0;
-                            Toast.makeText(getContext(), "Error getting bonus. Set bonus to 0", Toast.LENGTH_SHORT).show();
-                        }
-                        else {
-                            userCoin = Integer.valueOf(task.getResult().getValue().toString());
-                            progressDialog.dismiss();
-                            Toast.makeText(getContext(), "Bonus loaded", Toast.LENGTH_SHORT).show();
-                        }
-                        RelativeLayout relativeLayout = (RelativeLayout) view.findViewById(R.id.game_animation);
-                        showCoinTV = (TextView) view.findViewById(R.id.showCoinTV);
-                        showCoinTV.setText("Total coins: " + userCoin.toString());
-                        relativeLayout.addView(new AnimationView(getActivity()));
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                        progressDialog.dismiss();
+                        userCoin = 0;
+                        Toast.makeText(getContext(), "Error getting bonus. Set bonus to 0", Toast.LENGTH_SHORT).show();
                     }
+                    else {
+                        userCoin = Integer.valueOf(Objects.requireNonNull(task.getResult().getValue()).toString());
+                        progressDialog.dismiss();
+                        Toast.makeText(getContext(), "Bonus loaded", Toast.LENGTH_SHORT).show();
+                    }
+                    RelativeLayout relativeLayout = (RelativeLayout) view.findViewById(R.id.game_animation);
+                    showCoinTV = (TextView) view.findViewById(R.id.showCoinTV);
+                    showCoinTV.setText("Total coins: " + userCoin.toString());
+                    relativeLayout.addView(new AnimationView(getActivity()));
                 });
     }
 
@@ -170,19 +132,13 @@ public class UserGameFragment extends Fragment {
                 .child(Objects.requireNonNull(firebaseAuth.getUid()))
                 .child("bonus")
                 .setValue(coins)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        progressDialog.dismiss();
-                        Toast.makeText(getContext(), "Bonus updated", Toast.LENGTH_SHORT).show();
-                    }
+                .addOnSuccessListener(unused -> {
+                    progressDialog.dismiss();
+                    Toast.makeText(getContext(), "Bonus updated", Toast.LENGTH_SHORT).show();
                 })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        progressDialog.dismiss();
-                        Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
+                .addOnFailureListener(e -> {
+                    progressDialog.dismiss();
+                    Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
 
     }
@@ -190,8 +146,6 @@ public class UserGameFragment extends Fragment {
     private class AnimationView extends View {
         private ArrayList<Sprite2D> sprites;
 
-        // sensor variables
-        private SensorManager mSensorManager;
         private float mAccel;
         private float mAccelCurrent;
         private float mAccelLast;
@@ -200,7 +154,8 @@ public class UserGameFragment extends Fragment {
         private Sound soundCoinDrop;
 
         private void initSensor() {
-            mSensorManager = (SensorManager) requireActivity().getSystemService(Context.SENSOR_SERVICE);
+            // sensor variables
+            SensorManager mSensorManager = (SensorManager) requireActivity().getSystemService(Context.SENSOR_SERVICE);
 
             mSensorManager.registerListener(mSensorListener,
                     mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
@@ -218,6 +173,7 @@ public class UserGameFragment extends Fragment {
             soundCoinDrop = new Sound("coin Sound Effect", MediaPlayer.create(getContext(), R.raw.coinsoundeffect));
         }
 
+        @SuppressLint("SetTextI18n")
         private void shaking() {
             if (getContext() == null || !isUserInGame)
                 return;
@@ -226,7 +182,7 @@ public class UserGameFragment extends Fragment {
                 sprites.get(i).update();
 
             userCoin += 1;
-            showCoinTV.setText("Total coins: " + userCoin.toString());
+            showCoinTV.setText("Total coins: " + userCoin);
 
             soundCoinDrop.getSource().start();
             invalidate();
@@ -281,22 +237,6 @@ public class UserGameFragment extends Fragment {
                 sprites.get(i).draw(canvas);
         }
 
-        private void selectSprite(int newIndex) {
-            for (int i=0; i<sprites.size(); i++)
-                if (i == newIndex)
-                    sprites.get(i).State = 1;
-                else
-                    sprites.get(i).State = 0;
-
-        }
-
-        private int getSelectedSpriteIndex(float x, float y) {
-            for (int i=sprites.size()-1;i>=0; i--)
-                if (sprites.get(i).isSelected(x, y))
-                    return i;
-            return -1;
-        }
-
         private int getHeightResources() {
             return getResources().getDisplayMetrics().heightPixels;
         }
@@ -325,6 +265,5 @@ public class UserGameFragment extends Fragment {
             public void onAccuracyChanged(Sensor sensor, int accuracy) {
             }
         };
-
     }
 }

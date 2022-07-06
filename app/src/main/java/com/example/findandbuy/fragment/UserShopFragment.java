@@ -17,7 +17,6 @@ import android.widget.Toast;
 import com.example.findandbuy.R;
 import com.example.findandbuy.adapters.ShopAdapter;
 import com.example.findandbuy.models.Seller;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,28 +25,13 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link UserShopFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class UserShopFragment extends Fragment {
 
     private static UserShopFragment INSTANCE = null;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
     private RecyclerView recyclerView;
     private ArrayList<Seller> sellerArrayList;
 
-    private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
 
     public UserShopFragment() {
@@ -60,38 +44,17 @@ public class UserShopFragment extends Fragment {
         return INSTANCE;
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ShopFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static UserShopFragment newInstance(String param1, String param2) {
-        UserShopFragment fragment = new UserShopFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+        return new UserShopFragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
 
-        firebaseAuth = FirebaseAuth.getInstance();
         progressDialog = new ProgressDialog(getContext());
         progressDialog.setTitle("Please wait");
         progressDialog.setCanceledOnTouchOutside(false);
-
-
     }
 
     @Override
@@ -106,7 +69,6 @@ public class UserShopFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-
         progressDialog.setMessage("Loading shops");
         progressDialog.show();
         loadSellerLists();
@@ -170,6 +132,4 @@ public class UserShopFragment extends Fragment {
                     }
                 });
     }
-
-
 }

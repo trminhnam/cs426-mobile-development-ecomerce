@@ -2,7 +2,6 @@ package com.example.findandbuy.fragment;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -26,14 +25,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.findandbuy.Constants;
 import com.example.findandbuy.R;
-import com.example.findandbuy.seller.SellerAddItem;
-import com.example.findandbuy.seller.SellerMainActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -50,12 +46,8 @@ import com.google.firebase.storage.UploadTask;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Objects;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link SellerAddItemFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class SellerAddItemFragment extends Fragment {
 
     private ImageView productPhotoImageView;
@@ -64,8 +56,6 @@ public class SellerAddItemFragment extends Fragment {
     private EditText itemPriceEditText;
     private EditText itemCountEditText;
     private EditText itemDescriptionEditText;
-
-    private Button addProductButton;
 
 
     // permission constant
@@ -94,29 +84,13 @@ public class SellerAddItemFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SellerAddItemFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static SellerAddItemFragment newInstance(String param1, String param2) {
-        SellerAddItemFragment fragment = new SellerAddItemFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
+        return new SellerAddItemFragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-        }
-
-
     }
 
     @Override
@@ -143,7 +117,7 @@ public class SellerAddItemFragment extends Fragment {
         itemCountEditText = view.findViewById(R.id.itemCountEditText);
         itemDescriptionEditText = view.findViewById(R.id.itemDescriptionEditText);
 
-        addProductButton = view.findViewById(R.id.addProductButton);
+        Button addProductButton = view.findViewById(R.id.addProductButton);
 
         cameraPermissions = new String[]{
                 Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -153,26 +127,13 @@ public class SellerAddItemFragment extends Fragment {
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
         };
 
-        productPhotoImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                customViewForIntent.showImagePickDialog();
-            }
-        });
+        productPhotoImageView.setOnClickListener(v -> customViewForIntent.showImagePickDialog());
 
-        itemCategoryEditText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                customViewForIntent.showCaterogyDialig();
-            }
-        });
+        itemCategoryEditText.setOnClickListener(v -> customViewForIntent.showCaterogyDialig());
 
-        addProductButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Flow: 1. input data, 2. Validate data, 3. add data to db
-                inputData();
-            }
+        addProductButton.setOnClickListener(v -> {
+            // Flow: 1. input data, 2. Validate data, 3. add data to db
+            inputData();
         });
 
         // get shop name from firebase to add shopName to item
@@ -255,11 +216,8 @@ public class SellerAddItemFragment extends Fragment {
 //            progressDialog.show();
 
             String timestamp = "" + System.currentTimeMillis();
-            Log.d("ADD_ITEM", "timestamp = " + timestamp.toString());
+            Log.d("ADD_ITEM", "timestamp = " + timestamp);
             Log.d("ADD_ITEM", "firebase auth uid = " + firebaseAuth.getUid());
-            Toast.makeText(getContext(), firebaseAuth.getUid().toString(), Toast.LENGTH_LONG);
-            Toast.makeText(getContext(), timestamp, Toast.LENGTH_LONG);
-
 
             if (image_uri == null) {
 //                progressDialog.setMessage("Uploading item data");
@@ -277,21 +235,15 @@ public class SellerAddItemFragment extends Fragment {
                 hashMap.put("uid", "" + firebaseAuth.getUid());
                 hashMap.put("shopName", shopName);
                 DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
-                databaseReference.child(firebaseAuth.getUid()).child("Items").child(timestamp).setValue(hashMap)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void unused) {
+                databaseReference.child(Objects.requireNonNull(firebaseAuth.getUid())).child("Items").child(timestamp).setValue(hashMap)
+                        .addOnSuccessListener(unused -> {
 //                                progressDialog.dismiss();
-                                Toast.makeText(getContext(), "Item added", Toast.LENGTH_SHORT).show();
-                                clearData();
-                            }
+                            Toast.makeText(getContext(), "Item added", Toast.LENGTH_SHORT).show();
+                            clearData();
                         })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
+                        .addOnFailureListener(e -> {
 //                                progressDialog.dismiss();
-                                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
+                            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                         });
             } else {
                 // upload with image
@@ -304,65 +256,53 @@ public class SellerAddItemFragment extends Fragment {
                 // resize 255*255 image from uri before upload and return uri of image
                 Bitmap bitmap = null;
                 try {
-                    bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), image_uri);
+                    bitmap = MediaStore.Images.Media.getBitmap(requireContext().getContentResolver(), image_uri);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 Bitmap bitmapResized = Bitmap.createScaledBitmap(bitmap, 255, 255, false);
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 bitmapResized.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                image_uri = Uri.parse(MediaStore.Images.Media.insertImage(getContext().getContentResolver(), bitmapResized, timestamp, null));
+                image_uri = Uri.parse(MediaStore.Images.Media.insertImage(requireContext().getContentResolver(), bitmapResized, timestamp, null));
 
                 storageReference.putFile(image_uri)
-                        .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                            @Override
-                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
-                                while (!uriTask.isSuccessful()) {
-                                }
-                                Uri downloadImageUri = uriTask.getResult();
+                        .addOnSuccessListener(taskSnapshot -> {
+                            Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+//                            while (!uriTask.isSuccessful()) {
+//                            }
+                            Uri downloadImageUri = uriTask.getResult();
 
-                                if (uriTask.isSuccessful()) {
+                            if (uriTask.isSuccessful()) {
 //                                    progressDialog.setMessage("Uploading item data");
-                                    // receivev image url
-                                    HashMap<String, Object> hashMap = new HashMap<>();
-                                    hashMap.put("itemID", "" + timestamp);
-                                    hashMap.put("itemName", itemName);
-                                    hashMap.put("itemCategory", itemCategory);
-                                    hashMap.put("itemPrice", itemPrice);
-                                    hashMap.put("itemCount", itemCount);
-                                    hashMap.put("itemDescription", itemDescription);
+                                // receivev image url
+                                HashMap<String, Object> hashMap = new HashMap<>();
+                                hashMap.put("itemID", "" + timestamp);
+                                hashMap.put("itemName", itemName);
+                                hashMap.put("itemCategory", itemCategory);
+                                hashMap.put("itemPrice", itemPrice);
+                                hashMap.put("itemCount", itemCount);
+                                hashMap.put("itemDescription", itemDescription);
 
-                                    hashMap.put("timestamp", timestamp);
-                                    hashMap.put("itemImage", "" + downloadImageUri);
-                                    hashMap.put("uid", "" + firebaseAuth.getUid());
-                                    hashMap.put("shopName", shopName);
-                                    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
-                                    databaseReference.child(firebaseAuth.getUid()).child("Items").child(timestamp).setValue(hashMap)
-                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void unused) {
+                                hashMap.put("timestamp", timestamp);
+                                hashMap.put("itemImage", "" + downloadImageUri);
+                                hashMap.put("uid", "" + firebaseAuth.getUid());
+                                hashMap.put("shopName", shopName);
+                                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
+                                databaseReference.child(Objects.requireNonNull(firebaseAuth.getUid())).child("Items").child(timestamp).setValue(hashMap)
+                                        .addOnSuccessListener(unused -> {
 //                                                    progressDialog.dismiss();
-                                                    Toast.makeText(getContext(), "Item added", Toast.LENGTH_SHORT).show();
-                                                    clearData();
-                                                }
-                                            })
-                                            .addOnFailureListener(new OnFailureListener() {
-                                                @Override
-                                                public void onFailure(@NonNull Exception e) {
+                                            Toast.makeText(getContext(), "Item added", Toast.LENGTH_SHORT).show();
+                                            clearData();
+                                        })
+                                        .addOnFailureListener(e -> {
 //                                                    progressDialog.dismiss();
-                                                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                                                }
-                                            });
-                                }
+                                            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                                        });
                             }
                         })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
+                        .addOnFailureListener(e -> {
 //                                progressDialog.dismiss();
-                                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
+                            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                         });
             }
         }
@@ -370,14 +310,11 @@ public class SellerAddItemFragment extends Fragment {
         private void showCaterogyDialig() {
             String[] options = Constants.options;
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
             builder.setTitle("Product Category")
-                    .setItems(options, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            String category = options[which];
-                            itemCategoryEditText.setText(category);
-                        }
+                    .setItems(options, (dialog, which) -> {
+                        String category = options[which];
+                        itemCategoryEditText.setText(category);
                     })
                     .show();
         }
@@ -385,23 +322,20 @@ public class SellerAddItemFragment extends Fragment {
         private void showImagePickDialog() {
             String[] options = {"Camera", "Gallery", "Cancel"};
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
             builder.setTitle("Pick Image")
-                    .setItems(options, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            if (which == 0) {
-                                if (checkCameraPermission()) {
-                                    pickFromCamera();
-                                } else {
-                                    requestCameraPermission();
-                                }
-                            } else if (which == 1) {
-                                if (checkStoragePermission()) {
-                                    pickFromGallery();
-                                } else {
-                                    requestStoragePermission();
-                                }
+                    .setItems(options, (dialog, which) -> {
+                        if (which == 0) {
+                            if (checkCameraPermission()) {
+                                pickFromCamera();
+                            } else {
+                                requestCameraPermission();
+                            }
+                        } else if (which == 1) {
+                            if (checkStoragePermission()) {
+                                pickFromGallery();
+                            } else {
+                                requestStoragePermission();
                             }
                         }
                     })
@@ -411,7 +345,7 @@ public class SellerAddItemFragment extends Fragment {
         private void pickFromGallery() {
             Intent intent = new Intent(Intent.ACTION_PICK);
             intent.setType("image/*");
-            ((Activity) getContext()).startActivityForResult(intent, IMAGE_PICK_GALLERY_CODE);
+            ((Activity) requireContext()).startActivityForResult(intent, IMAGE_PICK_GALLERY_CODE);
         }
 
         private void pickFromCamera() {
@@ -421,35 +355,34 @@ public class SellerAddItemFragment extends Fragment {
             contentValues.put(MediaStore.Images.Media.TITLE, "Temp_Image_Title");
             contentValues.put(MediaStore.Images.Media.DESCRIPTION, "Temp_Image_Description");
 
-            image_uri = getContext().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
+            image_uri = requireContext().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
 
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             intent.putExtra(MediaStore.EXTRA_OUTPUT, image_uri);
-            ((Activity) getContext()).startActivityForResult(intent, IMAGE_PICK_CAMERA_CODE);
+            ((Activity) requireContext()).startActivityForResult(intent, IMAGE_PICK_CAMERA_CODE);
 
         }
 
         private boolean checkStoragePermission() {
-            boolean result = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
-                    (PackageManager.PERMISSION_GRANTED);
 
-            return result;
+            return ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
+                    (PackageManager.PERMISSION_GRANTED);
         }
 
         private void requestStoragePermission() {
-            ActivityCompat.requestPermissions((Activity) getContext(), storagePermissions, STORAGE_REQUEST_CODE);
+            ActivityCompat.requestPermissions((Activity) requireContext(), storagePermissions, STORAGE_REQUEST_CODE);
         }
 
         private boolean checkCameraPermission() {
-            boolean result = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) ==
+            boolean result = ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) ==
                     (PackageManager.PERMISSION_GRANTED);
-            result &= ContextCompat.checkSelfPermission( getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
+            result &= ContextCompat.checkSelfPermission( requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
                     (PackageManager.PERMISSION_GRANTED);
             return result;
         }
 
         private void requestCameraPermission() {
-            ActivityCompat.requestPermissions((Activity)getContext(), cameraPermissions, CAMERA_REQUEST_CODE);
+            ActivityCompat.requestPermissions((Activity)requireContext(), cameraPermissions, CAMERA_REQUEST_CODE);
         }
 
         @Override
@@ -485,6 +418,7 @@ public class SellerAddItemFragment extends Fragment {
         protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
             if (resultCode == RESULT_OK) {
                 if (requestCode == IMAGE_PICK_GALLERY_CODE) {
+                    assert data != null;
                     image_uri = data.getData();
 
                     productPhotoImageView.setImageURI(image_uri);
