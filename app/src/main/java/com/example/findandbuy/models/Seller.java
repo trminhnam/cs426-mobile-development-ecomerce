@@ -1,11 +1,11 @@
 package com.example.findandbuy.models;
 
 public class Seller {
-    private String uid, email, fullname, shopName, address, lat, lng, timestamp, accountType, available, online;
+    private String uid, email, fullname, shopName, address, lat, lng, timestamp, accountType, available, online, phoneNumber;
 
     public Seller() {}
 
-    public Seller(String uid, String email, String fullname, String shopName, String address, String lat, String lng, String timestamp, String accountType, String available, String online) {
+    public Seller(String uid, String email, String fullname, String shopName, String address, String lat, String lng, String timestamp, String accountType, String available, String online, String phoneNumber) {
         this.uid = uid;
         this.email = email;
         this.fullname = fullname;
@@ -17,6 +17,7 @@ public class Seller {
         this.accountType = accountType;
         this.available = available;
         this.online = online;
+        this.phoneNumber = phoneNumber;
     }
 
     public String getUid() {
@@ -105,5 +106,13 @@ public class Seller {
 
     public void setOnline(String online) {
         this.online = online;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 }
