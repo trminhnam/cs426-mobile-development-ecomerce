@@ -12,7 +12,9 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
+import com.example.findandbuy.LoginActivity;
 import com.example.findandbuy.R;
 import com.example.findandbuy.fragment.CustomMapFragment;
 import com.example.findandbuy.fragment.SellerAddItemFragment;
@@ -23,13 +25,25 @@ import com.example.findandbuy.fragment.UserProfileFragment;
 import com.example.findandbuy.fragment.UserShopFragment;
 import com.example.findandbuy.fragment.UserShoppingCartFragment;
 import com.example.findandbuy.navigation.BottomNavigationBehavior;
+import com.example.findandbuy.user.UserMainActivity;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
+import java.util.Objects;
 
 public class SellerMainActivity extends AppCompatActivity {
 
 
     private static Fragment fragment = null;
+
+    private FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +61,7 @@ public class SellerMainActivity extends AppCompatActivity {
         CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) navigation.getLayoutParams();
 
         layoutParams.setBehavior(new BottomNavigationBehavior());
+        firebaseAuth = FirebaseAuth.getInstance();
 
         switchFragment(0);
 
@@ -126,43 +141,40 @@ public class SellerMainActivity extends AppCompatActivity {
         return fragment;
     }
 
-}
+    private void logOutSeller() {
 
-//package com.example.findandbuy.seller;
-//
-//import androidx.appcompat.app.AppCompatActivity;
-//
-//import android.content.Intent;
-//import android.os.Bundle;
-//import android.view.View;
-//import android.widget.ImageButton;
-//import android.widget.TextView;
-//
-//import com.example.findandbuy.R;
-//
-//public class SellerMainActivity extends AppCompatActivity {
-//
-//    private TextView nameTextView;
-//    private ImageButton addProductButton;
-//
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_seller_main);
-//
-//        Bundle extras = getIntent().getExtras();
-//        String fullname = extras.getString("fullname");
-//
-//        nameTextView = findViewById(R.id.shopNameTextView);
-//        addProductButton = findViewById(R.id.addItemButton);
-//
-//        nameTextView.setText(fullname);
-//
-//        addProductButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                startActivity(new Intent(SellerMainActivity.this, SellerAddItem.class));
-//            }
-//        });
-//    }
-//}
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("online", "false");
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
+        ref.child(Objects.requireNonNull(firebaseAuth.getUid()))
+                .updateChildren(hashMap)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        firebaseAuth.signOut();
+                        Toast.makeText(SellerMainActivity.this, "" + "Signed out successfully", Toast.LENGTH_SHORT).show();
+                        returnToLoginScreen();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(SellerMainActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+        Log.d("log out", "logOutUser: log out");
+    }
+
+    private void returnToLoginScreen() {
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        if (user == null){
+            startActivity(new Intent(SellerMainActivity.this, LoginActivity.class));
+            finish();
+        }
+        else {
+            return;
+        }
+    }
+
+}

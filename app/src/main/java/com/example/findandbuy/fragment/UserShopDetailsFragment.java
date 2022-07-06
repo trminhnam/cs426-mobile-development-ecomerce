@@ -43,7 +43,7 @@ public class UserShopDetailsFragment extends Fragment {
     private ImageButton callButton, mapButton, backButton;
     private Spinner categorySpinner;
 
-    private String shopUid, shopNameDetail, emailDetail, addressDetail;
+    private String shopUid, shopNameDetail, emailDetail, addressDetail, phoneNumDetail;
 
     // TODO: Load from database
     private ArrayList<Item> listItems = new ArrayList<>();
@@ -75,6 +75,7 @@ public class UserShopDetailsFragment extends Fragment {
             this.shopNameDetail = bundle.getString("shopName");
             this.emailDetail = bundle.getString("email");
             this.addressDetail = bundle.getString("address");
+            this.phoneNumDetail = bundle.getString("phoneNumber");
         }
     }
 
@@ -119,7 +120,7 @@ public class UserShopDetailsFragment extends Fragment {
         shopName.setText(shopNameDetail);
         email.setText(emailDetail);
         address.setText(addressDetail);
-        phoneNum.setText("12345678");
+        phoneNum.setText(phoneNumDetail);
 
         listItemRv = (RecyclerView) view.findViewById(R.id.listProductsRv);
 
@@ -136,7 +137,7 @@ public class UserShopDetailsFragment extends Fragment {
         callButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dialPhoneNumber(phoneNum.getText().toString().trim());
+                dialPhoneNumber(phoneNumDetail);
             }
         });
         return view;
