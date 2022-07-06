@@ -100,6 +100,9 @@ public class UserProfileFragment extends Fragment {
     }
 
     private void loadUserProfile(TextView fullNameTextView, TextView emailTextView, TextView bonusTextView) {
+        if (getContext() == null) {
+            return;
+        }
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
         ref.orderByChild("uid").equalTo(firebaseAuth.getUid())
                 .addValueEventListener(new ValueEventListener() {
@@ -114,13 +117,15 @@ public class UserProfileFragment extends Fragment {
                             fullNameTextView.setText(fullName);
                             emailTextView.setText(email);
                             bonusTextView.setText(bonus + " coin");
-                            Toast.makeText(getContext(), "Load user profile successfully", Toast.LENGTH_SHORT).show();
+                            if (getContext() != null)
+                                Toast.makeText(getContext(), "Load user profile successfully", Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-                        Toast.makeText(getContext(), "Failed to load user profile", Toast.LENGTH_SHORT).show();
+                        if (getContext() != null)
+                            Toast.makeText(getContext(), "Failed to load user profile", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
