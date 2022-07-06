@@ -48,6 +48,15 @@ public class SellerProfileFragment extends Fragment {
         // Required empty public constructor
     }
 
+    private static SellerProfileFragment INSTANCE = null;
+
+    public static SellerProfileFragment getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new SellerProfileFragment();
+        }
+        return INSTANCE;
+    }
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.

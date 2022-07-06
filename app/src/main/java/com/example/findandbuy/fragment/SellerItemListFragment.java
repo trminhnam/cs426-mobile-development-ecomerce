@@ -37,40 +37,30 @@ import java.util.ArrayList;
  */
 public class SellerItemListFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static SellerItemListFragment INSTANCE = null;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    public SellerItemListFragment() {
+        // Required empty public constructor
+    }
+
+    public static SellerItemListFragment getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new SellerItemListFragment();
+        }
+        return INSTANCE;
+    }
 
     private RecyclerView recyclerView;
     private ArrayList<Item> itemArrayList;
     private SellerItemAdapter sellerItemAdapter;
 
     private FirebaseAuth firebaseAuth;
-    private ProgressDialog progressDialog;
+//    private ProgressDialog progressDialog;
 
-    public SellerItemListFragment() {
-        // Required empty public constructor
-    }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SellerItemListFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static SellerItemListFragment newInstance(String param1, String param2) {
         SellerItemListFragment fragment = new SellerItemListFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -79,21 +69,23 @@ public class SellerItemListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
         firebaseAuth = FirebaseAuth.getInstance();
-        progressDialog = new ProgressDialog(getContext());
-        progressDialog.setTitle("Please wait");
-        progressDialog.setCanceledOnTouchOutside(false);
+//        progressDialog = new ProgressDialog(getContext());
+//        progressDialog.setTitle("Please wait");
+//        progressDialog.setCanceledOnTouchOutside(false);
         
         loadAllItems();
     }
 
+
+
+
     @Override
     public void onResume() {
         super.onResume();
+        loadAllItems();
     }
 
     @Override

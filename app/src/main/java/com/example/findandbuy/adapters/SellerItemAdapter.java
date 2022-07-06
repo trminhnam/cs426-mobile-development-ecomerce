@@ -55,7 +55,7 @@ public class SellerItemAdapter
     private Item currentItem;
 
     private FirebaseAuth firebaseAuth;
-    private ProgressDialog progressDialog;
+//    private ProgressDialog progressDialog;
 
     public SellerItemAdapter(Context context, ArrayList<Item> itemArrayList, String userType){
         this.context = context;
@@ -63,9 +63,9 @@ public class SellerItemAdapter
         this.userType = userType;
 
         firebaseAuth = FirebaseAuth.getInstance();
-        progressDialog = new ProgressDialog(context);
-        progressDialog.setTitle("Please wait.");
-        progressDialog.setCanceledOnTouchOutside(false);
+//        progressDialog = new ProgressDialog(context);
+//        progressDialog.setTitle("Please wait.");
+//        progressDialog.setCanceledOnTouchOutside(false);
     }
 
     @NonNull
@@ -323,9 +323,8 @@ public class SellerItemAdapter
     }
 
     private void addItemToUserCart(Item item, String newItemCount) {
-
-        progressDialog.setMessage("Adding item to cart");
-        progressDialog.show();
+//        progressDialog.setMessage("Adding item to cart");
+//        progressDialog.show();
 
         item.setItemCount(newItemCount);
 
@@ -340,14 +339,14 @@ public class SellerItemAdapter
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-                        progressDialog.dismiss();
+//                        progressDialog.dismiss();
                         Toast.makeText(context, "Added successfully", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        progressDialog.dismiss();
+//                        progressDialog.dismiss();
                         Toast.makeText(context, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -355,25 +354,27 @@ public class SellerItemAdapter
 
     private void applySellerItemChanges(Item newItem) {
 
-        progressDialog.setMessage("Updating item");
+//        progressDialog.setMessage("Updating item");
 
         HashMap<String, Object> newdata = new HashMap<>();
         newdata.put(newItem.getItemID(), newItem);
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
-        databaseReference.child(firebaseAuth.getUid()).child("Items")
+        databaseReference
+                .child(Objects.requireNonNull(firebaseAuth.getUid()))
+                .child("Items")
                 .updateChildren(newdata)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-                        progressDialog.dismiss();
+//                        progressDialog.dismiss();
                         Toast.makeText(context.getApplicationContext(), "Updated successfully", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        progressDialog.dismiss();
+//                        progressDialog.dismiss();
                         Toast.makeText(context.getApplicationContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -381,26 +382,28 @@ public class SellerItemAdapter
 
     private void applySellerItemChanges(Item item, String newItemCount) {
 
-        progressDialog.setMessage("Updating item");
+//        progressDialog.setMessage("Updating item");
         item.setItemCount(newItemCount);
 
         HashMap<String, Object> newdata = new HashMap<>();
         newdata.put(item.getItemID(), item);
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
-        databaseReference.child(firebaseAuth.getUid()).child("Items")
+        databaseReference
+                .child(Objects.requireNonNull(firebaseAuth.getUid()))
+                .child("Items")
                 .updateChildren(newdata)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-                        progressDialog.dismiss();
+//                        progressDialog.dismiss();
                         Toast.makeText(context.getApplicationContext(), "Updated successfully", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        progressDialog.dismiss();
+//                        progressDialog.dismiss();
                         Toast.makeText(context.getApplicationContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
