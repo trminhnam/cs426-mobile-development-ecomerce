@@ -61,6 +61,7 @@ public class UserGameFragment extends Fragment {
 
     private TextView showCoinTV;
     private Integer userCoin=0;
+    private Boolean isUserInGame=false;
 
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
@@ -116,8 +117,14 @@ public class UserGameFragment extends Fragment {
         view =  inflater.inflate(R.layout.fragment_user_game, container, false);
 
         loadUserBonusFromFirebase();
-
+        isUserInGame = true;
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        isUserInGame = false;
     }
 
     private void loadUserBonusFromFirebase() {
@@ -212,6 +219,9 @@ public class UserGameFragment extends Fragment {
         }
 
         private void shaking() {
+            if (getContext() == null || !isUserInGame)
+                return;
+
             for (int i=0; i<sprites.size(); i++)
                 sprites.get(i).update();
 
