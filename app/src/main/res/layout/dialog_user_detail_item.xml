@@ -18,7 +18,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+    <EditText
         android:id="@+id/itemNameTextView"
         style="@style/TextAppearance.MaterialComponents.Headline6"
         android:layout_width="wrap_content"
@@ -30,7 +30,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/itemImageView" />
 
-    <TextView
+    <EditText
         android:id="@+id/categoryTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -38,17 +38,32 @@
         app:layout_constraintStart_toStartOf="@id/itemNameTextView"
         app:layout_constraintTop_toBottomOf="@id/itemNameTextView" />
 
-    <TextView
-        android:id="@+id/priceTextView"
-        style="@style/TextAppearance.MaterialComponents.Body1"
+    <LinearLayout
+        android:id="@+id/priceLinearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:layout_marginTop="8dp"
-        android:text="$ 0.5"
         app:layout_constraintStart_toStartOf="@+id/categoryTextView"
-        app:layout_constraintTop_toBottomOf="@id/categoryTextView" />
+        app:layout_constraintTop_toBottomOf="@id/categoryTextView">
 
-    <TextView
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="$ "
+            style="@style/TextAppearance.MaterialComponents.Body1" />
+
+        <EditText
+            android:id="@+id/priceTextView"
+            style="@style/TextAppearance.MaterialComponents.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="$ 0.5"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <EditText
         android:id="@+id/descriptionTextView"
         style="@style/TextAppearance.MaterialComponents.Body1"
         android:layout_width="0dp"
@@ -56,8 +71,8 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/priceTextView"
-        app:layout_constraintTop_toBottomOf="@id/priceTextView" />
+        app:layout_constraintStart_toStartOf="@+id/priceLinearLayout"
+        app:layout_constraintTop_toBottomOf="@id/priceLinearLayout" />
 
 
     <LinearLayout

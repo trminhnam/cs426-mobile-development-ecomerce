@@ -1,11 +1,13 @@
 package com.example.findandbuy.adapters;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -40,6 +42,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class SellerItemAdapter
@@ -116,15 +119,16 @@ public class SellerItemAdapter
     }
 
     private int quantity = 1;
+    @SuppressLint("SetTextI18n")
     private void showUserItemDetailDialog(Item item){
         View view = LayoutInflater.from(context).inflate(R.layout.dialog_user_detail_item, null);
 
         // init data store
         ImageView itemIv = view.findViewById(R.id.itemImageView);
-        TextView itemNameTv = view.findViewById(R.id.itemNameTextView);
-        TextView categoryTv = view.findViewById(R.id.categoryTextView);
-        TextView descriptionTv = view.findViewById(R.id.descriptionTextView);
-        TextView priceTv = view.findViewById(R.id.priceTextView);
+        EditText itemNameTv = view.findViewById(R.id.itemNameTextView);
+        EditText categoryTv = view.findViewById(R.id.categoryTextView);
+        EditText descriptionTv = view.findViewById(R.id.descriptionTextView);
+        EditText priceTv = view.findViewById(R.id.priceTextView);
 
         ImageButton incrementButton = view.findViewById(R.id.incrementItemButton);
         TextView itemCountTv = view.findViewById(R.id.itemCountTv);
@@ -138,6 +142,115 @@ public class SellerItemAdapter
         String itemCategory = item.getItemCategory();
         String itemDescription = item.getItemDescription();
         String itemPrice = item.getItemPrice();
+
+        if (Objects.equals(userType, "User"))
+        {
+        // set itemNameTv to readonly
+        itemNameTv.setCursorVisible(false);
+        itemNameTv.setLongClickable(false);
+        itemNameTv.setClickable(false);
+        itemNameTv.setFocusable(false);
+        itemNameTv.setSelected(false);
+        itemNameTv.setKeyListener(null);
+        itemNameTv.setBackgroundResource(android.R.color.transparent);
+
+            // set categoryTv to readonly
+        categoryTv.setCursorVisible(false);
+        categoryTv.setLongClickable(false);
+        categoryTv.setClickable(false);
+        categoryTv.setFocusable(false);
+        categoryTv.setSelected(false);
+        categoryTv.setKeyListener(null);
+        categoryTv.setBackgroundResource(android.R.color.transparent);
+
+        // set descriptionTv to readonly
+        descriptionTv.setCursorVisible(false);
+        descriptionTv.setLongClickable(false);
+        descriptionTv.setClickable(false);
+        descriptionTv.setFocusable(false);
+        descriptionTv.setSelected(false);
+        descriptionTv.setKeyListener(null);
+        descriptionTv.setBackgroundResource(android.R.color.transparent);
+
+        // set priceTv to readonly
+        priceTv.setCursorVisible(false);
+        priceTv.setLongClickable(false);
+        priceTv.setClickable(false);
+        priceTv.setFocusable(false);
+        priceTv.setSelected(false);
+        priceTv.setKeyListener(null);
+        priceTv.setBackgroundResource(android.R.color.transparent);
+        }
+        else
+        {
+            // set listener itemNameTv text change
+            itemNameTv.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+                    item.setItemName(editable.toString());
+                    // new item
+//                    applySellerItemChanges(item);
+                }
+            });
+
+            // set listener categoryTv text change
+            categoryTv.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                }
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                }
+                @Override
+                public void afterTextChanged(Editable editable) {
+                    item.setItemCategory(editable.toString());
+                    // new item
+//                    applySellerItemChanges(item);
+                }
+            });
+
+            // set listener descriptionTv text change
+            descriptionTv.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                }
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                }
+                @Override
+                public void afterTextChanged(Editable editable) {
+                    item.setItemDescription(editable.toString());
+                    // new item
+//                    applySellerItemChanges(item);
+                }
+            });
+
+            // set listener priceTv text change
+            priceTv.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                }
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                }
+                @Override
+                public void afterTextChanged(Editable editable) {
+                    item.setItemPrice(editable.toString());
+                    // new item
+//                    applySellerItemChanges(item);
+                }
+            });
+
+        }
+
 
         //Dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -153,7 +266,7 @@ public class SellerItemAdapter
         itemNameTv.setText("" + itemName);
         categoryTv.setText("" + itemCategory);
         descriptionTv.setText("" + itemDescription);
-        priceTv.setText("$ " + itemPrice);
+        priceTv.setText("" + itemPrice);
 
         //increment
         incrementButton.setOnClickListener(new View.OnClickListener() {
@@ -189,6 +302,7 @@ public class SellerItemAdapter
                 @Override
                 public void onClick(View v) {
                     addItemToUserCart(item, itemCountTv.getText().toString());
+//                    applySellerItemChanges(item);
                     dialog.dismiss();
                 }
             });
@@ -235,6 +349,32 @@ public class SellerItemAdapter
                     public void onFailure(@NonNull Exception e) {
                         progressDialog.dismiss();
                         Toast.makeText(context, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void applySellerItemChanges(Item newItem) {
+
+        progressDialog.setMessage("Updating item");
+
+        HashMap<String, Object> newdata = new HashMap<>();
+        newdata.put(newItem.getItemID(), newItem);
+
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
+        databaseReference.child(firebaseAuth.getUid()).child("Items")
+                .updateChildren(newdata)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        progressDialog.dismiss();
+                        Toast.makeText(context.getApplicationContext(), "Updated successfully", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        progressDialog.dismiss();
+                        Toast.makeText(context.getApplicationContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }

@@ -3,14 +3,10 @@ package com.example.findandbuy.seller;
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -20,7 +16,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -29,12 +24,9 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.PackageManagerCompat;
 
 import com.example.findandbuy.Constants;
-import com.example.findandbuy.LoginActivity;
 import com.example.findandbuy.R;
-import com.example.findandbuy.user.UserMainActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -48,6 +40,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 
 public class SellerAddItem extends AppCompatActivity {
@@ -156,7 +150,7 @@ public class SellerAddItem extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         for (DataSnapshot ds: snapshot.getChildren()){
-                            shopName = ""+ds.child("shopName");
+                            shopName = ""+ds.child("shopName").getValue();
                         }
                     }
 
@@ -248,6 +242,19 @@ public class SellerAddItem extends AppCompatActivity {
             String filePathAndName = "item_images/" + timestamp;
 
             StorageReference storageReference = FirebaseStorage.getInstance().getReference(filePathAndName);
+
+            // resize 255*255 image from uri before upload and return uri of image
+            Bitmap bitmap = null;
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), image_uri);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Bitmap bitmapResized = Bitmap.createScaledBitmap(bitmap, 255, 255, false);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmapResized.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            image_uri = Uri.parse(MediaStore.Images.Media.insertImage(getContentResolver(), bitmapResized, timestamp, null));
+
             storageReference.putFile(image_uri)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
@@ -267,8 +274,10 @@ public class SellerAddItem extends AppCompatActivity {
                                 hashMap.put("itemCount", itemCount);
                                 hashMap.put("itemDescription", itemCount);
 
-                                hashMap.put("timestamp", timestamp);                                hashMap.put("itemImage", ""+downloadImageUri);
+                                hashMap.put("timestamp", timestamp);
+                                hashMap.put("itemImage", ""+downloadImageUri);
                                 hashMap.put("uid", ""+firebaseAuth.getUid());
+                                hashMap.put("shopName", shopName);
                                 DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
                                 databaseReference.child(firebaseAuth.getUid()).child("Items").child(timestamp).setValue(hashMap)
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -413,7 +422,6 @@ public class SellerAddItem extends AppCompatActivity {
                 })
                 .show();
     }
-
 
     private void showImagePickDialog() {
         String[] options = {"Camera", "Gallery", "Cancel"};

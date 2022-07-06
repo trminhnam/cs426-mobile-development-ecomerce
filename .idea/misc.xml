@@ -10,14 +10,17 @@
         <entry key="..\:/AndroidStudio/cs426-mobile-development-ecomerce/app/src/main/res/layout/fragment_user_game.xml" value="0.176" />
         <entry key="..\:/AndroidStudio/cs426-mobile-development-ecomerce/app/src/main/res/layout/fragment_user_shop_details.xml" value="0.259375" />
         <entry key="..\:/AndroidStudio/cs426-mobile-development-ecomerce/app/src/main/res/layout/fragment_user_shopping_cart.xml" value="0.18432971014492755" />
+        <entry key="..\:/AndroidStudio/cs426-mobile-development-ecomerce/app/src/main/res/layout/row_item.xml" value="0.15353260869565216" />
         <entry key="..\:/Users/trmin/Desktop/cs426-mobile-development-ecomerce/app/src/main/res/drawable/bg_gradient.xml" value="0.1" />
         <entry key="..\:/Users/trmin/Desktop/cs426-mobile-development-ecomerce/app/src/main/res/drawable/ic_add.xml" value="0.1625" />
         <entry key="..\:/Users/trmin/Desktop/cs426-mobile-development-ecomerce/app/src/main/res/drawable/ic_add_photo_gray.xml" value="0.216" />
         <entry key="..\:/Users/trmin/Desktop/cs426-mobile-development-ecomerce/app/src/main/res/drawable/ic_category_gray.xml" value="0.1625" />
+        <entry key="..\:/Users/trmin/Desktop/cs426-mobile-development-ecomerce/app/src/main/res/drawable/ic_contact_phone_gray.xml" value="0.2055" />
         <entry key="..\:/Users/trmin/Desktop/cs426-mobile-development-ecomerce/app/src/main/res/drawable/ic_dropdown_gray.xml" value="0.216" />
         <entry key="..\:/Users/trmin/Desktop/cs426-mobile-development-ecomerce/app/src/main/res/drawable/ic_image_gray.xml" value="0.1" />
         <entry key="..\:/Users/trmin/Desktop/cs426-mobile-development-ecomerce/app/src/main/res/drawable/ic_money_gray.xml" value="0.1625" />
         <entry key="..\:/Users/trmin/Desktop/cs426-mobile-development-ecomerce/app/src/main/res/drawable/ic_numberfield_gray.xml" value="0.1625" />
+        <entry key="..\:/Users/trmin/Desktop/cs426-mobile-development-ecomerce/app/src/main/res/drawable/ic_store_gray.xml" value="0.2055" />
         <entry key="..\:/Users/trmin/Desktop/cs426-mobile-development-ecomerce/app/src/main/res/drawable/ic_textfield_gray.xml" value="0.1625" />
         <entry key="..\:/Users/trmin/Desktop/cs426-mobile-development-ecomerce/app/src/main/res/drawable/shape_circle01.xml" value="0.2035" />
         <entry key="..\:/Users/trmin/Desktop/cs426-mobile-development-ecomerce/app/src/main/res/drawable/shape_rect01.xml" value="0.2035" />
@@ -36,6 +39,7 @@
         <entry key="..\:/Users/trmin/Desktop/cs426-mobile-development-ecomerce/app/src/main/res/layout/fragment_map.xml" value="0.325" />
         <entry key="..\:/Users/trmin/Desktop/cs426-mobile-development-ecomerce/app/src/main/res/layout/fragment_seller_item_list.xml" value="0.536" />
         <entry key="..\:/Users/trmin/Desktop/cs426-mobile-development-ecomerce/app/src/main/res/layout/fragment_seller_login.xml" value="0.25555555555555554" />
+        <entry key="..\:/Users/trmin/Desktop/cs426-mobile-development-ecomerce/app/src/main/res/layout/fragment_seller_profile.xml" value="0.325" />
         <entry key="..\:/Users/trmin/Desktop/cs426-mobile-development-ecomerce/app/src/main/res/layout/fragment_user_game.xml" value="0.325" />
         <entry key="..\:/Users/trmin/Desktop/cs426-mobile-development-ecomerce/app/src/main/res/layout/fragment_user_profile.xml" value="0.325" />
         <entry key="..\:/Users/trmin/Desktop/cs426-mobile-development-ecomerce/app/src/main/res/layout/fragment_user_shop.xml" value="0.325" />

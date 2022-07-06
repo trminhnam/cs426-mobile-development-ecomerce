@@ -118,6 +118,24 @@ public class UserShopFragment extends Fragment {
         return view;
     }
 
+    private void reOrderShopName() {
+        for (int i = 0; i < sellerArrayList.size(); i++) {
+            for (int j = 0; j < sellerArrayList.size() - 1; j++) {
+                if (sellerArrayList.get(j).getShopName().length() > sellerArrayList.get(j + 1).getShopName().length()) {
+                    Seller temp = sellerArrayList.get(j);
+                    sellerArrayList.set(j, sellerArrayList.get(j + 1));
+                    sellerArrayList.set(j + 1, temp);
+                } else if (sellerArrayList.get(j).getShopName().length() == sellerArrayList.get(j + 1).getShopName().length()) {
+                    if (sellerArrayList.get(j).getShopName().compareTo(sellerArrayList.get(j + 1).getShopName()) > 0) {
+                        Seller temp = sellerArrayList.get(j);
+                        sellerArrayList.set(j, sellerArrayList.get(j + 1));
+                        sellerArrayList.set(j + 1, temp);
+                    }
+                }
+            }
+        }
+    }
+
 
     private void loadSellerLists() {
         sellerArrayList = new ArrayList<>();
@@ -137,6 +155,8 @@ public class UserShopFragment extends Fragment {
                             }
                         }
                         progressDialog.dismiss();
+
+                        reOrderShopName();
 
                         ShopAdapter shopAdapter = new ShopAdapter(getContext(), sellerArrayList);
                         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
